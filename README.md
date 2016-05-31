@@ -26,7 +26,9 @@
   * [Simulation](#simulation)
 
 ## Getting Started
-When beginning any project, it is critical to review code standards and metrics, as well as establish the requirements for the new software. Reviewing these standards and metrics is important to maintain high-quality and consistency in the codebase.
+When beginning any project, it is critical to review code standards and metrics, as well as establish the requirements for the new software. Reviewing these standards and metrics is important to maintain high-quality and consistency in the codebase. This is the basic plan for the Quality Assurance process:
+
+![ScreenShot](https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/Screen%20Shot%202016-05-31%20at%204.36.12%20PM.png)
 
 #### Quality Overview
 Each of the following should be reviewed and understood by all developers on the team.
@@ -40,7 +42,7 @@ Each of the following should be reviewed and understood by all developers on the
 Develop clear, and mutually agreeable goals for the end product. These should be well communicated and delegated. Developers should commit to deadlines for each stage. In addition, standards should be established for security of the software and Key Performance Indicators (KPIs) should be set for the project. Release Criteria should be set and acknowledged for the project, allowing developers to know when the software is completed.
 
 ## Test Planning and Designing
-Test driven development fosters clear goals and allows for those key requirements to be checked at each step in the development process.
+Test driven development fosters clear goals and allows for those key requirements to be checked at each step in the development process. 
 
 #### Test Cases
 These depend on the product, but they should address the desired requirements and functionality. Test cases form the backbone of any software platform and should be create painstakingly.
@@ -66,6 +68,11 @@ When creating any application, metrics will allow for clear goals and progress t
 &#9;While these metrics are helpful, they are certainly not complete; metrics may be project-specific and establishing these before a project starts can help accelerate the software development process while maintaining quality.
 
 ## Development and Repeated Testing
+This step of the Quality Assurance process will be the most time-consuming and important. Testing during development is critical to keeping track of the progress of the project. In general, the testing of a project will follow the following ascending order:
+
+![ScreenShot](https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/Screen%20Shot%202016-05-31%20at%204.37.26%20PM.png)
+
+During the development process, unit tests are the most critical to ensure quality in the software. We recommend in [Tier 1](#tier-1) testing that tests be 95% unit tests and 5% integration tests.
 
 #### Unit Tests
 
