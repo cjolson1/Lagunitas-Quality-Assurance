@@ -53,8 +53,9 @@ When faced with a system with multiple bugs, it is important to address those th
 #### Metrics
 When creating any application, metrics will allow for clear goals and progress to be acchieved efficiently. A 100% success rate is not always advised, as sufficient rates will allow for quality while not overly burdening progress. Below are some useful metric examples:
 - Pass rate: While need not be 100% in all scenarios, test case pass rates should be 100% for continuous integration testing.
-- Code coverage: This metric does not necessarily 
-<br>
+- Code coverage: This metric does not necessarily reflect the quality of the test cases written, code coverage is always a good indicator of how much of the project has actually been tested.
+- Defect metrics: Used in conjunction with goals, establishing thresholds for how many bugs are allowed in a development over a certain time period can be beneficial for production.
+While these metrics are helpful, they are certainly not complete; metrics may be project-specific and establishing these before a project starts can help accelerate the software development process while maintaining quality.
 ## Development and Repeated Testing
 Testing while development 
 #### Unit Tests
