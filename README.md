@@ -26,30 +26,37 @@
   * [Simulation](#simulation)
 
 ## Getting Started
-When beginning any project, it is critical to review code standards and metrics, as well as establish the requirements for the new software. Reviewing these standards and metrics is important to maintain high-quality and consistency in the codebase. 
+When beginning any project, it is critical to review code standards and metrics, as well as establish the requirements for the new software. Reviewing these standards and metrics is important to maintain high-quality and consistency in the codebase.
+
 #### Quality Overview
 Each of the following should be reviewed and understood by all developers on the team.
 - Error handling: Errors should be handled gracefully & explicity. Custom errors can be created to more effectively address issues in the code.
 - Avoid repeated code: Trivial. 
 - Comment clearly & concisely: Trivial. 
 - File length: Excessive file lengths are a good indicator that the file should be split into smaller, more focused files. As the file size increases, discoverability decreases. 
-- Review your own code first: Examine the changes made, and look for discrepancies or issues you might want to address before others address you about it. 
+- Review your own code first: Examine the changes made, and look for discrepancies or issues you might want to address before others address you about it.
 
 #### Requirements and Design Development
-Develop clear, and mutually agreeable goals for the end product. These should be well communicated and delegated. Developers should commit to deadlines for each stage. 
-<br>
+Develop clear, and mutually agreeable goals for the end product. These should be well communicated and delegated. Developers should commit to deadlines for each stage. In addition, standards should be established for security of the software and Key Performance Indicators (KPIs) should be set for the project. Release Criteria should be set and acknowledged for the project, allowing developers to know when the software is completed.
+
 ## Test Planning and Designing
-Test driven development fosters clear goals and allows for those key requirements to be checked at each step in the development process. 
+Test driven development fosters clear goals and allows for those key requirements to be checked at each step in the development process.
+
 #### Test Cases
-These depend on the product, but they should address the desired requirements and functionality. 
+These depend on the product, but they should address the desired requirements and functionality. Test cases form the backbone of any software platform and should be create painstakingly.
+
 #### Test Automation
 Designing tests to be automated will allow for more tests and a better use of developer's time. In the case of Lagunitas, Jenkins and Selenium would be used to test code as it is committed; however, it is important to do more exhaustive, time-consuming testing when the project is not being worked on (e.g. when the office is empty). During this phase of the software development cycle, we recommend that tests be automated in a structured, two-tier process.
+
 ##### Tier 1
-Also known as "microtesting" or sanity checks, test after every commit on general (ie required cases)
+Also known as "microtesting" or sanity checks, this stage requires testing after each commit (i.e. required cases). This testing should be rudimentary and quick in order to ensure productivity.
+
 ##### Tier 2
-Also known as "macrotesting" or regression testing, exhaustive testing at night when project isn't being worked on. 
+Also known as "macrotesting" or regression testing, exhaustive testing at night when project isn't being worked on. These tests should take a lot of time and should work to test every aspect of the system extensively.
+
 #### Bugs
-When faced with a system with multiple bugs, it is important to address those that effect the most people/users first. Integrating a tool like Google Analytics or a custom software tool to evaluate the most pertinent bugs is recommended. 
+When faced with a system with multiple bugs, it is important to address those that effect the most people/users first. Integrating a tool like Google Analytics or a custom software tool to evaluate the most pertinent bugs is recommended.
+
 #### Metrics
 When creating any application, metrics will allow for clear goals and progress to be acchieved efficiently. A 100% success rate is not always advised, as sufficient rates will allow for quality while not overly burdening progress. Below are some useful metric examples:
 - Pass rate: While need not be 100% in all scenarios, test case pass rates should be 100% for continuous integration testing.
@@ -59,15 +66,26 @@ When creating any application, metrics will allow for clear goals and progress t
 &#9;While these metrics are helpful, they are certainly not complete; metrics may be project-specific and establishing these before a project starts can help accelerate the software development process while maintaining quality.
 
 ## Development and Repeated Testing
+
 #### Unit Tests
+
 #### Integration Tests
+
 #### Performance Tests
+
 #### Code Reviews
+
 #### Session Based Testing
+
 #### Security
+
 <br>
 ## Final Steps
+
 #### System Tests
+
 #### Regression Cycle
+
 #### Acceptance Testing
+
 #### Simulation
