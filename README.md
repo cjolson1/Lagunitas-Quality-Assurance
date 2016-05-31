@@ -55,9 +55,10 @@ When creating any application, metrics will allow for clear goals and progress t
 - Pass rate: While need not be 100% in all scenarios, test case pass rates should be 100% for continuous integration testing.
 - Code coverage: This metric does not necessarily reflect the quality of the test cases written, code coverage is always a good indicator of how much of the project has actually been tested.
 - Defect metrics: Used in conjunction with goals, establishing thresholds for how many bugs are allowed in a development over a certain time period can be beneficial for production.
-While these metrics are helpful, they are certainly not complete; metrics may be project-specific and establishing these before a project starts can help accelerate the software development process while maintaining quality.
+
+&#9;While these metrics are helpful, they are certainly not complete; metrics may be project-specific and establishing these before a project starts can help accelerate the software development process while maintaining quality.
+
 ## Development and Repeated Testing
-Testing while development 
 #### Unit Tests
 #### Integration Tests
 #### Performance Tests
