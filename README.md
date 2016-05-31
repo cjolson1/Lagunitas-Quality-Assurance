@@ -2,17 +2,8 @@
 ###### Christopher Olson  |  Maria Casciani
 
 ## Table of Contents
--[Click](#click)
--[quack](#quack)
-<br>
-<br>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+1. [Getting Started](#getting-started)
+  * [Quality Overview](#quality-overview)
+  * [Requirements and Design Review](#requirements-and-design-review)
 
-
-#Click
-
-<br>
-<br>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
-#Quack
+#Getting Started
