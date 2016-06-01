@@ -5,6 +5,9 @@
 1. [Getting Started](#getting-started)
   * [Quality Overview](#quality-overview)
   * [Requirements and Design Development](#requirements-and-design-development)
+  * [Skepticism Toward Test Driven Development](#skepticism-toward-test-driven-development)
+    - [Pros](#pros)
+    - [Cons](#cons)
 2. [Test Planning and Designing](#test-planning-and-designing)
   * [Test Cases](#test-cases)
   * [Test Automation](#test-automation)
@@ -15,14 +18,14 @@
 3. [Development and Repeated Testing](#development-and-repeated-testing)
   * [Unit Tests](#unit-tests)
   * [Integration Tests](#integration-tests)
-  * [Performance Tests](#performance-tests)
   * [Code Reviews](#code-reviews)
   * [Session Based Testing](#session-based-testing)
   * [Security](#security)
 4. [Final Steps](#final-steps)
   * [System Tests](#system-tests)
   * [Regression Cycle](#regression-cycle)
-  * [Acceptance Testing](#acceptance-testing)
+  * [Acceptance Tests](#acceptance-tests)
+  * [Performance Tests](#performance-tests)
   * [Simulation](#simulation)
 
 ## Getting Started
@@ -35,8 +38,8 @@ When beginning any project, it is critical to review code standards and metrics,
 #### Quality Overview
 Each of the following should be reviewed and understood by all developers on the team.
 - Error handling: Errors should be handled gracefully & explicity. Custom errors can be created to more effectively address issues in the code.
-- Avoid repeated code: Trivial. 
-- Comment clearly & concisely: Trivial. 
+- Avoid repeated code
+- Comment clearly & concisely
 - File length: Excessive file lengths are a good indicator that the file should be split into smaller, more focused files. As the file size increases, discoverability decreases. 
 - Review your own code first: Examine the changes made, and look for discrepancies or issues you might want to address before others address you about it.
 
@@ -44,6 +47,35 @@ While these guidelines are good to follow for any project, it is important to es
 
 #### Requirements and Design Development
 Develop clear, and mutually agreeable goals for the end product. These should be well communicated and delegated. Developers should commit to deadlines for each stage. In addition, standards should be established for security of the software and Key Performance Indicators (KPIs) should be set for the project. Release Criteria should be set and acknowledged for the project, allowing developers to know when the software is completed.
+
+#### Skepticism Toward Test Driven Development
+While using test driven development (TDD) for a project can increase project quality, there is a tradeoff between the benfit of less bugs and better quality versus the time it takes to finish the project. This time expense is a valid concern; however, for Lagunitas, a company in the process of scaling, TDD can be advantageous for developing quality applications with minimized time fixing bugs. Test Driven Development also can be thought of as "Test Driven Design", allowing the structure of the tests to allow your development to proceed with smaller less complex units of code more clearly coming together. 
+
+<p align="center">
+<b>According to "Exploding Software-Engineering Myths" by Microsoft Research, which used Microsoft to test the efficiency of TDD, test-driven development reduces defects in software by 60-90% while increasing time investment by 15-35%.</b>
+</p>
+
+According to the author of the paper, "Over a development cycle of 12 months, 35 percent is another four months, which is huge; however, the tradeoff is that you reduce post-release maintenance costs significantly, since code quality is so much better. Again, these are decisions that managers have to make—where should they take the hit? But now, they actually have quantified data for making those decisions.”
+
+TDD is helpful to learn, understand, and internalise key principles of modular design and delivers quality results. On the flipside, TDD forces a shift toward a more concentrated effort at the inception of the programs development, forcing a slow start that eventually picks up speed.
+
+With that being said, we strongly recommend TDD be used by Lagunitas except for extreme cases in which a project must be completed on a given day or the project is too small or trivial to even consider testing extensively.
+
+Throughout our research we have collected a series of pros and cons to TDD that may be useful when considering a borderline project to use TDD with.
+
+##### Pros
+- Makes code easier to maintain and refactor.
+- Makes collaboration easier and more efficient, team members can edit each others code with confidence because the tests will inform them if the changes are making the code behave in unexpected ways.
+- Good unit testing forces good architecture.  In order to make your code unit-testable, it must be properly modularized, by writing the unit testing first various architectural problems tend to surface earlier.
+- Over the long term it's faster. Refactoring code written two years in the past is hard. If that code is backed up by a good suite of unit tests, the process is made so much easier.
+- The Django web framework directly supports TDD for development. They have unit tests for the web data model, control layers, and HTML presentation and behavior. 
+
+##### Cons
+- Like any programming, there is a big difference between doing it and doing it well.  Writing good unit tests is an art form. (We will get to that in this document.)
+- Initially unit testing is slower.
+- Unit testing is something the whole team has to buy into. Team Leaders have to enforce policies and actually get in and check the tests.
+- Complex cases are much harder to design test cases for. 
+
 
 ## Test Planning and Designing
 Test driven development fosters clear goals and allows for those key requirements to be checked at each step in the development process. 
@@ -100,7 +132,7 @@ Some general topics to cover when unit testing are the following:
 
 - Module Interface test: This test checks if information is properly flowing in and out of the program or module.
 - Local data structures: Testing if the data that is supposed to be saved is saved is extremely important.
-- Boundary conditions: Trivial.
+- Boundary conditions
 - Error handling paths: The system's behavior surrounding errors should be controlled and useful [(see more)](#quality-overview)
 
 It is important to document each test extensively in order to promote reusability and keep communication clear. Additionally, a failing test should read like a high-quality bug report. Failed test reports should include what was being tested, what the program should do, the expected output, and the actual output. Having these clear channels can imporve quality dramatically.
@@ -112,17 +144,17 @@ Furthermore, while it may be tempting/cost-effective to "glue" together two unit
 #### Integration Tests
 Integration testing begins testing muliple units of code together. It is the logical extension of unit testing. Integration testing allows for an intermediary step before system testing so that problems can be more quickly localized and addressed. This form of testing identifies problems that occur when units are combined. Most of the time when an errors occurs, it is due to the interfacing between the units.
 
-Of particular interest for Lagunitas is the interaction of the software being written and the third-party libraries and external resources such as file systems, databases, and network services.  This is due to the fact that the behavior of such dependencies may not be fully known or controlled by the consuming development team, or may change in unexpected ways when new versions are introduced. In context of external webservices...
+Of particular interest for Lagunitas is the interaction of the software being written and the third-party libraries and external resources such as file systems, databases, and network services.  This is due to the fact that the behavior of such dependencies may not be fully known or controlled by the consuming development team, or may change in unexpected ways when new versions are introduced. In context of external webservices that may be used in conjunction with a project, this means that integration testing can prove vital to the success of the project.
 
 You and your team can do intergration testing in a variety of ways, but it is important to automate them and run them in the 95/5 unit/integration test ratio on Jenkins or Selenium. It is important that you and your team come to a consensus on what the strategy will be in order to improve workflow and the organization/quality of your work. The following are three common approaches to integration testing:
 
-- Top-down approach: This approach requires testing the highest-level modules 
+- Top-down approach: This approach requires testing the highest-level modules first. This allows high-level logic and data flow to be tested early on and minimizes the need for drivers; however, the need for stubs complicates test management and low-level applications are tested late in the development cycle. Furthermore, this form of testing does not promote early release of a project with limited functionality because it requires everything be thoroughly tested before finishing.
+- Bottom-up approach: The logical counterpart to the top-down approach. The need for stubs is minimized, but there is a need for drivers which complicates the test management. High-level logic and data flow are tested late. Like the top-down approach, the bottom-up approach also provides poor support for early release of limited functionality.
+- Umbrella approach: This approach is more advanced and free-spirited. It requires testing along functional data and control-flow paths. First, the inputs for functions are integrated in the bottom-up pattern discussed above. The outputs for each function are then integrated in the top-down manner. The primary advantage of this approach is the degree of support for early release of limited functionality. It also helps minimize the need for stubs and drivers. The potential weaknesses of this approach are significant, however, in that it can be less systematic than the other two approaches, leading to the need for more regression testing.
 
-#### Performance Tests
-Once the program is stable, these tests will focus on the efficiency of the code 
+We suggested Lagunitas use either the top-down or bottom-up methods first to adapt to the idea of test-driven development. As comfort with the process grows, we advise a transition to the Umbrella approach for projects that would like to have Alpha and Beta stages before deployment.
 
 #### Code Reviews
-
 
 #### Session Based Testing
 
@@ -135,6 +167,9 @@ Once the program is stable, these tests will focus on the efficiency of the code
 
 #### Regression Cycle
 
-#### Acceptance Testing
+#### Acceptance Tests
+
+#### Performance Tests
+Once the program is stable, these tests will focus on the efficiency of the code. 
 
 #### Simulation
