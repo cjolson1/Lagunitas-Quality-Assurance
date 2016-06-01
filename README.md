@@ -172,7 +172,9 @@ Integration testing begins testing muliple units of code together. It is the log
 
 Of particular interest for Lagunitas is the interaction of the software being written and the third-party libraries and external resources such as file systems, databases, and network services.  This is due to the fact that the behavior of such dependencies may not be fully known or controlled by the consuming development team, or may change in unexpected ways when new versions are introduced. In context of external webservices that may be used in conjunction with a project, this means that integration testing can prove vital to the success of the project.
 
-You and your team can do intergration testing in a variety of ways, but it is important to automate them and run them in the 95/5 unit/integration test ratio on Jenkins or Selenium. It is important that you and your team come to a consensus on what the strategy will be in order to improve workflow and the organization/quality of your work. The following are three common approaches to integration testing:
+You and your team can do intergration testing in a variety of ways, but it is important to automate them and run them in the 95/5 unit/integration test ratio on Jenkins or Selenium. It is important that you and your team come to a consensus on what the strategy will be in order to improve workflow and the organization/quality of your work. 
+
+The following are three common approaches to integration testing:
 
 - **Top-down approach:** This approach requires testing the highest-level modules first. This allows high-level logic and data flow to be tested early on and minimizes the need for drivers; however, the need for stubs complicates test management and low-level applications are tested late in the development cycle. Furthermore, this form of testing does not promote early release of a project with limited functionality because it requires everything be thoroughly tested before finishing.
 - **Bottom-up approach:** The logical counterpart to the top-down approach. The need for stubs is minimized, but there is a need for drivers which complicates the test management. High-level logic and data flow are tested late. Like the top-down approach, the bottom-up approach also provides poor support for early release of limited functionality.
@@ -185,6 +187,7 @@ We suggested Lagunitas use either the top-down or bottom-up methods first to ada
 Briefly, a code review is a discussion between two or more developers about changes to the code to address an issue. Its importance is critical; it promotes collaboration, identifies bugs, and keeps code more maintainable. This practice's practicality is fairly obvious. We suggest that code reviews be done when a component of a project is finished. Code reviews should be done with two or more developers, including the person that wrote the code being reviewed.
 
 Here are some useful practices to employ during code reviews:
+
 - **Review fewer than 200-400 lines of code at a time:** The Cisco code review study (see the sidebar) showed that for optimal effectiveness, developers should review fewer than 200-400 lines of code (LOC) at a time. Beyond that, the ability to find defects diminishes. At this rate, with the review spread over no more than 60–90 minutes, you should get a 70–90% yield. In other words, if 10 defects existed, you'd find 7 to 9 of them.
 - **Aim for an inspection rate of fewer than 300-500 lines of code (LOC) per hour:** Take your time with code review. Faster is not better. IBM research shows that you'll achieve optimal results at an inspection rate of less than 300–500 LOC per hour.
 - **Take enough time for a proper, slow review, but not more than 60–90 minutes:** IBM research shows that 60-90 minutes are the upper bound for effective code reviewing. On the flip side, you should always spend at least five minutes reviewing code, even if it's one line.
@@ -210,13 +213,12 @@ See [Quality Overview](#quality-overview)
 - **Number of Mocks:** Mocking is great. Mocking everything is not great. Use a rule of thumb where if there’s more than 3 mocks in a test, it should be revisited. Either the test is testing too broadly or the function is too large. Maybe it doesn’t need to be tested at a unit test level and would suffice as an integration test. Either way, it’s something to discuss.
 - **Meets requirements:** Usually as part of the end of a review, look at the requirements of the story, task, or bug which the work was filed against. If it doesn’t meet one of the criteria, it’s better to bounce it back before problems arise.
 
-
-
 #### Security
 
 ##### Fuzz Testing
-
+Fuzz testing is for detecting problems that can cause the system to crash. Examples of these kinds of issues would be buffer overflow, cross-site scripting, denial of service attacks, or SQL injection. Fuzz testing is typically employed by hackers to bring a system down with minimal effort. Fuzz testing is not effective for discovering threat potential from things such as: spyware, viruses, and Trojans. We do not recommend Lagunitas use this form of testing because it is not really applicable.
 <br>
+
 ## Final Steps
 
 #### System Tests
@@ -234,7 +236,21 @@ Once the program is stable, these tests will focus on the efficiency of the code
 
 #### Testing Frameworks
 
+There are many frameworks that can be used to test software built here at Lagunitas. Many of the platforms that are used here are made for TDD and easily support unit testing, easily the most critical step in the testing process. 
+
+With that said, here are how the testing frameworks for Django, JavaScript, and Selenium:
+
 ##### Django
+
+Django's testing platform is an extension of Python's `unittest` module, which makes it easy to interact with. Test cases are objects from the subclass `django.test.TestCase`, which is a subclass of `unittest.TestCase` that runs each test inside a transaction to provide isolation.
+
+Here is an example of what an example test case might look like:
+
+
+
+When you run your tests, the default behavior of the test utility is to find all the test cases (that is, subclasses of `unittest.TestCase`) in any file whose name begins with **test**, automatically build a test suite out of those test cases, and run that suite. The default **startapp** template creates a **tests.py** file in the new application. This might be fine if you only have a few tests, but as your test suite grows you’ll likely want to restructure it into a tests package so you can split your tests into different submodules such as **test_models.py, test_views.py, test_forms.py,** etc. Feel free to pick whatever organizational scheme you like.
+
+
 
 ##### JavaScript
 
