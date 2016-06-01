@@ -1,5 +1,5 @@
 # Lagunitas Quality Assurance
-###### Christopher Olson | Maria Casciani
+###### Christopher Olson | Maria Casciani &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; June 1, 2016 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Last Revision: June 1, 2016 15:19
 <br>
 ## Table of Contents
 1. [Getting Started](#getting-started)
@@ -66,6 +66,8 @@ Develop clear, and mutually agreeable goals for the end product. These should be
 #### Skepticism Toward Test Driven Development
 While using test driven development (TDD) for a project can increase project quality, there is a tradeoff between the benfit of less bugs and better quality versus the time it takes to finish the project. This time expense is a valid concern; however, for Lagunitas, a company in the process of scaling, TDD can be advantageous for developing quality applications with minimized time fixing bugs. Test Driven Development also can be thought of as "Test Driven Design", allowing the structure of the tests to allow your development to proceed with smaller less complex units of code more clearly coming together. 
 
+Some groups that do Agile development, like Lagunitas, do not use TDD; however, it seems to be a critical part of Agile development, according to the Agile <a href="http://programmers.stackexchange.com/questions/21870/can-you-be-agile-without-doing-tdd-test-driven-development">community</a>.
+
 <p align="center">
 <b>According to "Exploding Software-Engineering Myths" by Microsoft Research, which used Microsoft to test the efficiency of TDD, test-driven development reduces defects in software by 60-90% while increasing time investment by 15-35%.</b>
 </p>
@@ -122,11 +124,15 @@ Also known as "microtesting" or sanity checks, this stage requires testing after
 Also known as "macrotesting" or regression testing, exhaustive testing at night when project isn't being worked on. These tests should take a lot of time and should work to test every aspect of the system extensively.
 
 #### Bugs
-When faced with a system with multiple bugs, it is important to address those that effect the most people/users first. Integrating a tool like Google Analytics or a custom software tool to evaluate the most pertinent bugs is recommended.
+When faced with a system with multiple bugs, it is important to address those that effect the most people/users first. Integrating a tool like <a href="https://www.google.com/analytics/#?modal_active=none">Google Analytics</a> or a custom software tool to evaluate the most pertinent bugs is recommended.
 
 #### Metrics
-When creating any application, metrics will allow for clear goals and progress to be acchieved efficiently. A 100% success rate is not always advised, as sufficient rates will allow for quality while not overly burdening progress. Below are some useful metric examples:
+Metrics are critical to understand the level and quality of the software’s progress. A 100% success rate is not always advised, as sufficient rates will allow for quality while not overly burdening progress. 
 
+- **User sentiment**
+- **Requirement Turnover:** Requirements delivered/requirements desired at the outset
+- **Defect removal efficiency:** No. of Defects found during QA testing / (No. of Defects found during QA testing +No. of Defects found by End user)) * 100
+- **Defect density:** defects in a module/ total defects
 - **Pass rate:** While need not be 100% in all scenarios, test case pass rates should be 100% for continuous integration testing.
 - **Code coverage:** This metric does not necessarily reflect the quality of the test cases written, code coverage is always a good indicator of how much of the project has actually been tested. 100% code coverage means that when the entire sum of all your tests are run, every line is executed at least once. This metric is an indicator of working code, not good code.
 - **Defect metrics:** Used in conjunction with the team's goals, establishing thresholds for how many bugs are allowed in a development over a certain time period can be beneficial for production.
@@ -214,6 +220,13 @@ See [Quality Overview](#quality-overview)
 - **Meets requirements:** Usually as part of the end of a review, look at the requirements of the story, task, or bug which the work was filed against. If it doesn’t meet one of the criteria, it’s better to bounce it back before problems arise.
 
 #### Security
+The dependence on Django, a ubiquitous technology, means that its primary security vulnerabilities are well known and documented. Developers should consider taking steps to, at the very least, ensure that the most critical software (such as connections to the financial software) is strong against basic threats.
+
+- The simplest first step is to update the current working version of your Django framework in all your environments. And while Django is backwards compatible, it is nonetheless crucial that you identify any components in your web app that might be impacted by patching/updating.
+- Django's built-in CSRF protection is good. Make sure you enable it and use it everywhere. 
+- Avoid manually forming SQL queries using string concatenation. For instance, do not use raw SQL queries (e.g., `raw()`). Similarly, do not use the `extra()` method/modifier to inject raw SQL. Do not execute custom SQL directly; if you bypass Django's ORM layer, you bypass its protections against SQL injection.
+
+Of course, these are only the basics; however, any platform that is being rolled out should have comprehensive security.
 
 ##### Fuzz Testing
 Fuzz testing is for detecting problems that can cause the system to crash. Examples of these kinds of issues would be buffer overflow, cross-site scripting, denial of service attacks, or SQL injection. Fuzz testing is typically employed by hackers to bring a system down with minimal effort. Fuzz testing is not effective for discovering threat potential from things such as: spyware, viruses, and Trojans. We do not recommend Lagunitas use this form of testing because it is not really applicable.
@@ -225,14 +238,44 @@ Fuzz testing is for detecting problems that can cause the system to crash. Examp
 
 #### Regression Cycle
 
+A regression cycle is run in the final phase of product stabilization, and it is that procees that triggers the green light to go to production. Since very little is changing in development at this point in the project, there is an opportunity to validate the entire product. We suggest modelling the entire piece of software as a directed graph with edges pointing from components to the components that are dependent upon it. When any branch is modified, the hierarchy shows what branches below it will be affected and will need additional QA testing.
+
+We suggest using a "traffic light" method for the regression cycle. If every edge recieves a green light (passes all tests), the product is considered ready for delivery. If a branch receives a yellow light (all tests passed but with one or more reported warnings), it is important to talk about whther the piece should be worked on more or deployed and fixed after. Finally, if a branch receives a red light (one or more tests failed), stop and address the issue. We suggest that you automate the regression cycle, so it only takes a few days to run.
+
 #### Acceptance Tests
 
 #### Performance Tests
-Once the program is stable, these tests will focus on the efficiency of the code. 
+Performance tests assess speed, scalability, reliability, and stability. Once the platform is stable, preformance tests can begin.
+
+Lagunitas' software, especially programs that will interact with a growing number of users should definitely be assessed with performance-based testing. Scaling issues are critical to platforms such as the distributor ordering system, or ones which will have to withstand larger amounts of data flow. 
+
+Performance will be determined by running software through a variety of difficult scenarios.
+ 
+- **Load Testing:** Measures important business critical transactions and load on the database, application server, etc. There are many open source options to simulate a many users such as <a href="https://jmeter.apache.org/">JMeter</a> or <a href="http://gatling.io/#/">Gattling</a>. Selenium is capable of performance testing, but isn’t an optimal choice. This is because when doing load tests it is significantly slower than other options like JMeter. 
+- **Soak Testing:** Tests system performance under sustained use. 
+- **Stress Testing:** Finds the upper capacity of the system. 
+- **Spike Testing:** Determines the ability of the system to handle large increases in usage in a small amount of time. 
+
+Load testing and soak testing seem most useful to the expected usage of Lagunitas software which will likely endure sustained usage, with minimal high loads or spikes. 
 
 #### Simulation
 
 ##### Session Based Testing
+Session based testing is when a developer takes 90 ± 45 minutes to try to find errors and break a program. It is very exploratory and spontaneous, as opposed to scripted testing with software. As a result, new errors can be found while also verifying software requirements. Session based testing in conjunction with more traditional, regimented testing is recommended by experts at Microsoft. 
+
+Pros: 
+- **Can find previously unknown errors**
+- **Low Cost:** no need to create unit tests, instead the developers get instantaneous feedback on software performance.
+
+Cons: 
+- **Limited by the domain of knowledge of the tester and cannot be done for long period of time**
+
+Session testing basics: 
+- **Goal-based:** Set a focus for the tester. Without a clear testing procedure, the session tester will approach the problem in their own way.
+- **Documentation:** The session tester must clearly document what was found and how errors occurred. 
+   - **Scenario #1:** I tried launching the Open File dialog using keyboard shortcut, and I found out that the hotkey to Open is “n” instead of the more traditional “o”.  We should keep the hotkey consistent with other applications.  Bug #123 filed.
+   - **Scenario #2:** Dragging the Open File dialog window around, and this seems to work fine as expected.  Also drag the window outside of the screen and the window redraws itself back correctly.
+   - **Scenario #3:** Tried opening file without extension, and Notepad crashes!  Bug #456 filed.
 
 #### Testing Frameworks
 
@@ -242,18 +285,114 @@ With that said, here are how the testing frameworks for Django, JavaScript, and 
 
 ##### Django
 
-Django's testing platform is an extension of Python's `unittest` module, which makes it easy to interact with. Test cases are objects from the subclass `django.test.TestCase`, which is a subclass of `unittest.TestCase` that runs each test inside a transaction to provide isolation.
+The testing framework for Django is split between the front-end and back-end. 
+
+On the back-end, Django's testing platform is an extension of Python's `unittest` module, which makes it easy to interact with. Test cases are objects from the subclass `django.test.TestCase`, which is a subclass of `unittest.TestCase` that runs each test inside a transaction to provide isolation. We highly recommend taking advantage of this testing library.
 
 Here is an example of what an example test case might look like:
 
+```python
+from django.test import TestCase
+from myapp.models import Animal
 
+class AnimalTestCase(TestCase):
+    def setUp(self):
+        Animal.objects.create(name="lion", sound="roar")
+        Animal.objects.create(name="cat", sound="meow")
+
+    def test_animals_can_speak(self):
+        """Animals that can speak are correctly identified"""
+        lion = Animal.objects.get(name="lion")
+        cat = Animal.objects.get(name="cat")
+        self.assertEqual(lion.speak(), 'The lion says "roar"')
+        self.assertEqual(cat.speak(), 'The cat says "meow"')
+```
 
 When you run your tests, the default behavior of the test utility is to find all the test cases (that is, subclasses of `unittest.TestCase`) in any file whose name begins with **test**, automatically build a test suite out of those test cases, and run that suite. The default **startapp** template creates a **tests.py** file in the new application. This might be fine if you only have a few tests, but as your test suite grows you’ll likely want to restructure it into a tests package so you can split your tests into different submodules such as **test_models.py, test_views.py, test_forms.py,** etc. Feel free to pick whatever organizational scheme you like.
 
+Once you've written tests, run them using the **test** command of your project's **manage.py** utility:
 
+```python
+$ ./manage.py test
+```
+
+Django's test library also has the ability to do built-in test discovery.You can specify particular tests to run by supplying any number of “test labels” to `./manage.py test`. Each test label can be a full Python dotted path to a package, module, `TestCase` subclass, or test method.
+
+Some examples of this include:
+
+```python
+# Run all the tests in the animals.tests module
+$ ./manage.py test animals.tests
+
+# Run all the tests found within the 'animals' package
+$ ./manage.py test animals
+
+# Run just one test case
+$ ./manage.py test animals.tests.AnimalTestCase
+
+# Run just one test method
+$ ./manage.py test animals.tests.AnimalTestCase.test_animals_can_speak
+```
+
+You can also provide a path to a directory to discover tests below that directory:
+
+```python
+$ ./manage.py test animals/
+```
+
+There is also a pattern option:
+
+```python
+$ ./manage.py test --pattern="tests_*.py"
+```
+
+We also suggest using the `--failfast` option which allows for a notice on failures without having to wait for the entire testing sequence to complete.
+
+Further information regarding unittest and its customizations can be found <a href="https://docs.python.org/3/library/unittest.html#module-unittest">here</a>.
+
+On the front-end, Django has a test client that acts as a dummy Web browser and allows you to test your views and interact with your Django app programmatically.
+
+Some of the things you can do with the test client are:
+
+- Simulate GET and POST requests on a URL and observe the response – everything from low-level HTTP (result headers and status codes) to page content.
+- See the chain of redirects (if any) and check the URL and status code at each step.
+- Test that a given request is rendered by a given Django template, with a template context that contains certain values.
+
+This framework by no means is meant to replace [Selenium](#selenium). It has a different focus. In short:
+
+- Use Django’s test client to establish that the correct template is being rendered and that the template is passed the correct context data.
+- Use in-browser frameworks like Selenium to test *rendered* HTML and the *behavior* of Web pages, namely JavaScript functionality. Django also provides special support for those frameworks.
+
+In the best case scenario, teams would use both the Django test client and Selenium.
+
+To use the test client, instantiate `django.test.Client` within a session of the Python interactive interpreter and retrieve Web pages:
+
+```python
+>>> from django.test import Client
+>>> c = Client()
+>>> response = c.post('/login/', {'username': 'john', 'password': 'smith'})
+>>> response.status_code
+200
+>>> response = c.get('/customer/details/')
+>>> response.content
+b'<!DOCTYPE html...'
+```
+
+Note a few important things about how the client works:
+
+- The test client does not require the Web server to be running. In fact, it will run just fine with no Web server running at all! That’s because it avoids the overhead of HTTP and deals directly with the Django framework. This helps make the unit tests run quickly.
+- When retrieving pages, remember to specify the path of the URL, not the whole domain. The client is not capable of retrieving Web pages that are not powered by your Django project. If you need to retrieve other Web pages, use a Python standard library module such as <a href="https://docs.python.org/2/library/urllib2.html">urllib2</a> or <a href="http://docs.python-requests.org/en/master/">requests</a>.
+- To resolve URLs, the test client uses whatever URLconf is pointed-to by your <a href="https://docs.djangoproject.com/en/1.9/ref/settings/#std:setting-ROOT_URLCONF">ROOT_URLCONF</a> setting.
+- By default, the test client will disable any CSRF checks performed by your site. If you want the test client to perform CSRF checks, you can create an instance of the test client that enforces CSRF checks. To do this, pass in the enforce_csrf_checks argument when you construct your client: 
+`csft_client = Client(enfore_csrf_checks=True)`.
+
+The Django Client can perform `GET` and `POST` requests and should be looked at closely before beginning testing. The full documentation can be found <a href="https://docs.djangoproject.com/en/1.9/topics/testing/tools/#django.test.Client">here</a>.
 
 ##### JavaScript
+Since Lagunitas uses a Django back-end, we do not forsee any use of a JavaScript testing framework other than [Selenium](#selenium) because of its ability to perform test automation; however, we have compiled a list of JavaScript unit testing tools that are TDD compliant that we found <a href="http://stackoverflow.com/questions/300855/javascript-unit-test-tools-for-tdd/680713#680713">here</a>.
 
 ##### Selenium
+
+
 
 #### An Example
