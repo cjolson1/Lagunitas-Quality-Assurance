@@ -17,19 +17,26 @@
   * [Metrics](#metrics)
 3. [Development and Repeated Testing](#development-and-repeated-testing)
   * [Unit Tests](#unit-tests)
+  * [Mocking](#mocking)
   * [Integration Tests](#integration-tests)
   * [Code Reviews](#code-reviews)
     - [Architecture and Design](#architecture-and-design)
     - [Style](#style)
     - [Testing](#testing)
   * [Security](#security)
+    - [Fuzz Testing](#fuzz-testing)
 4. [Final Steps](#final-steps)
   * [System Tests](#system-tests)
   * [Regression Cycle](#regression-cycle)
   * [Acceptance Tests](#acceptance-tests)
   * [Performance Tests](#performance-tests)
   * [Simulation](#simulation)
-    - * [Session Based Testing](#session-based-testing)
+    - [Session Based Testing](#session-based-testing)
+5. [Testing Frameworks](#testing-frameworks)
+  * [Django](#django)
+  * [JavaScript](#javascript)
+  * [Selenium](#selenium)
+6. [An Example](#an-example)
 
 ## Getting Started
 When beginning any project, it is critical to review code standards and metrics, as well as establish the requirements for the new software. Reviewing these standards and metrics is important to maintain high-quality and consistency in the codebase. This is the basic plan for the Quality Assurance process:
@@ -39,12 +46,17 @@ When beginning any project, it is critical to review code standards and metrics,
 </p>
 
 #### Quality Overview
-Each of the following should be reviewed and understood by all developers on the team.
+Each of the following should be reviewed and understood by all developers on the team:
+
 - **Error handling:** Errors should be handled gracefully & explicity. Custom errors can be created to more effectively address issues in the code.
 - **Avoid repeated code**
-- **Comment clearly & concisely**
+- **Comment code clearly & concisely:** Good idea to remove any commented out lines.
 - **File length:** Excessive file lengths are a good indicator that the file should be split into smaller, more focused files. As the file size increases, discoverability decreases. 
 - **Review your own code first:** Examine the changes made, and look for discrepancies or issues you might want to address before others address you about it.
+- **Method names:** Naming things is one of the hard problems in computer science. If a method is named `get_message_queue_name` and it is actually doing something completely different like sanitizing HTML from the input, then that’s an inaccurate method name. And probably a misleading function.
+- **Variable names:** `foo` or `bar` are probably not useful names for data structures. `e` is similarly not useful when compared to `exception`. Be as verbose as you need (depending on the language). Expressive variable names make it easier to understand code when you have to revisit it later.
+- **Docstrings:** For complex methods or those with longer lists of arguments, is there a docstring explaining what each of the arguments does, if it’s not obvious?
+- **Readability:** Is the code easy to understand? Is it necessary to pause frequently during the review to decipher it?
 
 While these guidelines are good to follow for any project, it is important to establish quality control measure that are *specific* to the project as a whole.
 
@@ -71,6 +83,7 @@ With that being said, we strongly recommend TDD be used by Lagunitas except for 
 Throughout our research we have collected a series of pros and cons to TDD that may be useful when considering a borderline project to use TDD with.
 
 ##### Pros
+
 - Makes code easier to maintain and refactor.
 - Makes collaboration easier and more efficient, team members can edit each others code with confidence because the tests will inform them if the changes are making the code behave in unexpected ways.
 - Good unit testing forces good architecture.  In order to make your code unit-testable, it must be properly modularized, by writing the unit testing first various architectural problems tend to surface earlier.
@@ -78,6 +91,7 @@ Throughout our research we have collected a series of pros and cons to TDD that 
 - The Django web framework directly supports TDD for development. They have unit tests for the web data model, control layers, and HTML presentation and behavior. 
 
 ##### Cons
+
 - Like any programming, there is a big difference between doing it and doing it well.  Writing good unit tests is an art form. (We will get to that in this document.)
 - Initially unit testing is slower.
 - Unit testing is something the whole team has to buy into. Team Leaders have to enforce policies and actually get in and check the tests.
@@ -91,6 +105,7 @@ Test driven development fosters clear goals and allows for those key requirement
 These depend on the product, but they should address the desired requirements and functionality. Test cases form the backbone of any software platform and should be create painstakingly. It is important to not write trivial tests for your project; they contribute to code rot and generally make you and your team test-resistant, which is not a good thing you the quality of your software. 
 
 A good test should be able to answer the following questions clearly:
+
 - What are you testing?
 - What should it do?
 - What is the actual output?
@@ -111,6 +126,7 @@ When faced with a system with multiple bugs, it is important to address those th
 
 #### Metrics
 When creating any application, metrics will allow for clear goals and progress to be acchieved efficiently. A 100% success rate is not always advised, as sufficient rates will allow for quality while not overly burdening progress. Below are some useful metric examples:
+
 - **Pass rate:** While need not be 100% in all scenarios, test case pass rates should be 100% for continuous integration testing.
 - **Code coverage:** This metric does not necessarily reflect the quality of the test cases written, code coverage is always a good indicator of how much of the project has actually been tested. 100% code coverage means that when the entire sum of all your tests are run, every line is executed at least once. This metric is an indicator of working code, not good code.
 - **Defect metrics:** Used in conjunction with the team's goals, establishing thresholds for how many bugs are allowed in a development over a certain time period can be beneficial for production.
@@ -147,6 +163,9 @@ It is important to document each test extensively in order to promote reusabilit
 A common approach to unit testing involves writing drivers and stubs. The driver simulates a calling unit and a stub simulates a called unit. While creating these tests can be bothersome, unit testing can provide enchanced code coverage, reducing difficulties in finding errors in complex pieces of an application, and [test automation](#test-automation). 
 
 Furthermore, while it may be tempting/cost-effective to "glue" together two units and test them as an integrated unit, an error can occur in a variety of places, creating confusion and uncertainty. With an integrated unit composed of unit 1 and unit 2, an error can occur in either of the units, both of the units, in the interface between the units, and in the test itself. These possibilities really demonstrate the importance of only testing one unit as your baseline to lower the level of uncertainty and raise the qulaity associated with testing your project.
+
+#### Mocking
+A corollary of unit testing is mocking, 
 
 #### Integration Tests
 Integration testing begins testing muliple units of code together. It is the logical extension of unit testing. Integration testing allows for an intermediary step before system testing so that problems can be more quickly localized and addressed. This form of testing identifies problems that occur when units are combined. Most of the time when an errors occurs, it is due to the interfacing between the units.
@@ -195,6 +214,8 @@ See [Quality Overview](#quality-overview)
 
 #### Security
 
+##### Fuzz Testing
+
 <br>
 ## Final Steps
 
@@ -210,3 +231,13 @@ Once the program is stable, these tests will focus on the efficiency of the code
 #### Simulation
 
 ##### Session Based Testing
+
+#### Testing Frameworks
+
+##### Django
+
+##### JavaScript
+
+##### Selenium
+
+#### An Example
