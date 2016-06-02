@@ -265,15 +265,15 @@ Lagunitas' software, especially programs that will interact with a growing numbe
 
 Performance will be determined by running software through a variety of difficult scenarios.
  
-- **Load Testing:** This measures important business critical transactions and expected load on the database, application server, etc. There are many open source options to simulate a many users such as <a href="https://jmeter.apache.org/">JMeter</a> or <a href="http://gatling.io/#/">Gattling</a>. Selenium is capable of performance testing, but isn’t an optimal choice. This is because when doing load tests it is significantly slower than other options like JMeter. Selenium is capable of performance testing, but isn’t an optimal choice. This is because when doing load tests it is significantly slower than other options like JMeter. Selenium WebDriver is also capable of working with JMeter JUnit 4. To use Selenium WebDriver, simply install “WebDriver Set” plugins. The WebDriver sampler is very useful if you want to test AJAX based web applications and simulated user actions. 
+- **Load Testing:** This measures important business critical transactions and expected load on the database, application server, etc. There are many open source options to simulate a many users such as <a href="https://jmeter.apache.org/">JMeter</a> or <a href="http://gatling.io/#/">Gattling</a>. Selenium is capable of performance testing, but isn’t an optimal choice. This is because when doing load tests it is significantly slower than other options like JMeter. Selenium is capable of performance testing, but isn’t an optimal choice. This is because when doing load tests it is significantly slower than other options like JMeter. Selenium WebDriver is also capable of working with <a href="http://junit.org/junit4/">JMeter JUnit 4</a>. To use <a href="http://www.seleniumhq.org/projects/webdriver/">Selenium WebDriver</a>, simply install “WebDriver Set” plugins. The WebDriver sampler is very useful if you want to test AJAX based web applications and simulated user actions. 
     1. **Endurance Testing:** Tests system performance under sustained load.
-Can use LoadRunner in JMeter, or  Selenium WebDriver. Issues commonly found: 
+Can use <a href="http://loadrunnerjmeter.com/">LoadRunner</a> in JMeter, or  Selenium WebDriver. Issues commonly found: 
        * Serious memory leaks that would eventually result in application or Operating System crash.
        * Failure to close connections between the layers of the system could stall some or all modules of the system.
        * Failure to close database connections under some conditions might result in the complete system crash.
        * Gradual degradation of response time of the system as the application becomes less efficient as a result of prolonged test.
     2. **Stress Testing:** Finds the upper capacity of the system. 
-- **Spike Testing:** Determines the ability of the system to handle large increases in usage in a small amount of time. 
+- **Spike Testing:** Determines the ability of the system to handle large increases in usage in a small amount of time. Can be done with a variety of performance testing tools, including JMeter.
 
 Load testing and endurance testing seem most useful to the expected usage of Lagunitas software which will likely endure sustained usage, with minimal high loads or spikes. 
 
@@ -494,6 +494,8 @@ That is really all there is to getting started with mocking django. There are a 
 
 ##### JavaScript
 Since Lagunitas uses a Django back-end, we do not forsee any use of a JavaScript testing framework other than [Selenium](#selenium) because of its ability to perform test automation; however, we have compiled a list of JavaScript unit testing tools that are TDD compliant that we found <a href="http://stackoverflow.com/questions/300855/javascript-unit-test-tools-for-tdd/680713#680713">here</a>.
+
+A relatively simple front-end testing tool is <a href="http://casperjs.org/">CapserJS</a>. It relies on [integrated testing](#integrated-tests).
 
 ##### Selenium
 
