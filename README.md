@@ -36,6 +36,7 @@
   * [Django](#django)
   * [JavaScript](#javascript)
   * [Selenium](#selenium)
+  * [Jasper](#jasper)
 6. [An Example](#an-example)
 
 ## Getting Started
@@ -247,13 +248,18 @@ We suggest using a "traffic light" method for the regression cycle. If every edg
 #### Performance Tests
 Performance tests assess speed, scalability, reliability, and stability. Once the platform is stable, preformance tests can begin.
 
-Lagunitas' software, especially programs that will interact with a growing number of users should definitely be assessed with performance-based testing. Scaling issues are critical to platforms such as the distributor ordering system, or ones which will have to withstand larger amounts of data flow. 
+Lagunitas' software, especially programs that will interact with a growing number of users should definitely be assessed with performance-based testing. Scaling issues are critical to platforms such as the distributor ordering system, or ones which will have to withstand larger amounts of data flow. Load testing and endurance testing seem most useful to the expected usage of Lagunitas software which will likely endure sustained usage, with minimal high loads or spikes.
 
 Performance will be determined by running software through a variety of difficult scenarios.
  
-- **Load Testing:** Measures important business critical transactions and load on the database, application server, etc. There are many open source options to simulate a many users such as <a href="https://jmeter.apache.org/">JMeter</a> or <a href="http://gatling.io/#/">Gattling</a>. Selenium is capable of performance testing, but isn’t an optimal choice. This is because when doing load tests it is significantly slower than other options like JMeter. 
-- **Soak Testing:** Tests system performance under sustained use. 
-- **Stress Testing:** Finds the upper capacity of the system. 
+- **Load Testing:** This measures important business critical transactions and expected load on the database, application server, etc. There are many open source options to simulate a many users such as <a href="https://jmeter.apache.org/">JMeter</a> or <a href="http://gatling.io/#/">Gattling</a>. Selenium is capable of performance testing, but isn’t an optimal choice. This is because when doing load tests it is significantly slower than other options like JMeter. Selenium is capable of performance testing, but isn’t an optimal choice. This is because when doing load tests it is significantly slower than other options like JMeter. Selenium WebDriver is also capable of working with JMeter JUnit 4. To use Selenium WebDriver, simply install “WebDriver Set” plugins. The WebDriver sampler is very useful if you want to test AJAX based web applications and simulated user actions. 
+    1. **Endurance Testing:** Tests system performance under sustained load.
+Can use LoadRunner in JMeter, or  Selenium WebDriver. Issues commonly found: 
+       * Serious memory leaks that would eventually result in application or Operating System crash.
+       * Failure to close connections between the layers of the system could stall some or all modules of the system.
+       * Failure to close database connections under some conditions might result in the complete system crash.
+       * Gradual degradation of response time of the system as the application becomes less efficient as a result of prolonged test.
+    2. **Stress Testing:** Finds the upper capacity of the system. 
 - **Spike Testing:** Determines the ability of the system to handle large increases in usage in a small amount of time. 
 
 Load testing and soak testing seem most useful to the expected usage of Lagunitas software which will likely endure sustained usage, with minimal high loads or spikes. 
@@ -393,6 +399,6 @@ Since Lagunitas uses a Django back-end, we do not forsee any use of a JavaScript
 
 ##### Selenium
 
-
+##### Jasper
 
 #### An Example
