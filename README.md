@@ -1,5 +1,5 @@
 # Lagunitas Quality Assurance
-###### Christopher Olson | Maria Casciani &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; June 1, 2016 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Last Revision: June 1, 2016 16:42
+###### Christopher Olson | Maria Casciani &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; June 2, 2016 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Last Revision: June 2, 2016 10:55
 <br>
 ## Table of Contents
 1. [Getting Started](#getting-started)
@@ -28,10 +28,9 @@
 4. [Final Steps](#final-steps)
   * [System Tests](#system-tests)
   * [Regression Cycle](#regression-cycle)
-  * [Acceptance Tests](#acceptance-tests)
   * [Performance Tests](#performance-tests)
-  * [Simulation](#simulation)
-    - [Session Based Testing](#session-based-testing)
+  * [Acceptance Tests](#acceptance-tests)
+  * [Session Based Testing](#session-based-testing)
 5. [Testing Frameworks](#testing-frameworks)
   * [Django](#django)
   * [JavaScript](#javascript)
@@ -110,7 +109,7 @@ These depend on the product, but they should address the desired requirements an
 A good test should be able to answer the following questions clearly:
 
 - What are you testing?
-- What should it do?
+- What is the functionality?
 - What is the actual output?
 - What is the expected output?
 - How can the test be reproduced?
@@ -195,11 +194,11 @@ Briefly, a code review is a discussion between two or more developers about chan
 
 Here are some useful practices to employ during code reviews:
 
-- **Review fewer than 200-400 lines of code at a time:** The Cisco code review study (see the sidebar) showed that for optimal effectiveness, developers should review fewer than 200-400 lines of code (LOC) at a time. Beyond that, the ability to find defects diminishes. At this rate, with the review spread over no more than 60–90 minutes, you should get a 70–90% yield. In other words, if 10 defects existed, you'd find 7 to 9 of them.
+- **Review fewer than 200-400 lines of code at a time:** The Cisco code review study showed that for optimal effectiveness, developers should review fewer than 200-400 lines of code (LOC) at a time. Beyond that, the ability to find defects diminishes. At this rate, with the review spread over no more than 60–90 minutes, you should get a 70–90% yield. In other words, if 10 defects existed, you'd find 7 to 9 of them.
 - **Aim for an inspection rate of fewer than 300-500 lines of code (LOC) per hour:** Take your time with code review. Faster is not better. IBM research shows that you'll achieve optimal results at an inspection rate of less than 300–500 LOC per hour.
 - **Take enough time for a proper, slow review, but not more than 60–90 minutes:** IBM research shows that 60-90 minutes are the upper bound for effective code reviewing. On the flip side, you should always spend at least five minutes reviewing code, even if it's one line.
 - **Be sure that authors annotate source code before the review begins**
-- **Create a personal checklist: Each person typically makes the same 15–20 mistakes:** If you notice what your typical errors are, you can develop your own personal checklist (Personal Software Process, the Software Engineering Institute, and the Capability Maturity Model Integrated recommend this practice, too). Reviewers will do the work of determining your common mistakes. All you have to do is keep a short checklist of the common flaws in your work, particularly the things that you most often forget to do.
+- **Create a personal checklist:** Each person typically makes the same 15–20 mistakes. If you notice what your typical errors are, you can develop your own personal checklist (Personal Software Process, the Software Engineering Institute, and the Capability Maturity Model Integrated recommend this practice, too). Reviewers will do the work of determining your common mistakes. All you have to do is keep a short checklist of the common flaws in your work, particularly the things that you most often forget to do.
 - **Foster a good code review culture in which finding defects is viewed positively**
 - **Metrics should never be used to single out developers, particularly in front of their peers:** This practice can seriously damage morale.
 
@@ -224,7 +223,7 @@ See [Quality Overview](#quality-overview)
 The dependence on Django, a ubiquitous technology, means that its primary security vulnerabilities are well known and documented. Developers should consider taking steps to, at the very least, ensure that the most critical software (such as connections to the financial software) is strong against basic threats.
 
 - The simplest first step is to update the current working version of your Django framework in all your environments. And while Django is backwards compatible, it is nonetheless crucial that you identify any components in your web app that might be impacted by patching/updating.
-- Django's built-in CSRF protection is good. Make sure you enable it and use it everywhere. 
+- Django's built-in CSRF protection is good. Make sure you enable it and use it everywhere. Cross-Site Request Forgery (CSRF) is a type of attack that occurs when a malicious web site, email, blog, instant message, or program causes a user's web browser to perform an unwanted action on a trusted site for which the user is currently authenticated.
 - Avoid manually forming SQL queries using string concatenation. For instance, do not use raw SQL queries (e.g., `raw()`). Similarly, do not use the `extra()` method/modifier to inject raw SQL. Do not execute custom SQL directly; if you bypass Django's ORM layer, you bypass its protections against SQL injection.
 
 Of course, these are only the basics; however, any platform that is being rolled out should have comprehensive security.
@@ -262,11 +261,9 @@ Can use LoadRunner in JMeter, or  Selenium WebDriver. Issues commonly found:
     2. **Stress Testing:** Finds the upper capacity of the system. 
 - **Spike Testing:** Determines the ability of the system to handle large increases in usage in a small amount of time. 
 
-Load testing and soak testing seem most useful to the expected usage of Lagunitas software which will likely endure sustained usage, with minimal high loads or spikes. 
+Load testing and endurance testing seem most useful to the expected usage of Lagunitas software which will likely endure sustained usage, with minimal high loads or spikes. 
 
-#### Simulation
-
-##### Session Based Testing
+#### Session Based Testing
 Session based testing is when a developer takes 90 ± 45 minutes to try to find errors and break a program. It is very exploratory and spontaneous, as opposed to scripted testing with software. As a result, new errors can be found while also verifying software requirements. Session based testing in conjunction with more traditional, regimented testing is recommended by experts at Microsoft. 
 
 Pros: 
