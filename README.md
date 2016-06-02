@@ -495,7 +495,7 @@ That is really all there is to getting started with mocking django. There are a 
 ##### JavaScript
 Since Lagunitas uses a Django back-end, we do not forsee any use of a JavaScript testing framework other than [Selenium](#selenium) because of its ability to perform test automation; however, we have compiled a list of JavaScript unit testing tools that are TDD compliant that we found <a href="http://stackoverflow.com/questions/300855/javascript-unit-test-tools-for-tdd/680713#680713">here</a>.
 
-A relatively simple front-end testing tool is <a href="http://casperjs.org/">CapserJS</a>. It relies on [integrated testing](#integrated-tests).
+A relatively simple front-end testing tool is <a href="http://casperjs.org/">CapserJS</a>. It relies on [integrated testing](#integration-tests).
 
 ##### Selenium
 
