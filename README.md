@@ -242,8 +242,6 @@ A regression cycle is run in the final phase of product stabilization, and it is
 
 We suggest using a "traffic light" method for the regression cycle. If every edge recieves a green light (passes all tests), the product is considered ready for delivery. If a branch receives a yellow light (all tests passed but with one or more reported warnings), it is important to talk about whther the piece should be worked on more or deployed and fixed after. Finally, if a branch receives a red light (one or more tests failed), stop and address the issue. We suggest that you automate the regression cycle, so it only takes a few days to run.
 
-#### Acceptance Tests
-
 #### Performance Tests
 Performance tests assess speed, scalability, reliability, and stability. Once the platform is stable, preformance tests can begin.
 
@@ -262,6 +260,8 @@ Can use LoadRunner in JMeter, or  Selenium WebDriver. Issues commonly found:
 - **Spike Testing:** Determines the ability of the system to handle large increases in usage in a small amount of time. 
 
 Load testing and endurance testing seem most useful to the expected usage of Lagunitas software which will likely endure sustained usage, with minimal high loads or spikes. 
+
+#### Acceptance Tests
 
 #### Session Based Testing
 Session based testing is when a developer takes 90 ± 45 minutes to try to find errors and break a program. It is very exploratory and spontaneous, as opposed to scripted testing with software. As a result, new errors can be found while also verifying software requirements. Session based testing in conjunction with more traditional, regimented testing is recommended by experts at Microsoft. 
