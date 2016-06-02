@@ -35,7 +35,7 @@
   * [Django](#django)
   * [JavaScript](#javascript)
   * [Selenium](#selenium)
-  * [Jasper](#jasper)
+  * [Jenkins](#jenkins)
 6. [An Example](#an-example)
 
 ## Getting Started
@@ -171,7 +171,23 @@ A common approach to unit testing involves writing drivers and stubs. The driver
 Furthermore, while it may be tempting/cost-effective to "glue" together two units and test them as an integrated unit, an error can occur in a variety of places, creating confusion and uncertainty. With an integrated unit composed of unit 1 and unit 2, an error can occur in either of the units, both of the units, in the interface between the units, and in the test itself. These possibilities really demonstrate the importance of only testing one unit as your baseline to lower the level of uncertainty and raise the qulaity associated with testing your project.
 
 #### Mocking
-A corollary of unit testing is mocking, 
+Mocks simulate the behavior of actual objects to allow testers to isolate a smaller component of the program during unit testing, such as a class. Mocking is more elaborate than stubbing. Stubs perform the minimal amount of object behavior to enable the tested module to run, with state verification. When unit testing, mocks perform behavior verification. 
+
+For example, you want to test your software’s ability to send an email if an order wasn’t received. A stub in this case would count how many emails were sent. A mock would track if the program sent the email with the right contents and to the correct person. We have a detailed example of mocking in Django [here](#testing-django-with-mocking).
+
+When to use mocks?
+
+When your method being unit tested has dependencies. Mock every dependency your unit test touches. When creating a mock, set the exact return values the dependency should return when tested, and exceptions to throw to test the method’s error handling. 
+
+Mock Shortcomings:
+
+Excessive mocking calls in a unit test can lead to unit tests that are too tightly coupled to the internal implementation of the very dependency you’re trying to mock.  This can make your code very difficult to refactor because the unit tests are very specific. 
+
+Usage of mocks usually follows this pattern:
+
+1. Setup of the mock(s) and expectations.
+2. Execution of the code to test.
+3. Verification that the expectations were met.
 
 #### Integration Tests
 Integration testing begins testing muliple units of code together. It is the logical extension of unit testing. Integration testing allows for an intermediary step before system testing so that problems can be more quickly localized and addressed. This form of testing identifies problems that occur when units are combined. Most of the time when an errors occurs, it is due to the interfacing between the units.
@@ -222,10 +238,10 @@ See [Quality Overview](#quality-overview)
 #### Security
 The dependence on Django, a ubiquitous technology, means that its primary security vulnerabilities are well known and documented. Developers should consider taking steps to, at the very least, ensure that the most critical software (such as connections to the financial software) is strong against basic threats.
 
-- The simplest first step is to update the current working version of your Django framework in all your environments. And while Django is backwards compatible, it is nonetheless crucial that you identify any components in your web app that might be impacted by patching/updating.
-- Django's built-in CSRF protection is good. Make sure you enable it and use it everywhere. Cross-Site Request Forgery (CSRF) is a type of attack that occurs when a malicious web site, email, blog, instant message, or program causes a user's web browser to perform an unwanted action on a trusted site for which the user is currently authenticated.
-- Avoid manually forming SQL queries using string concatenation. For instance, do not use raw SQL queries (e.g., `raw()`). Similarly, do not use the `extra()` method/modifier to inject raw SQL. Do not execute custom SQL directly; if you bypass Django's ORM layer, you bypass its protections against SQL injection.
-
+ - The simplest first step is to update the current working version of your Django framework in all your environments. And while Django is backwards compatible, it is nonetheless crucial that you identify any components in your web app that might be impacted by patching/updating.
+ - Django's built-in CSRF protection is good. Enable it and use it everywhere.  (Cross-Site Forgery Attack: when a hacker tricks a user into loading a malicious url in which they are authenticated into) 
+ - Avoid manually forming SQL queries using string concatenation. For instance, do not use raw SQL queries (e.g. `raw()`). Similarly, do not use the `extra()` method/modifier to inject raw SQL. Do not execute custom SQL directly; if you bypass Django's Object Relational Mapping layer, you bypass its protections against SQL command injection. (SQL injection attacks are used to read sensitive data, modify data, or perform administrative actions) 
+ 
 Of course, these are only the basics; however, any platform that is being rolled out should have comprehensive security.
 
 ##### Fuzz Testing
@@ -290,6 +306,8 @@ With that said, here are how the testing frameworks for Django, JavaScript, and 
 
 The testing framework for Django is split between the front-end and back-end. 
 
+###### Testing Django on the back end
+
 On the back-end, Django's testing platform is an extension of Python's `unittest` module, which makes it easy to interact with. Test cases are objects from the subclass `django.test.TestCase`, which is a subclass of `unittest.TestCase` that runs each test inside a transaction to provide isolation. We highly recommend taking advantage of this testing library.
 
 Here is an example of what an example test case might look like:
@@ -353,6 +371,8 @@ We also suggest using the `--failfast` option which allows for a notice on failu
 
 Further information regarding unittest and its customizations can be found <a href="https://docs.python.org/3/library/unittest.html#module-unittest">here</a>.
 
+###### Testing Django on the front-end
+
 On the front-end, Django has a test client that acts as a dummy Web browser and allows you to test your views and interact with your Django app programmatically.
 
 Some of the things you can do with the test client are:
@@ -391,11 +411,92 @@ Note a few important things about how the client works:
 
 The Django Client can perform `GET` and `POST` requests and should be looked at closely before beginning testing. The full documentation can be found <a href="https://docs.djangoproject.com/en/1.9/topics/testing/tools/#django.test.Client">here</a>.
 
+###### Testing Django with Mocking
+
+It is also possible to run mocks using Django. Mocking Django can be useful for the reason detail in the [Mocking section](#mocking). Mocking can be done using the <a href="https://pypi.python.org/pypi/mock/">mock</a> library in conjunction with Django and <a href="https://docs.python.org/2.7/library/unittest.html">unittest</a>. Mocking generally uses unittest's `TestCase` object as opposed to the django `TestCase` object because it saves the database cleanup between tests.
+
+```python
+from django.db import models
+ 
+class SampleManager(models.Manager):
+    def get_by_user(self, user):
+        self.filter(user=user)
+ 
+class Sample(models.Model):
+    pass
+```
+
+```python
+import unittest
+import mock
+from django_testing import models
+ 
+class SampleTests(unittest.TestCase):
+    def test_filters_by_user(self):
+        user = mock.Mock()
+        manager = mock.Mock(spec=models.SampleManager)
+        models.SampleManager.get_by_user(manager, user)
+        manager.filter.assert_called_with(user=user)
+```
+
+Let's walk though the test line by line. First, create a mock user. `user = mock.Mock()` Second, create a mock manager. `manager = mock.Mock(spec=models.SampleManager)` Next, call the method that you want to have do something. You'll notice something a bit of trickery here by using the actual `SampleManager` class and passing the manager mock object in as the self argument. This allows you to capture what the implementation code does with the manager inside the `get_by_user` method. `models.SampleManager.get_by_user(manager, user)` Finally, assert that your desired result occured. Here, you are asserting that the filter method of the manager mock object was called with the keyword user argument with the value of your user mock. `manager.filter.assert_called_with(user=user)`
+
+Let's take a look at a different way to write that same test.
+
+```python
+@mock.patch('django_testing.models.SampleManager.filter', mock.Mock())
+    def test_filters_by_user_with_patch(self):
+        user = mock.Mock()
+        models.Sample.objects.get_by_user(user)
+        models.Sample.objects.filter.assert_called_with(user=user)
+```
+
+Here, the `mock` library's patch decorator to mock the `filter` method on the `SampleManager` class instead of using the 'mock as self' trickery. Let's look at one more way to write this test.
+
+
+```python
+@mock.patch('django_testing.models.SampleManager.filter')
+    def test_filters_by_user_with_patch_and_filter_passed_in(self, filter_method):
+        user = mock.Mock()
+        models.Sample.objects.get_by_user(user)
+        filter_method.assert_called_with(user=user)
+```
+
+In this example, the patch decorator is used a little bit differently. By omitting the second argument, the patch decorator will pass the mock into your test method which will then allow you to do assertions directly against it. Now, say you want to check for specific return values, consider this test.
+
+```python
+@mock.patch('django_testing.models.SampleManager.get_last')
+    @mock.patch('django_testing.models.SampleManager.get_first')
+    def test_result_of_one_query_in_args_of_another(self, get_first, get_last):
+        result = models.Sample.objects.get_first_and_last()
+        self.assertEqual((get_first.return_value, get_last.return_value), result)
+```
+
+You want to make sure that the result of `get_first_and_last` returns a tuple of the result of `get_first` and `get_last`. Our implementation code would look like this.
+
+```python
+from django.db import models
+ 
+class SampleManager(models.Manager):
+    def get_first(self):
+        pass
+    def get_last(self):
+        pass
+    def get_first_and_last(self):
+        return self.get_first(), self.get_last()
+ 
+class Sample(models.Model):
+    objects = SampleManager()
+```
+
+That is really all there is to getting started with mocking django. There are a few more advanced things that can be found <a href="http://chimera.labs.oreilly.com/books/1234000000754/ch16.html#_checking_the_view_actually_logs_the_user_in">here</a>.
+
+
 ##### JavaScript
 Since Lagunitas uses a Django back-end, we do not forsee any use of a JavaScript testing framework other than [Selenium](#selenium) because of its ability to perform test automation; however, we have compiled a list of JavaScript unit testing tools that are TDD compliant that we found <a href="http://stackoverflow.com/questions/300855/javascript-unit-test-tools-for-tdd/680713#680713">here</a>.
 
 ##### Selenium
 
-##### Jasper
+##### Jenkins
 
 #### An Example
