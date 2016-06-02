@@ -192,6 +192,14 @@ Usage of mocks usually follows this pattern:
 #### Integration Tests
 Integration testing begins testing muliple units of code together. It is the logical extension of unit testing. Integration testing allows for an intermediary step before system testing so that problems can be more quickly localized and addressed. This form of testing identifies problems that occur when units are combined. Most of the time when an errors occurs, it is due to the interfacing between the units.
 
+As a rule of thumb:
+
+<p align="center">
+ <b>
+ Unit testing makes sure you are using quality ingredients. Functional testing makes sure your application doesn't taste like crap.
+ </b>
+</p>
+
 Of particular interest for Lagunitas is the interaction of the software being written and the third-party libraries and external resources such as file systems, databases, and network services.  This is due to the fact that the behavior of such dependencies may not be fully known or controlled by the consuming development team, or may change in unexpected ways when new versions are introduced. In context of external webservices that may be used in conjunction with a project, this means that integration testing can prove vital to the success of the project.
 
 You and your team can do intergration testing in a variety of ways, but it is important to automate them and run them in the 95/5 unit/integration test ratio on Jenkins or Selenium. It is important that you and your team come to a consensus on what the strategy will be in order to improve workflow and the organization/quality of your work. 
@@ -489,13 +497,101 @@ class Sample(models.Model):
     objects = SampleManager()
 ```
 
-That is really all there is to getting started with mocking django. There are a few more advanced things that can be found <a href="http://chimera.labs.oreilly.com/books/1234000000754/ch16.html#_checking_the_view_actually_logs_the_user_in">here</a>.
+That is really all there is to getting started with mocking Django. There are a few more advanced things that can be found <a href="http://chimera.labs.oreilly.com/books/1234000000754/ch16.html#_checking_the_view_actually_logs_the_user_in">here</a>.
 
 
 ##### JavaScript
 Since Lagunitas uses a Django back-end, we do not forsee any use of a JavaScript testing framework other than [Selenium](#selenium) because of its ability to perform test automation; however, we have compiled a list of JavaScript unit testing tools that are TDD compliant that we found <a href="http://stackoverflow.com/questions/300855/javascript-unit-test-tools-for-tdd/680713#680713">here</a>.
 
-A relatively simple front-end testing tool is <a href="http://casperjs.org/">CapserJS</a>. It relies on [integrated testing](#integration-tests).
+A relatively simple front-end testing tool is <a href="http://docs.casperjs.org/en/latest/quickstart.html">CapserJS</a>. It runs on <a href="http://phantomjs.org/">PhantomJS</a> and relies on [integration tests](#integration-tests) in order to thoroughly test the front-end of your platform.
+
+Compared to Selenium GUI interface, CasperJS is lightweight and simple and can be run from the command line.
+
+To use Casper, you simply write some JavaScript, save it to a file, then run it from the command line like so: `casperjs my-source.js`. If you will be running unit tests, you must include the `test` command, like so: `casperjs test my-test.js`. All of the examples in this post should be run with the `test` command. 
+
+Casper has a fantastic API full of convenience methods to help you interact with your phantasmic browser. There are two main modules that you can use, the <a href="http://docs.casperjs.org/en/latest/modules/casper.html">casper module</a> and the <a href="http://docs.casperjs.org/en/latest/modules/tester.html">tester module</a>. Methods in the tester module are only available when you run Casper with casperjs test `my-test.js`.
+
+As an example, let's look at what the `casper` module can test on <a href="http://www.reddit.com/">http://www.reddit.com</a>.
+
+```javascript
+casper.options.viewportSize = {width: 1024, height: 768};
+casper.start("http://www.reddit.com/", function() {
+	console.log('Opened page with title \"' + this.getTitle() + '"');
+    casper.capture("../images/reddit-home.png");
+}).run();
+```
+
+The `start()` call opens the page and executes the callback when it's loaded. The `capture()` functionality allows you to take a screenshot and save it in the form of a PNG. Saving screenshots in this manner can be a great part of your functional tests, and can be hugely helpful as a debugging tool when writing your tests, helping you "see" what's going on in the invisible browser.
+
+Now let's take a look at Casper's test API. Let's open up the /r/programming subreddit, click the "New" link and confirm that we're on the right page and have the correct content.
+
+```javascript
+casper.options.viewportSize = {width: 1024, height: 768};
+var testCount = 2;
+casper.test.begin("Testing Reddit", testCount, function redditTest(test) {
+    casper.start("http://www.reddit.com/r/programming", function() {
+    	test.assertTitleMatch(/programming/, "Title is what we'd expect");
+    	//Click "new link"
+    	casper.click("a[href*='/programming/new/']");
+    	casper.waitForUrl(/\/programming\/new\/$/, function() {
+    		test.assertElementCount("p.title", 25, "25 links on first page");
+    		casper.capture("../images/reddit-programming-new.png");
+    	});
+    }).run(function() {
+        test.done();
+    });
+});
+```
+
+Here, after we click the "New" link, we wait for the url to change and a new page to load. Then we confirm that there are 25 links on the page, the Reddit default.
+
+Casper's API is chock full of handy helper methods like `click()` and `assertElementCount()`. Let's look at a more complicated method, `fill()`. `fill()` is a convenient way to fill out and (optionally) submit forms on the page. In this example, let's fill out the search box form and search for "javascript" within the /r/programming subreddit.
+
+```javascript
+casper.options.viewportSize = {width: 1024, height: 768};
+var testCount = 1;
+casper.test.begin("Searching Reddit", testCount, function redditSearch(test) {
+    casper.start("http://www.reddit.com/r/programming", function() {
+    	//Search for "javascript"
+        casper.fill("form#search", {
+            "q": "javascript",
+           "restrict_sr": true
+        }, true);
+        casper.then(function(){
+            test.assertElementCount("p.title", 25, "Found 25 or more results");
+            this.capture("../images/Reddit search.png");
+        });
+    }).run(function() {
+        test.done();
+    });
+});
+```
+
+Sometimes, to really test something complicated, you need to jump into the DOM of the browser itself. Casper provides the ability to do just that with the <a href="http://docs.casperjs.org/en/latest/modules/casper.html#evaluate">`evaluate()`</a> method. If you find this a bit confusing, they have a nice <a href="http://docs.casperjs.org/en/latest/_images/evaluate-diagram.png">diagram</a> to help you picture this.
+
+Here's an example where we will jump into the context of the r/programming page, click on upvote, confirm that the login modal appears, then click on the `.close` backdrop and confirm that the modal disappears. The results are then returned to the casper environment.
+
+```javascript
+casper.options.viewportSize = {width: 1024, height: 768};
+var testCount = 1;
+casper.test.begin("Testing upvote login", testCount, function upvoteLogin(test) {
+    casper.start("http://www.reddit.com/r/programming", function() {
+    	var modalOpensAndCloses = casper.evaluate(function(){
+            console.log("Now I'm in the DOM!");
+            $("div.thing:first .arrow.up").click()
+            var modalVisibleAfterClick = $(".popup").is(":visible");
+            $(".cover").click()
+            var modalClosedAfterClickOff = $(".popup").is(":visible");
+            return (modalVisibleAfterClick && !modalClosedAfterClickOff);
+        });
+        test.assert(modalOpensAndCloses, "Login Modal is displayed when clicking upvote before signing in");
+    }).run(function() {
+        test.done();
+    });
+});
+```
+
+An important thing to note when using `casper.evaluate()` is that unlike almost any other interaction that occurs with the browser (`click()`, `fill()`, etc.), evaluate is synchronous. Whereas after calling fill or `sendKeys` you will need to wrap your next interaction in a `casper.then()` callback, evaluate happens instantly. This actually makes it easier to use than some of its asynchronous counterparts, but after a while you get used to asynchronous and have to remind yourself that evaluate is synchronous.
 
 ##### Selenium
 
