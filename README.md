@@ -35,7 +35,6 @@
   * [Django](#django)
   * [JavaScript](#javascript)
   * [Selenium](#selenium)
-  * [Jenkins](#jenkins)
 6. [An Example](#an-example)
 
 ## Getting Started
@@ -748,7 +747,5 @@ class Auth(SeleniumTestCase):
 This is an introduction to how Django/Selenium testing can work. Of course, one can test in the Selenium GUI. More info on that can be found <a href="http://www.seleniumhq.org/docs/02_selenium_ide.jsp">here</a>. 
 
 Advanced testing topics in Django/Selenium-specifc testing can be found <a href="http://agiliq.com/blog/2014/09/advanced-functional-testing-with-selenium/">here</a>.
-
-##### Jenkins
 
 #### An Example
