@@ -26,8 +26,8 @@
   * [Security](#security)
     - [Fuzz Testing](#fuzz-testing)
 4. [Final Steps](#final-steps)
+	* [Regression Cycle](#regression-cycle)
   * [System Tests](#system-tests)
-  * [Regression Cycle](#regression-cycle)
   * [Performance Tests](#performance-tests)
   * [Acceptance Tests](#acceptance-tests)
   * [Session Based Testing](#session-based-testing)
@@ -258,13 +258,40 @@ Fuzz testing is for detecting problems that can cause the system to crash. Examp
 
 ## Final Steps
 
-#### System Tests
-
 #### Regression Cycle
 
 A regression cycle is run in the final phase of product stabilization, and it is that procees that triggers the green light to go to production. Since very little is changing in development at this point in the project, there is an opportunity to validate the entire product. We suggest modelling the entire piece of software as a directed graph with edges pointing from components to the components that are dependent upon it. When any branch is modified, the hierarchy shows what branches below it will be affected and will need additional QA testing.
 
 We suggest using a "traffic light" method for the regression cycle. If every edge recieves a green light (passes all tests), the product is considered ready for delivery. If a branch receives a yellow light (all tests passed but with one or more reported warnings), it is important to talk about whther the piece should be worked on more or deployed and fixed after. Finally, if a branch receives a red light (one or more tests failed), stop and address the issue. We suggest that you automate the regression cycle, so it only takes a few days to run.
+
+#### System Tests
+System tests verify if that the whole system meets the application architecture and business requirements by assessing the interaction of features. System testing tests the system as a whole. Once all the components are integrated, the application as a whole is tested rigorously to see that it meets the specified Quality Standards.
+
+Entry Criteria to begin System Tests:
+- Unit Testing should be finished.
+- Integration of modules should be fully integrated.
+- As per the specification document software development is completed.
+- Testing environment is available for testing.
+
+System testing is important because of the following reasons:
+- System testing is the first step in the Software Development Life Cycle, where the application is tested as a whole.
+- The application is tested thoroughly to verify that it meets the functional and technical specifications.
+- The application is tested in an environment that is very close to the production environment where the application will be deployed.
+- System testing enables us to test, verify, and validate both the business requirements as well as the application architecture.
+
+To illustrate how comprehensive we suggest System Tests should be, here is an example:
+
+For example you are doing testing on a web application of a school and in this web application there are many modules like Teacher Module, Staff Module, Parent Module, Student Module, and Admin Module and so on. Now you have to do System Testing on a web application of a school, so your criteria for doing System Testing will be like that which is given below:
+
+1. First you test the GUI related issues on all these above mentioned modules by checking that font size, alignment, display images should work properly on all the modules.
+
+2. Now after checking the GUI issues you move towards functionality related issues by checking that the requirements of client have been met or not.
+
+3. After checking functionality you can check whether the application is user friendly or not by checking that proper error message should be displayed on screen or not. In this Usability Testing you test the system means application by keeping users in mind because if the application is not user friendly than client will not accept the application because in application apart from functionality, user friendliness is also very important.
+
+Now you proceed toward non-functional testing because non-functional testing is also a part of System Testing. So we test the [Performance Test-related issues](#performance-tests) on all the above mentioned modules, so this is the non-functional testing done by us on all above modules.
+
+So when you test the both Functional and Non-Functional testing on all the modules which were mentioned above that means you have tested the complete system as a whole, or that you did the System Testing on above modules. Keep one thing in mind that, System Testing includes functional as well as non functional testing both.
 
 #### Performance Tests
 Performance tests assess speed, scalability, reliability, and stability. Once the platform is stable, preformance tests can begin.
@@ -286,6 +313,31 @@ Can use <a href="http://loadrunnerjmeter.com/">LoadRunner</a> in JMeter, or  Sel
 Load testing and endurance testing seem most useful to the expected usage of Lagunitas software which will likely endure sustained usage, with minimal high loads or spikes. 
 
 #### Acceptance Tests
+
+Acceptance tests verify if the full system meets all requirements and if the program is prepped for delivery. You should have a set of pre-written scenarios and test cases that will be used to test the application. More ideas will be shared about the application and more tests can be performed on it to gauge its accuracy and the reasons why the project was initiated. Acceptance tests are not only intended to point out simple spelling mistakes, cosmetic errors, or interface gaps, but also to point out any bugs in the application that will result in system crashes or major errors in the application.
+By performing acceptance tests on an application, the testing team will deduce how the application will perform in production. 
+
+Here is a <a href="https://blog.8thlight.com/doug-bradbury/2011/04/26/ten-ways-to-do-acceptance-testing-wrong.html">link</a> to some common mistakes that teams make when doing Acceptance Tests.
+
+There is a variety of software out there that can perform automated Acceptance Tests, and we suggest using [CasperJS](#casperjs). 
+
+Here is a breakdown of the good and the bad with Selenium and Casper:
+
+Selenium WebDriver
+
+- **The good:** You can automate most browsers and mobile devices in many different programming languages. It’s pretty widely adopted across other frameworks as well, and can integrate with BDD tools such as Cucumber. There are meetups and conferences and Google Hangouts where you can find support. Selenium is pretty easy to pick up with some programming knowledge. You can also use Selenium Grid/Server or SauceLabs to run your tests in parallel across multiple machines.
+- **The bad:** Just because you can do almost anything doesn’t mean you should. It’s very tempting to try to make your test suite run on every browser and support mobile devices, but the maintenance cost is very high and it’ll take you a while to figure out how to make each browser’s driver work with your code. Utilizing Selenium’s capabilities to run across browsers and devices and in parallel on Sauce was a lot of effort for very little reward. I can remember only one instance where the other browsers caught a bug, because many cross-browser bugs are visual and won’t be caught by automation. All of that effort you spend maintaining can’t be spent making new tests, and you still have to manually check those browsers for visual bugs.
+- We would mainly recommend Selenium for large teams who intend to utilize the cross-platform and cross-browser testing features or use Sauce Labs. The maintenance cost will be high, but if you have the patience and bandwidth, go for it. Selenium is a widely-adopted and powerful tool for automation and can help you achieve your wildest automated testing dreams if you’re dedicated enough.
+
+CasperJS
+
+- **The good:** CasperJS’s <a href="http://docs.casperjs.org/en/latest/modules/">API</a> is incredibly helpful compared to the digging with Selenium. The tester module makes your passes and fails very clear, and the tester API is also nice to work with. You can write your tests in CoffeeScript or JavaScript, and if you can’t figure out how to do what you want in CasperJS you can do it in JavaScript or CoffeeScript. CasperJS is quick, light-weight, and easy to set up. There are very helpful getting started guides for beginners. Automated tests will most likely not completely replace manual testing, and headless browsing takes less time and minimizes the maintenance burden, because you’re not trying to figure out why your tests don’t work a certain way in one browser. This will leave you time for the inevitable manual testing, or for writing even more CasperJS scripts. While CasperJS doesn’t have quite as wide an adoption as Selenium, there are already a lot of great open-source tools to help you do a lot of cool things with it.
+- **The bad:** It’s a bit harder to get answers to your questions on the framework because of its newness. A lot of the tools that work with CasperJS are very new and still have bugs to work out, so you may invest a good chunk of time into them before realizing that they are not mature enough to use for your testing. Headless browsing is sometimes intimidating; debugging is not incredibly fun to do when you can’t see what your code is doing in a browser. CasperJS’s debug mode combined with its methods to capture screenshots are a good substitute in my opinion, but be patient when you start learning this framework.
+- CasperJS is a great tool for small teams like Lagunitas. The output of test passes and fails gets kind of unmanageable once you have a lot of test files, so you may want to look into writing something that outputs a digest of test results to avoid minutes of scrolling. Use this if you’re a small team who wants to make tests quickly. Use this if you know and love Javascript or Coffeescript and want to write your tests in one of those languages. Use this if you want to learn basic Javascript or Coffeescript.
+
+A detailed slideshow on how to perform using Selenium WebDriver can be found <a href="http://www.slideshare.net/NickBelhomme/mastering-selenium-for-automated-acceptance-tests/34-Setting_up_the_grid">here</a>.
+
+A rundown of acceptance testing in CasperJS can be found <a href="https://github.com/ivanoats/Full-Stack-JavaScript-Engineering/blob/master/casper/acceptance_testing_with_casperjs.md">here</a>.
 
 #### Session Based Testing
 Session based testing is when a developer takes 90 ± 45 minutes to try to find errors and break a program. It is very exploratory and spontaneous, as opposed to scripted testing with software. As a result, new errors can be found while also verifying software requirements. Session based testing in conjunction with more traditional, regimented testing is recommended by experts at Microsoft. 
@@ -507,6 +559,8 @@ A relatively simple front-end testing tool is <a href="http://docs.casperjs.org/
 
 Compared to Selenium GUI interface, CasperJS is lightweight and simple and can be run from the command line.
 
+###### CasperJS
+
 To use Casper, you simply write some JavaScript, save it to a file, then run it from the command line like so: `casperjs my-source.js`. If you will be running unit tests, you must include the `test` command, like so: `casperjs test my-test.js`. All of the examples in this post should be run with the `test` command. 
 
 Casper has a fantastic API full of convenience methods to help you interact with your phantasmic browser. There are two main modules that you can use, the <a href="http://docs.casperjs.org/en/latest/modules/casper.html">casper module</a> and the <a href="http://docs.casperjs.org/en/latest/modules/tester.html">tester module</a>. Methods in the tester module are only available when you run Casper with casperjs test `my-test.js`.
@@ -567,7 +621,7 @@ casper.test.begin("Searching Reddit", testCount, function redditSearch(test) {
 });
 ```
 
-Sometimes, to really test something complicated, you need to jump into the DOM of the browser itself. Casper provides the ability to do just that with the <a href="http://docs.casperjs.org/en/latest/modules/casper.html#evaluate">`evaluate()`</a> method. If you find this a bit confusing, they have a nice <a href="http://docs.casperjs.org/en/latest/_images/evaluate-diagram.png">diagram</a> to help you picture this.
+Sometimes, to really test something complicated, you need to jump into the Document Object Model (DOM) of the browser itself. Casper provides the ability to do just that with the <a href="http://docs.casperjs.org/en/latest/modules/casper.html#evaluate">`evaluate()`</a> method. If you find this a bit confusing, they have a nice <a href="http://docs.casperjs.org/en/latest/_images/evaluate-diagram.png">diagram</a> to help you picture this.
 
 Here's an example where we will jump into the context of the r/programming page, click on upvote, confirm that the login modal appears, then click on the `.close` backdrop and confirm that the modal disappears. The results are then returned to the casper environment.
 
