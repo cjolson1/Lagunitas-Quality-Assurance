@@ -649,6 +649,106 @@ An important thing to note when using `casper.evaluate()` is that unlike almost 
 
 ##### Selenium
 
+Django supports Seleium test case integration, which can help facilitate the testing process, with the class `LiveServerTestCase` within `django.test`. This class will automatically run a test server in the background and your Selenium tests will be run against that server. It not only simplifies the process, but it also means your tests can be setup the same way your Django tests are, and so both can be run together without any aditional setup using the standard `manage.py test` command.
+
+Selenium tests can be setup inside each app’s test directory just like a regular test would be, but since they’re very tied to the specific project, we suggest creating an app where all the tests are stored.
+
+Here is an example of what to include in `test.py`:
+
+```python
+class SeleniumTestCase(LiveServerTestCase):
+    """
+    A base test case for Selenium, providing hepler methods for generating
+    clients and logging in profiles.
+    """
+
+    def open(self, url):
+        self.wd.get("%s%s" % (self.live_server_url, url))
+```
+
+Here we defined our base test class and helper methods. We have an “open” helper because Selenium needs an absolute URL (including server and port), but you can also define methods for common operations like “sign in”, “sign out”, etc.. that you may need throughout all the tests.
+
+Because the default webdriver query methods are very verbose and missing some important features, it can be useful to create your own web driver in `webdriver.py`.
+
+```python
+class CustomWebDriver(SELENIUM_WEBDRIVER):
+    """Our own WebDriver with some helpers added"""
+
+    def find_css(self, css_selector):
+        """Shortcut to find elements by CSS. Returns either a list or singleton"""
+        elems = self.find_elements_by_css_selector(css_selector)
+        found = len(elems)
+        if found == 1:
+            return elems[0]
+        elif not elems:
+            raise NoSuchElementException(css_selector)
+        return elems
+
+    def wait_for_css(self, css_selector, timeout=7):
+        """ Shortcut for WebDriverWait"""
+        return WebDriverWait(self, timeout).until(lambda driver : driver.find_css(css_selector))
+```
+
+In this example, we have only one method, which is very handy:
+
+- `find_css` is basically a shortcut for both “find_elements_by_css_selector” and “find_element_by_css_selector”, and as the method names imply, it enables you to find DOM elements using regular CSS selectors.
+- `wait_for_css` is a helpful method to block the test from progressing until a element (css selector) is found on the page. This method is commonly used in non-blocking instructions (such as AJAX requests) or some JavaScript interactions that do DOM manipulation. Whenever you get an “element not found” error due to JavaScript being slower than your test instructions, this is the method to use.
+
+As you start writing more and more tests, you’ll find yourself writing similar code to deal with selects or custom widgets for example. webdriver.py is where you can add these so your tests can be more DRY. As a rule of thumb, We tend to use `webdriver.py` to add “generic” shortcuts and `test.py` for “app specific” shortcuts (like sign in).
+
+Here is an example webdriver test that tests admin sign in:
+
+```python
+# Make sure your class inherits from your base class
+class Auth(SeleniumTestCase):
+
+    def setUp(self):
+        # setUp is where you setup call fixture creation scripts
+        # and instantiate the WebDriver, which in turns loads up the browser.
+        User.objects.create_superuser(username='admin',
+                                      password='pw',
+                                      email='info@lincolnloop.com')
+
+        # Instantiating the WebDriver will load your browser
+        self.wd = CustomWebDriver()
+
+    def tearDown(self):
+        # Don't forget to call quit on your webdriver, so that
+        # the browser is closed after the tests are ran
+        self.wd.quit()
+
+    # Just like Django tests, any method that is a Selenium test should
+    # start with the "test_" prefix.
+    def test_login(self):
+        """
+        Django Admin login test
+        """
+        # Open the admin index page
+        self.open(reverse('admin:index'))
+
+        # Selenium knows it has to wait for page loads (except for AJAX requests)
+        # so we don't need to do anything about that, and can just
+        # call find_css. Since we can chain methods, we can
+        # call the built-in send_keys method right away to change the
+        # value of the field
+        self.wd.find_css('#id_username').send_keys("admin")
+        # for the password, we can now just call find_css since we know the page
+        # has been rendered
+        self.wd.find_css("#id_password").send_keys('pw')
+        # You're not limited to CSS selectors only, check
+        # http://seleniumhq.org/docs/03_webdriver.html for 
+        # a more compreehensive documentation.
+        self.wd.find_element_by_xpath('//input[@value="Log in"]').click()
+        # Again, after submiting the form, we'll use the find_css helper
+        # method and pass as a CSS selector, an id that will only exist
+        # on the index page and not the login page
+        self.wd.find_css("#content-main")
+```
+
+This is an introduction to how Django/Selenium testing can work. Of course, one can test in the Selenium GUI. More info on that can be found <a href="http://www.seleniumhq.org/docs/02_selenium_ide.jsp">here</a>. 
+
+Advanced testing topics in Django/Selenium-specifc testing can be found <a href="http://agiliq.com/blog/2014/09/advanced-functional-testing-with-selenium/">here</a>.
+
 ##### Jenkins
 
 #### An Example
