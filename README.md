@@ -2,20 +2,16 @@
 <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/Screen%20Shot%202016-06-03%20at%202.31.16%20PM.png">
 <h1>Lagunitas Quality Assurance</h1>
 </p>
-###### Christopher Olson | Maria Casciani &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; June 2, 2016 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Last Revision: June 2, 2016 10:55
+###### Christopher Olson | Maria Casciani &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; June 3, 2016 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Last Revision: June 3, 2016 14:36
 <br>
 ## Table of Contents
 1. [Getting Started](#getting-started)
   * [Quality Overview](#quality-overview)
   * [Requirements and Design Development](#requirements-and-design-development)
   * [Skepticism Toward Test Driven Development](#skepticism-toward-test-driven-development)
-    - [Pros](#pros)
-    - [Cons](#cons)
 2. [Test Planning and Designing](#test-planning-and-designing)
   * [Test Cases](#test-cases)
   * [Test Automation](#test-automation)
-    - [Tier 1](#tier-1)
-    - [Tier 2](#tier-2)
   * [Bugs](#bugs)
   * [Metrics](#metrics)
 3. [Development and Repeated Testing](#development-and-repeated-testing)
@@ -27,13 +23,12 @@
     - [Style](#style)
     - [Testing](#testing)
   * [Security](#security)
-    - [Fuzz Testing](#fuzz-testing)
 4. [Final Steps](#final-steps)
-	* [Regression Cycle](#regression-cycle)
-  * [System Tests](#system-tests)
-  * [Performance Tests](#performance-tests)
+  * [Regression Cycle](#regression-cycle)
+  	- [System Tests](#system-tests)
+  	- [Performance Tests](#performance-tests)
+  	- [Session Based Testing](#session-based-testing)
   * [Acceptance Tests](#acceptance-tests)
-  * [Session Based Testing](#session-based-testing)
 5. [Testing Frameworks](#testing-frameworks)
   * [Django](#django)
   * [JavaScript](#javascript)
