@@ -1,10 +1,14 @@
 <p align="center">
 <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/Screen%20Shot%202016-06-03%20at%202.31.16%20PM.png">
+
 <h1>Lagunitas Quality Assurance</h1>
+
 </p>
+
 ###### Christopher Olson | Maria Casciani &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; June 3, 2016 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Last Revision: June 3, 2016 14:36
 <br>
 ## Table of Contents
+
 1. [Getting Started](#getting-started)
   * [Quality Overview](#quality-overview)
   * [Requirements and Design Development](#requirements-and-design-development)
@@ -36,18 +40,22 @@
 6. [An Example](#an-example)
 
 ## Getting Started
-When beginning any project, it is critical to review code standards and metrics, as well as establish the requirements for the new software. Reviewing these standards and metrics is important to maintain high-quality and consistency in the codebase. This is the basic plan for the Quality Assurance process:
+
+When beginning any project, review code standards and metrics, as well as establish the requirements for the new software. Reviewing these standards and metrics is important to maintain a high-quality codebase that is consistent. 
+
+This is the basic plan for the Quality Assurance process:
 
 <p align="center">
  <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/Screen%20Shot%202016-05-31%20at%204.36.12%20PM.png">
 </p>
 
 ### Quality Overview
-Each of the following should be reviewed and understood by all developers on the team:
+
+Each of the following should be reviewed and understood by all developers on the team, in addition to the <a href="/">Lagunitas Code Quality Standards</a> and <a href="https://www.python.org/dev/peps/pep-0008/">PEP 8</a>:
 
 - **Error handling:** Errors should be handled gracefully & explicity. Custom errors can be created to more effectively address issues in the code.
 - **Avoid repeated code**
-- **Comment code clearly & concisely:** Good idea to remove any commented out lines.
+- **Comment code clearly & concisely:** It's a good idea to remove any commented out lines.
 - **File length:** Excessive file lengths are a good indicator that the file should be split into smaller, more focused files. As the file size increases, discoverability decreases. 
 - **Review your own code first:** Examine the changes made, and look for discrepancies or issues you might want to address before others address you about it.
 - **Method names:** Naming things is one of the hard problems in computer science. If a method is named `get_message_queue_name` and it is actually doing something completely different like sanitizing HTML from the input, then that’s an inaccurate method name. And probably a misleading function.
@@ -55,31 +63,13 @@ Each of the following should be reviewed and understood by all developers on the
 - **Docstrings:** For complex methods or those with longer lists of arguments, is there a docstring explaining what each of the arguments does, if it’s not obvious?
 - **Readability:** Is the code easy to understand? Is it necessary to pause frequently during the review to decipher it?
 
-While these guidelines are good to follow for any project, it is important to establish quality control measure that are *specific* to the project as a whole.
-
 ### Requirements and Design Development
-Develop clear, and mutually agreeable goals for the end product. These should be well communicated and delegated. Developers should commit to deadlines for each stage. In addition, standards should be established for security of the software and Key Performance Indicators (KPIs) should be set for the project. Release Criteria should be set and acknowledged for the project, allowing developers to know when the software is completed.
+
+Develop clear, and mutually agreeable goals for the final product. These should be well communicated and delegated. Developers should commit to deadlines for each stage. In addition, standards should be established for security of the software metrics.
 
 ### Skepticism Toward Test Driven Development
-While using test driven development (TDD) for a project can increase project quality, there is a tradeoff between the benfit of less bugs and better quality versus the time it takes to finish the project. This time expense is a valid concern; however, for Lagunitas, a company in the process of scaling, TDD can be advantageous for developing quality applications with minimized time fixing bugs. Test Driven Development also can be thought of as "Test Driven Design", allowing the structure of the tests to allow your development to proceed with smaller less complex units of code more clearly coming together. 
 
-Some groups that do Agile development, like Lagunitas, do not use TDD; however, it seems to be a critical part of Agile development, according to the Agile <a href="http://programmers.stackexchange.com/questions/21870/can-you-be-agile-without-doing-tdd-test-driven-development">community</a>.
-
-<p align="center">
-<b>According to "Exploding Software-Engineering Myths" by Microsoft Research, which used Microsoft to test the efficiency of TDD, test-driven development reduces defects in software by 60-90% while increasing time investment by 15-35%.</b>
-</p>
-
-According to the author of the paper, "Over a development cycle of 12 months, 35 percent is another four months, which is huge; however, the tradeoff is that you reduce post-release maintenance costs significantly, since code quality is so much better. Again, these are decisions that managers have to make—where should they take the hit? But now, they actually have quantified data for making those decisions.”
-
-TDD is helpful to learn, understand, and internalise key principles of modular design and delivers quality results. On the flipside, TDD forces a shift toward a more concentrated effort at the inception of the programs development, forcing a slow start that eventually picks up speed.
-
-<p align="center">
-<b>Furthermore, the software Lagunitas currently employs for testing (Selenium, Jenkins, Django) are made to be used with TDD.</b>
-</p>
-
-With that being said, we strongly recommend TDD be used by Lagunitas except for extreme cases in which a project must be completed on a given day or the project is too small or trivial to even consider testing extensively.
-
-Throughout our research we have collected a series of pros and cons to TDD that may be useful when considering a borderline project to use TDD with.
+A paragraph that Maria will write about the definition of TDD. Test Driven Development also can be thought of as "Test Driven Design", allowing the structure of the tests to allow your development to proceed with smaller less complex units of code more clearly coming together. 
 
 #### Pros
 
@@ -96,8 +86,26 @@ Throughout our research we have collected a series of pros and cons to TDD that 
 - Unit testing is something the whole team has to buy into. Team Leaders have to enforce policies and actually get in and check the tests.
 - Complex cases are much harder to design test cases for. 
 
+While test driven development (TDD) project have higher quality, there is a tradeoff between the benfit of less bugs versus the cost of increased deployment time. This time expense is a valid concern; however, for Lagunitas, a company in the process of scaling, TDD can be advantageous for developing quality applications with minimized time-fixing bugs. 
+
+Agile-development group like Lagunitas, do not use TDD; however, it is a critical part of Agile development, according to the Agile <a href="http://programmers.stackexchange.com/questions/21870/can-you-be-agile-without-doing-tdd-test-driven-development">community</a>.
+
+<p align="center">
+<b>According to "Exploding Software-Engineering Myths" by Microsoft Research, which used Microsoft to test the efficiency of TDD, test-driven development reduces defects in software by 60-90% while increasing time investment by 15-35%.</b>
+</p>
+
+According to the author of the paper, "Over a development cycle of 12 months, 35 percent is another four months, which is huge; however, the tradeoff is that you reduce post-release maintenance costs significantly, since code quality is so much better. Again, these are decisions that managers have to make—where should they take the hit? But now, they actually have quantified data for making those decisions.”
+
+TDD is helpful to learn, understand, and internalise key principles of modular design to deliver quality results. On the flipside, TDD forces a shift toward a more concentrated effort at the inception of the project's development, forcing a slow start that eventually picks up speed.
+
+<p align="center">
+<b>Furthermore, the software Lagunitas currently employs for testing (Selenium, Jenkins, Django) are made to be used with TDD.</b>
+</p>
+
+With that being said, we strongly recommend TDD be used by Lagunitas except for extreme cases in which a project must be completed on a given day or the project is too small or trivial to even consider testing extensively.
 
 ## Test Planning and Designing
+
 Test driven development fosters clear goals and allows for those key requirements to be checked at each step in the development process. 
 
 ### Test Cases
@@ -260,7 +268,7 @@ A regression cycle is run in the final phase of product stabilization, and it is
 
 We suggest using a "traffic light" method for the regression cycle. If every edge recieves a green light (passes all tests), the product is considered ready for delivery. If a branch receives a yellow light (all tests passed but with one or more reported warnings), it is important to talk about whther the piece should be worked on more or deployed and fixed after. Finally, if a branch receives a red light (one or more tests failed), stop and address the issue. We suggest that you automate the regression cycle, so it only takes a few days to run.
 
-### System Tests
+#### System Tests
 System tests verify if that the whole system meets the application architecture and business requirements by assessing the interaction of features. System testing tests the system as a whole. Once all the components are integrated, the application as a whole is tested rigorously to see that it meets the specified Quality Standards.
 
 Entry Criteria to begin System Tests:
@@ -289,7 +297,7 @@ Now you proceed toward non-functional testing because non-functional testing is 
 
 So when you test the both Functional and Non-Functional testing on all the modules which were mentioned above that means you have tested the complete system as a whole, or that you did the System Testing on above modules. Keep one thing in mind that, System Testing includes functional as well as non functional testing both.
 
-### Performance Tests
+#### Performance Tests
 Performance tests assess speed, scalability, reliability, and stability. Once the platform is stable, preformance tests can begin.
 
 Lagunitas' software, especially programs that will interact with a growing number of users should definitely be assessed with performance-based testing. Scaling issues are critical to platforms such as the distributor ordering system, or ones which will have to withstand larger amounts of data flow. Load testing and endurance testing seem most useful to the expected usage of Lagunitas software which will likely endure sustained usage, with minimal high loads or spikes.
@@ -307,6 +315,23 @@ Can use <a href="http://loadrunnerjmeter.com/">LoadRunner</a> in JMeter, or  Sel
 - **Spike Testing:** Determines the ability of the system to handle large increases in usage in a small amount of time. Can be done with a variety of performance testing tools, including JMeter.
 
 Load testing and endurance testing seem most useful to the expected usage of Lagunitas software which will likely endure sustained usage, with minimal high loads or spikes. 
+
+#### Session Based Testing
+Session based testing is when a developer takes 90 ± 45 minutes to try to find errors and break a program. It is very exploratory and spontaneous, as opposed to scripted testing with software. As a result, new errors can be found while also verifying software requirements. Session based testing in conjunction with more traditional, regimented testing is recommended by experts at Microsoft. 
+
+Pros: 
+- **Can find previously unknown errors**
+- **Low Cost:** no need to create unit tests, instead the developers get instantaneous feedback on software performance.
+
+Cons: 
+- **Limited by the domain of knowledge of the tester and cannot be done for long period of time**
+
+Session testing basics: 
+- **Goal-based:** Set a focus for the tester. Without a clear testing procedure, the session tester will approach the problem in their own way.
+- **Documentation:** The session tester must clearly document what was found and how errors occurred. 
+   - **Scenario #1:** I tried launching the Open File dialog using keyboard shortcut, and I found out that the hotkey to Open is “n” instead of the more traditional “o”.  We should keep the hotkey consistent with other applications.  Bug #123 filed.
+   - **Scenario #2:** Dragging the Open File dialog window around, and this seems to work fine as expected.  Also drag the window outside of the screen and the window redraws itself back correctly.
+   - **Scenario #3:** Tried opening file without extension, and Notepad crashes!  Bug #456 filed.
 
 ### Acceptance Tests
 
@@ -334,23 +359,6 @@ CasperJS
 A detailed slideshow on how to perform using Selenium WebDriver can be found <a href="http://www.slideshare.net/NickBelhomme/mastering-selenium-for-automated-acceptance-tests/34-Setting_up_the_grid">here</a>.
 
 A rundown of acceptance testing in CasperJS can be found <a href="https://github.com/ivanoats/Full-Stack-JavaScript-Engineering/blob/master/casper/acceptance_testing_with_casperjs.md">here</a>.
-
-### Session Based Testing
-Session based testing is when a developer takes 90 ± 45 minutes to try to find errors and break a program. It is very exploratory and spontaneous, as opposed to scripted testing with software. As a result, new errors can be found while also verifying software requirements. Session based testing in conjunction with more traditional, regimented testing is recommended by experts at Microsoft. 
-
-Pros: 
-- **Can find previously unknown errors**
-- **Low Cost:** no need to create unit tests, instead the developers get instantaneous feedback on software performance.
-
-Cons: 
-- **Limited by the domain of knowledge of the tester and cannot be done for long period of time**
-
-Session testing basics: 
-- **Goal-based:** Set a focus for the tester. Without a clear testing procedure, the session tester will approach the problem in their own way.
-- **Documentation:** The session tester must clearly document what was found and how errors occurred. 
-   - **Scenario #1:** I tried launching the Open File dialog using keyboard shortcut, and I found out that the hotkey to Open is “n” instead of the more traditional “o”.  We should keep the hotkey consistent with other applications.  Bug #123 filed.
-   - **Scenario #2:** Dragging the Open File dialog window around, and this seems to work fine as expected.  Also drag the window outside of the screen and the window redraws itself back correctly.
-   - **Scenario #3:** Tried opening file without extension, and Notepad crashes!  Bug #456 filed.
 
 ### Testing Frameworks
 
