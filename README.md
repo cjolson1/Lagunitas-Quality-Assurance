@@ -509,10 +509,11 @@ class SampleTests(unittest.TestCase):
         manager.filter.assert_called_with(user=user)
 ```
 
-Let's walk though the test line by line. 
-1. Create a mock user. `user = mock.Mock()` 
-2. Create a mock manager. `manager = mock.Mock(spec=models.SampleManager)` 
-3. Call the method that you want to have do something. You'll notice something a bit tricky here by using the actual `SampleManager` class and passing the manager mock object in as the self argument. This allows you to capture what the implementation code does with the manager inside the `get_by_user` method. `models.SampleManager.get_by_user(manager, user)` 4. Assert that your desired result occured. Here, you are asserting that the filter method of the manager mock object was called with the keyword user argument with the value of your user mock. `manager.filter.assert_called_with(user=user)`
+Let's walk though the test line by line. <br>
+1. Create a mock user. `user = mock.Mock()` <br>
+2. Create a mock manager. `manager = mock.Mock(spec=models.SampleManager)` <br>
+3. Call the method that you want to have do something. You'll notice something a bit tricky here by using the actual `SampleManager` class and passing the manager mock object in as the self argument. This allows you to capture what the implementation code does with the manager inside the `get_by_user` method. `models.SampleManager.get_by_user(manager, user)`<br>
+4. Assert that your desired result occured. Here, you are asserting that the filter method of the manager mock object was called with the keyword user argument with the value of your user mock. `manager.filter.assert_called_with(user=user)`<br><br>
 
 Let's take a look at a different way to write that same test.
 
@@ -566,11 +567,11 @@ That is really all there is to getting started with mocking Django. There are a 
 
 
 #### JavaScript
-Since Lagunitas uses a Django back-end, we do not forsee any use of a JavaScript testing framework other than [Selenium](#selenium) because of its ability to perform test automation; however, we have compiled a list of JavaScript unit testing tools that are TDD compliant that we found <a href="http://stackoverflow.com/questions/300855/javascript-unit-test-tools-for-tdd/680713#680713">here</a>.
+Since Lagunitas uses a Django back-end, we do not forsee any use of a JavaScript testing framework other than [Selenium](#selenium) because of its ability to perform test automation especially on browser compatibility; however, we have compiled a list of JavaScript unit testing tools that are TDD compliant that we found <a href="http://stackoverflow.com/questions/300855/javascript-unit-test-tools-for-tdd/680713#680713">here</a>.
 
 A relatively simple front-end testing tool is <a href="http://docs.casperjs.org/en/latest/quickstart.html">CapserJS</a>. It runs on <a href="http://phantomjs.org/">PhantomJS</a> and relies on [integration tests](#integration-tests) in order to thoroughly test the front-end of your platform.
 
-Compared to Selenium GUI interface, CasperJS is lightweight and simple and can be run from the command line.
+Compared to Selenium GUI interface, CasperJS is fast, simple, and can be run from the command line.
 
 ##### CasperJS
 
@@ -671,7 +672,7 @@ Here is an example of what to include in `test.py`:
 ```python
 class SeleniumTestCase(LiveServerTestCase):
     """
-    A base test case for Selenium, providing hepler methods for generating
+    A base test case for Selenium, providing helper methods for generating
     clients and logging in profiles.
     """
 
