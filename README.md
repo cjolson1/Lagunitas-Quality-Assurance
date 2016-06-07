@@ -153,7 +153,7 @@ In general, the testing of a project will follow the following ascending order:
  <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/Screen%20Shot%202016-05-31%20at%204.37.26%20PM.png">
 </p>
 
-During the development process, unit tests are the most critical to ensure quality in the software. We recommend in [Tier 1](#tier-1) testing that tests be 95% unit tests and 5% integration tests.
+During the development process, unit tests are the most critical to ensure quality in the software. We recommend in [Tier 1](#tier-1) testing that tests be 70% unit tests & 20% integration tests. [Tier 2](#tier-2) tests that are end-to-end should account for 10% of total tests according to <a href="http://googletesting.blogspot.com/2015/04/just-say-no-to-more-end-to-end-tests.html"> Google Testing </a>. 
 
 ### Unit Tests
 Unit testing focuses on individual units of source code, making sure it is up to the expected code standards. This type of testing is important to address any issues before progressing. Overall, the goal of unit testing is to take the smallest piece of testable software in your project, isolate it, and determine whether its behavior matches what you expect from it. It is at this level that a large percentage of defects in software can be detected and identified. 
@@ -209,7 +209,7 @@ As a rule of thumb:
 
 Of particular interest for Lagunitas is the interaction of the software being written and the third-party libraries and external resources such as file systems, databases, and network services.  This is due to the fact that the behavior of such dependencies may not be fully known or controlled, or may change in unexpected ways when new versions are introduced. In context of external webservices that may be used in conjunction with a project, this means that integration testing can prove vital to the success of the project.
 
-You and your team can do integration testing in a variety of ways, but it is important to automate them and run them in the 95:5 unit:integration test ratio on Jenkins or Selenium. It is important that you and your team come to a consensus on what the strategy will be in order to improve workflow and the organization/quality of your work. 
+You and your team can do integration testing in a variety of ways, but it is important to automate them and run them in the 70:20 unit:integration test ratio on Jenkins or Selenium. It is important that you and your team come to a consensus on what the strategy will be in order to improve workflow and the organization/quality of your work. 
 
 The following are three common approaches to integration testing:
 
