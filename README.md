@@ -338,9 +338,9 @@ Cons:
 
 Acceptance tests verify if the full system meets all requirements and if the program is prepped for delivery. At this stage, the focus is on the user-experience. Acceptance tests are not only intended to point out simple spelling mistakes, cosmetic errors, or interface gaps, but also determine:
 
-	- **Usability:** Is the UI configured to their liking? Did we put the customer branding in all the right places? Do   we have all the fields/screens they asked for?
-	- **Maintainability:** How will we deliver software updates/patches?
-	- **Configurability:** Can user modify the system to suit their needs?
+- **Usability:** Is the UI configured to their liking? Did we put the customer branding in all the right places? Do   we have all the fields/screens they asked for?
+- **Maintainability:** How will we deliver software updates/patches?
+- **Configurability:** Can user modify the system to suit their needs?
 
 Here is a <a href="https://blog.8thlight.com/doug-bradbury/2011/04/26/ten-ways-to-do-acceptance-testing-wrong.html">link</a> to some common mistakes that teams make when doing Acceptance Tests.
 
