@@ -5,7 +5,7 @@
 
 </p>
 
-###### Christopher Olson | Maria Casciani &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; June 3, 2016 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Last Revision: June 3, 2016 14:36
+###### Christopher Olson | Maria Casciani &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; June 3, 2016 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Last Revision: June 7, 2016 11:33
 <br>
 ## Table of Contents
 
@@ -29,15 +29,14 @@
   * [Security](#security)
 4. [Final Steps](#final-steps)
   * [Regression Cycle](#regression-cycle)
-  	- [System Tests](#system-tests)
+  * [System Tests](#system-tests)
   	- [Performance Tests](#performance-tests)
   	- [Session Based Testing](#session-based-testing)
-  * [Acceptance Tests](#acceptance-tests)
+	- [Acceptance Tests](#acceptance-tests)
 5. [Testing Frameworks](#testing-frameworks)
   * [Django](#django)
   * [JavaScript](#javascript)
   * [Selenium](#selenium)
-6. [An Example](#an-example)
 
 ## Getting Started
 
@@ -69,9 +68,9 @@ Develop clear, and mutually agreeable goals for the final product. These should 
 
 ### Skepticism Toward Test Driven Development
 
-A paragraph that Maria will write about the definition of TDD. Test Driven Development also can be thought of as "Test Driven Design", allowing the structure of the tests to allow your development to proceed with smaller less complex units of code more clearly coming together. 
+With TDD, you build the test and then develop functionality until the code passes the test. As each new addition to the code is made, its test can be added to the suite of tests that are run when you build the integrated work. Test Driven Development also can be thought of as "Test Driven Design", allowing the structure of the tests to allow your development to proceed with smaller less complex units of code more clearly coming together. 
 
-#### Pros
+#### Pros of TDD
 
 - Makes code easier to maintain and refactor.
 - Makes collaboration easier and more efficient, team members can edit each others code with confidence because the tests will inform them if the changes are making the code behave in unexpected ways.
@@ -79,14 +78,14 @@ A paragraph that Maria will write about the definition of TDD. Test Driven Devel
 - Over the long term it's faster. Refactoring code written two years in the past is hard. If that code is backed up by a good suite of unit tests, the process is made so much easier.
 - The Django web framework directly supports TDD for development. They have unit tests for the web data model, control layers, and HTML presentation and behavior. 
 
-#### Cons
+#### Cons of TDD
 
 - Like any programming, there is a big difference between doing it and doing it well.  Writing good unit tests is an art form. (We will get to that in this document.)
 - Initially unit testing is slower.
 - Unit testing is something the whole team has to buy into. Team Leaders have to enforce policies and actually get in and check the tests.
 - Complex cases are much harder to design test cases for. 
 
-While test driven development (TDD) project have higher quality, there is a tradeoff between the benfit of less bugs versus the cost of increased deployment time. This time expense is a valid concern; however, for Lagunitas, a company in the process of scaling, TDD can be advantageous for developing quality applications with minimized time-fixing bugs. 
+While test driven development (TDD) project have higher quality, there is a tradeoff between the benfit of less bugs versus the cost of increased deployment time. This time expense is a valid concern; however, for Lagunitas, a company in the process of scaling, TDD can be advantageous for developing quality applications with minimized time wasted fixing bugs. 
 
 Agile-development group like Lagunitas, do not use TDD; however, it is a critical part of Agile development, according to the Agile <a href="http://programmers.stackexchange.com/questions/21870/can-you-be-agile-without-doing-tdd-test-driven-development">community</a>.
 
@@ -109,7 +108,7 @@ With that being said, we strongly recommend TDD be used by Lagunitas except for 
 Test driven development fosters clear goals and allows for those key requirements to be checked at each step in the development process. 
 
 ### Test Cases
-These depend on the product, but they should address the desired requirements and functionality. Test cases form the backbone of any software platform and should be create painstakingly. It is important to not write trivial tests for your project; they contribute to code rot and generally make you and your team test-resistant, which is not a good thing you the quality of your software. 
+These depend on the product, but they should address the desired requirements and functionality. Test cases form the backbone of any software platform and should be create painstakingly. It is important to not write trivial tests for your project; they contribute to code rot and generally make you and your team test-resistant, which is not a good thing for the quality of your software. 
 
 A good test should be able to answer the following questions clearly:
 
@@ -120,7 +119,7 @@ A good test should be able to answer the following questions clearly:
 - How can the test be reproduced?
 
 ### Test Automation
-Designing tests to be automated will allow for more tests and a better use of developer's time. In the case of Lagunitas, Jenkins and Selenium would be used to test code as it is committed; however, it is important to do more exhaustive, time-consuming testing when the project is not being worked on (e.g. when the office is empty). During this phase of the software development cycle, we recommend that tests be automated in a structured, two-tier process.
+Designing tests to be automated will allow for more tests and a better use of developers' time. In the case of Lagunitas, Jenkins and Selenium would be used to test code as it is committed; however, it is important to do more exhaustive, time-consuming testing when the project is not being worked on (e.g. when the office is empty). During this phase of the software development cycle, we recommend that tests be automated in a structured, two-tier process.
 
 #### Tier 1
 Also known as "microtesting" or sanity checks, this stage requires testing after each commit (i.e. required cases). This testing should be rudimentary and quick in order to ensure productivity.
@@ -129,23 +128,26 @@ Also known as "microtesting" or sanity checks, this stage requires testing after
 Also known as "macrotesting" or regression testing, exhaustive testing at night when project isn't being worked on. These tests should take a lot of time and should work to test every aspect of the system extensively.
 
 ### Bugs
-When faced with a system with multiple bugs, it is important to address those that effect the most people/users first. Integrating a tool like <a href="https://www.google.com/analytics/#?modal_active=none">Google Analytics</a> or a custom software tool to evaluate the most pertinent bugs is recommended.
+When faced with a system with multiple bugs, it is important to address those that affect the most people/users first. Integrating a tool like <a href="https://www.google.com/analytics/#?modal_active=none">Google Analytics</a> or a custom software tool to evaluate the most pertinent bugs is recommended.
 
 ### Metrics
-Metrics are critical to understand the level and quality of the software’s progress. A 100% success rate is not always advised, as sufficient rates will allow for quality while not overly burdening progress. 
+Metrics are critical to understanding the level and quality of the software’s progress. A 100% success rate is not always advised, as sufficient rates will allow for quality while not overly burdening progress. 
 
+Some metrics include:
 - **User sentiment**
 - **Requirement Turnover:** Requirements delivered/requirements desired at the outset
 - **Defect removal efficiency:** No. of Defects found during QA testing / (No. of Defects found during QA testing +No. of Defects found by End user)) * 100
 - **Defect density:** defects in a module/ total defects
 - **Pass rate:** While need not be 100% in all scenarios, test case pass rates should be 100% for continuous integration testing.
 - **Code coverage:** This metric does not necessarily reflect the quality of the test cases written, code coverage is always a good indicator of how much of the project has actually been tested. 100% code coverage means that when the entire sum of all your tests are run, every line is executed at least once. This metric is an indicator of working code, not good code.
-- **Defect metrics:** Used in conjunction with the team's goals, establishing thresholds for how many bugs are allowed in a development over a certain time period can be beneficial for production.
+- **Defect metrics:** Used in conjunction with the team's goals, it establishes thresholds for how many bugs are allowed in a development over a certain time period.
 
-&#9;While these metrics are helpful, they are certainly not complete; metrics may be project-specific and establishing these before a project starts can help accelerate the software development process while maintaining quality.
+&#9;While these metrics are helpful, they are certainly not complete; metrics may be project-specific and establishing these before a project starts accelerates the software development process while maintaining quality.
 
 ## Development and Repeated Testing
-This step of the Quality Assurance process will be the most time-consuming and important. Testing during development is critical to keeping track of the progress of the project. In general, the testing of a project will follow the following ascending order:
+This step of the Quality Assurance process will be the most time-consuming and important. Testing during development is critical to keeping track of the progress of the project. 
+
+In general, the testing of a project will follow the following ascending order:
 
 <p align="center">
  <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/Screen%20Shot%202016-05-31%20at%204.37.26%20PM.png">
@@ -154,7 +156,7 @@ This step of the Quality Assurance process will be the most time-consuming and i
 During the development process, unit tests are the most critical to ensure quality in the software. We recommend in [Tier 1](#tier-1) testing that tests be 95% unit tests and 5% integration tests.
 
 ### Unit Tests
-Unit testing focuses on individual units of source code, making sure it is up to the expected code standards. This type of testing is important to address any issues before progressing. Since it only tests small portions of code, it is fastest to complete. Overall, the goal of unit testing is to take the smallest piece of testable software in your project, isolate it, and determine whether its behavior matches what you expect from it. It is at this level that a large percentage of defects in software can be detected and identified. 
+Unit testing focuses on individual units of source code, making sure it is up to the expected code standards. This type of testing is important to address any issues before progressing. Overall, the goal of unit testing is to take the smallest piece of testable software in your project, isolate it, and determine whether its behavior matches what you expect from it. It is at this level that a large percentage of defects in software can be detected and identified. 
 
 Studies from Microsoft Research, IBM, and Springer tested the efficacy of test-first vs test-after methodologies and consistently found that a test-first process produces better results than adding tests later. It is resoundingly clear:
 
@@ -169,14 +171,14 @@ Some general topics to cover when unit testing are the following:
 - **Boundary conditions**
 - **Error handling paths:** The system's behavior surrounding errors should be controlled and useful [(see more)](#quality-overview)
 
-It is important to document each test extensively in order to promote reusability and keep communication clear. Additionally, a failing test should read like a high-quality bug report. Failed test reports should include what was being tested, what the program should do, the expected output, and the actual output. Having these clear channels can imporve quality dramatically.
+It is important to document each test extensively in order to promote reusability and keep communication clear. Additionally, a failing test should read like a high-quality bug report. Failed test reports should include what was being tested, what the program should do, the expected output, and the actual output. Having these clear channels can improve quality dramatically.
 
 A common approach to unit testing involves writing drivers and stubs. The driver simulates a calling unit and a stub simulates a called unit. While creating these tests can be bothersome, unit testing can provide enchanced code coverage, reducing difficulties in finding errors in complex pieces of an application, and [test automation](#test-automation). 
 
-Furthermore, while it may be tempting/cost-effective to "glue" together two units and test them as an integrated unit, an error can occur in a variety of places, creating confusion and uncertainty. With an integrated unit composed of unit 1 and unit 2, an error can occur in either of the units, both of the units, in the interface between the units, and in the test itself. These possibilities really demonstrate the importance of only testing one unit as your baseline to lower the level of uncertainty and raise the qulaity associated with testing your project.
+Furthermore, while it may be tempting/cost-effective to "glue" together two units and test them as an integrated unit, an error can occur in a variety of places, creating confusion and uncertainty. With an integrated unit composed of unit 1 and unit 2, an error can occur in either of the units, both of the units, in the interface between the units, and in the test itself. These possibilities really demonstrate the importance of only testing one unit as your baseline to lower the level of uncertainty and raise the quality associated with testing your project.
 
 ### Mocking
-Mocks simulate the behavior of actual objects to allow testers to isolate a smaller component of the program during unit testing, such as a class. Mocking is more elaborate than stubbing. Stubs perform the minimal amount of object behavior to enable the tested module to run, with state verification. When unit testing, mocks perform behavior verification. 
+Mocks simulate the behavior of actual objects to allow testers to isolate a smaller component of the program during unit testing, such as a class. Mocking is more elaborate than stubbing. Stubs perform state verification, or simply provide input (the minimal amount of object behavior to enable the tested module to run). When unit testing, mocks perform behavior verification. 
 
 For example, you want to test your software’s ability to send an email if an order wasn’t received. A stub in this case would count how many emails were sent. A mock would track if the program sent the email with the right contents and to the correct person. We have a detailed example of mocking in Django [here](#testing-django-with-mocking).
 
@@ -195,7 +197,7 @@ Usage of mocks usually follows this pattern:
 3. Verification that the expectations were met.
 
 ### Integration Tests
-Integration testing begins testing muliple units of code together. It is the logical extension of unit testing. Integration testing allows for an intermediary step before system testing so that problems can be more quickly localized and addressed. This form of testing identifies problems that occur when units are combined. Most of the time when an errors occurs, it is due to the interfacing between the units.
+Integration testing begins testing multiple units of code together. It is the logical extension of unit testing. Integration testing allows for an intermediary step before system testing so that problems can be more quickly localized and addressed. This form of testing identifies problems that occur when units are combined. Most of the time when an errors occurs, it is due to the interfacing between the units.
 
 As a rule of thumb:
 
@@ -205,9 +207,9 @@ As a rule of thumb:
  </b>
 </p>
 
-Of particular interest for Lagunitas is the interaction of the software being written and the third-party libraries and external resources such as file systems, databases, and network services.  This is due to the fact that the behavior of such dependencies may not be fully known or controlled by the consuming development team, or may change in unexpected ways when new versions are introduced. In context of external webservices that may be used in conjunction with a project, this means that integration testing can prove vital to the success of the project.
+Of particular interest for Lagunitas is the interaction of the software being written and the third-party libraries and external resources such as file systems, databases, and network services.  This is due to the fact that the behavior of such dependencies may not be fully known or controlled, or may change in unexpected ways when new versions are introduced. In context of external webservices that may be used in conjunction with a project, this means that integration testing can prove vital to the success of the project.
 
-You and your team can do intergration testing in a variety of ways, but it is important to automate them and run them in the 95/5 unit/integration test ratio on Jenkins or Selenium. It is important that you and your team come to a consensus on what the strategy will be in order to improve workflow and the organization/quality of your work. 
+You and your team can do integration testing in a variety of ways, but it is important to automate them and run them in the 95:5 unit:integration test ratio on Jenkins or Selenium. It is important that you and your team come to a consensus on what the strategy will be in order to improve workflow and the organization/quality of your work. 
 
 The following are three common approaches to integration testing:
 
@@ -218,7 +220,7 @@ The following are three common approaches to integration testing:
 We suggested Lagunitas use either the top-down or bottom-up methods first to adapt to the idea of test-driven development. As comfort with the process grows, we advise a transition to the Umbrella approach for projects that would like to have Alpha and Beta stages before deployment.
 
 ### Code Reviews
-Briefly, a code review is a discussion between two or more developers about changes to the code to address an issue. Its importance is critical; it promotes collaboration, identifies bugs, and keeps code more maintainable. This practice's practicality is fairly obvious. We suggest that code reviews be done when a component of a project is finished. Code reviews should be done with two or more developers, including the person that wrote the code being reviewed.
+Briefly, a code review is a discussion between two or more developers about changes to code to address an issue. Its importance is critical; it promotes collaboration, identifies bugs, and keeps code more maintainable. We suggest that code reviews be done when a component of a project is finished. Code reviews should be done with two or more developers, including the person that wrote the code under review.
 
 Here are some useful practices to employ during code reviews:
 
@@ -242,7 +244,7 @@ Code reviews should span the components Architecture and Design, Style, and Test
 See [Quality Overview](#quality-overview)
 
 #### Testing
-- **Test coverage and quality:** Its great to see tests for new features. Are the tests thoughtful? Do they cover the failure conditions? Are they easy to read? How fragile are they? How big are the tests? Are they slow?
+- **Test coverage and quality:** It's great to see tests for new features. Are the tests thoughtful? Do they cover the failure conditions? Are they easy to read? How fragile are they? How big are the tests? Are they slow?
 - **Testing at the right level:** When reviewing tests make sure that they are testing the program at the right level. In other words, are we as low a level as we need to be to check the expected functionality? Gary Bernhardt, a prominent TDD software blogger, recommends a ratio of 95% unit tests, 5% integration tests. With Django projects, it’s easy to test at a high level by accident and create a slow test suite so it’s important to be vigilant.
 - **Number of Mocks:** Mocking is great. Mocking everything is not great. Use a rule of thumb where if there’s more than 3 mocks in a test, it should be revisited. Either the test is testing too broadly or the function is too large. Maybe it doesn’t need to be tested at a unit test level and would suffice as an integration test. Either way, it’s something to discuss.
 - **Meets requirements:** Usually as part of the end of a review, look at the requirements of the story, task, or bug which the work was filed against. If it doesn’t meet one of the criteria, it’s better to bounce it back before problems arise.
@@ -251,62 +253,62 @@ See [Quality Overview](#quality-overview)
 The dependence on Django, a ubiquitous technology, means that its primary security vulnerabilities are well known and documented. Developers should consider taking steps to, at the very least, ensure that the most critical software (such as connections to the financial software) is strong against basic threats.
 
  - The simplest first step is to update the current working version of your Django framework in all your environments. And while Django is backwards compatible, it is nonetheless crucial that you identify any components in your web app that might be impacted by patching/updating.
- - Django's built-in CSRF protection is good. Enable it and use it everywhere.  (Cross-Site Forgery Attack: when a hacker tricks a user into loading a malicious url in which they are authenticated into) 
+ - Django's built-in CSRF protection is good. Enable it and use it everywhere.  (Cross-Site Forgery Attack: when a hacker tricks an authenticated user into loading a malicious url to transmit commands)
+
  - Avoid manually forming SQL queries using string concatenation. For instance, do not use raw SQL queries (e.g. `raw()`). Similarly, do not use the `extra()` method/modifier to inject raw SQL. Do not execute custom SQL directly; if you bypass Django's Object Relational Mapping layer, you bypass its protections against SQL command injection. (SQL injection attacks are used to read sensitive data, modify data, or perform administrative actions) 
  
 Of course, these are only the basics; however, any platform that is being rolled out should have comprehensive security.
 
 #### Fuzz Testing
-Fuzz testing is for detecting problems that can cause the system to crash. Examples of these kinds of issues would be buffer overflow, cross-site scripting, denial of service attacks, or SQL injection. Fuzz testing is typically employed by hackers to bring a system down with minimal effort. Fuzz testing is not effective for discovering threat potential from things such as: spyware, viruses, and Trojans. We do not recommend Lagunitas use this form of testing because it is not really applicable.
+Fuzz testing purposely attempts to cause the system to crash, by inputting large quantities of random data. Examples of these kinds of issues would be buffer overflow, cross-site scripting, denial of service attacks, or SQL injection. Fuzz testing is typically employed by hackers to bring a system down with minimal effort. Fuzz testing is not effective for discovering threat potential from things such as: spyware, viruses, and Trojans. We do not recommend Lagunitas use this form of testing because it is not an efficient, or methodical testing technique.
 <br>
 
 ## Final Steps
 
+The following tests are used once the all the software modules have been developed, unit, and integration tested. These tests determine systemic issues, and assess what needs to be fixed before the software goes into use. 
+
 ### Regression Cycle
 
-A regression cycle is run in the final phase of product stabilization, and it is that procees that triggers the green light to go to production. Since very little is changing in development at this point in the project, there is an opportunity to validate the entire product. We suggest modelling the entire piece of software as a directed graph with edges pointing from components to the components that are dependent upon it. When any branch is modified, the hierarchy shows what branches below it will be affected and will need additional QA testing.
+A regression cycle is run in the final phase of product stabilization, and it is that proceeds that triggers the green light to go to production. Since very little is changing in development at this point in the project, there is an opportunity to validate the entire product. We suggest modelling the entire piece of software as a directed graph with edges pointing from components to the components that are dependent upon it. When any branch is modified, the hierarchy shows what branches below it will be affected and will need additional QA testing.
 
-We suggest using a "traffic light" method for the regression cycle. If every edge recieves a green light (passes all tests), the product is considered ready for delivery. If a branch receives a yellow light (all tests passed but with one or more reported warnings), it is important to talk about whther the piece should be worked on more or deployed and fixed after. Finally, if a branch receives a red light (one or more tests failed), stop and address the issue. We suggest that you automate the regression cycle, so it only takes a few days to run.
+We suggest using a "traffic light" method for the regression cycle. If every edge recieves a green light (passes all tests), the product is considered ready for delivery. If a branch receives a yellow light (all tests passed but with one or more reported warnings), it is important to talk about whether the piece should be worked on more or deployed and fixed after. Finally, if a branch receives a red light (one or more tests failed), stop and address the issue. We suggest that you automate the regression cycle, so it only takes a few days to run.
 
 #### System Tests
-System tests verify if that the whole system meets the application architecture and business requirements by assessing the interaction of features. System testing tests the system as a whole. Once all the components are integrated, the application as a whole is tested rigorously to see that it meets the specified Quality Standards.
+
+System tests verify that the whole system meets the application architecture and business requirements by assessing all of the feature, as a whole. 
 
 Entry Criteria to begin System Tests:
 - Unit Testing should be finished.
 - Integration of modules should be fully integrated.
-- As per the specification document software development is completed.
+- As per the specification, document software development is completed.
 - Testing environment is available for testing.
 
 System testing is important because of the following reasons:
-- System testing is the first step in the Software Development Life Cycle, where the application is tested as a whole.
-- The application is tested thoroughly to verify that it meets the functional and technical specifications.
+- System testing is the first step in testing the application as a whole.
+- The application is tested thoroughly to verify that it meets the functional (business requirements) and technical specifications.
 - The application is tested in an environment that is very close to the production environment where the application will be deployed.
-- System testing enables us to test, verify, and validate both the business requirements as well as the application architecture.
 
 To illustrate how comprehensive we suggest System Tests should be, here is an example:
 
-For example you are doing testing on a web application of a school and in this web application there are many modules like Teacher Module, Staff Module, Parent Module, Student Module, and Admin Module and so on. Now you have to do System Testing on a web application of a school, so your criteria for doing System Testing will be like that which is given below:
+For example you are doing testing on a web application of a school. This web application there are many modules like Teacher Module, Parent Module, Student Module. Now you have to do System Testing on a web application of a school, so your criteria for doing System Testing will be like that which is given below:
 
-1. First you test the GUI related issues on all these above mentioned modules by checking that font size, alignment, display images should work properly on all the modules.
+1. First you test the GUI related issues on all these above mentioned modules by checking that font size, alignment, display images work properly on all the modules.
 
 2. Now after checking the GUI issues you move towards functionality related issues by checking that the requirements of client have been met or not.
 
-3. After checking functionality you can check whether the application is user friendly or not by checking that proper error message should be displayed on screen or not. In this Usability Testing you test the system means application by keeping users in mind because if the application is not user friendly than client will not accept the application because in application apart from functionality, user friendliness is also very important.
-
-Now you proceed toward non-functional testing because non-functional testing is also a part of System Testing. So we test the [Performance Test-related issues](#performance-tests) on all the above mentioned modules, so this is the non-functional testing done by us on all above modules.
-
-So when you test the both Functional and Non-Functional testing on all the modules which were mentioned above that means you have tested the complete system as a whole, or that you did the System Testing on above modules. Keep one thing in mind that, System Testing includes functional as well as non functional testing both.
+3. After checking functionality, you can check whether the application is user friendly or not by checking that proper error message should be displayed on screen or not. 
 
 #### Performance Tests
-Performance tests assess speed, scalability, reliability, and stability. Once the platform is stable, preformance tests can begin.
+Performance tests assess speed, scalability, reliability, and stability. 
 
-Lagunitas' software, especially programs that will interact with a growing number of users should definitely be assessed with performance-based testing. Scaling issues are critical to platforms such as the distributor ordering system, or ones which will have to withstand larger amounts of data flow. Load testing and endurance testing seem most useful to the expected usage of Lagunitas software which will likely endure sustained usage, with minimal high loads or spikes.
+Lagunitas' software, especially programs that will interact with a growing number of users should be assessed with performance-based testing. Scaling issues are critical to platforms such as the distributor ordering system, or ones which will have to withstand larger amounts of data flow. Load testing and endurance testing seem most useful to the expected usage of Lagunitas software which will likely endure sustained usage, with minimal high loads or spikes.
 
 Performance will be determined by running software through a variety of difficult scenarios.
  
-- **Load Testing:** This measures important business critical transactions and expected load on the database, application server, etc. There are many open source options to simulate a many users such as <a href="https://jmeter.apache.org/">JMeter</a> or <a href="http://gatling.io/#/">Gattling</a>. Selenium is capable of performance testing, but isn’t an optimal choice. This is because when doing load tests it is significantly slower than other options like JMeter. Selenium is capable of performance testing, but isn’t an optimal choice. This is because when doing load tests it is significantly slower than other options like JMeter. Selenium WebDriver is also capable of working with <a href="http://junit.org/junit4/">JMeter JUnit 4</a>. To use <a href="http://www.seleniumhq.org/projects/webdriver/">Selenium WebDriver</a>, simply install “WebDriver Set” plugins. The WebDriver sampler is very useful if you want to test AJAX based web applications and simulated user actions. 
+- **Load Testing:** This measures important business critical transactions and expected load on the database, application server, etc. There are many open source options to simulate many users such as <a href="https://jmeter.apache.org/">JMeter</a> or <a href="http://gatling.io/#/">Gattling</a>. Selenium is capable of performance testing, but isn’t an optimal choice. This is because when doing load tests it is significantly slower than other options like JMeter. The Selenium WebDriver is also capable of working with <a href="http://junit.org/junit4/">JMeter JUnit 4</a>. To use <a href="http://www.seleniumhq.org/projects/webdriver/">Selenium WebDriver</a>, simply install “WebDriver Set” plugins. The WebDriver sampler is very useful if you want to test AJAX based web applications and simulated user actions. 
     1. **Endurance Testing:** Tests system performance under sustained load.
-Can use <a href="http://loadrunnerjmeter.com/">LoadRunner</a> in JMeter, or  Selenium WebDriver. Issues commonly found: 
+Can use <a href="http://loadrunnerjmeter.com/">LoadRunner</a> in JMeter, or  Selenium WebDriver. 
+Issues commonly found include: 
        * Serious memory leaks that would eventually result in application or Operating System crash.
        * Failure to close connections between the layers of the system could stall some or all modules of the system.
        * Failure to close database connections under some conditions might result in the complete system crash.
@@ -314,17 +316,8 @@ Can use <a href="http://loadrunnerjmeter.com/">LoadRunner</a> in JMeter, or  Sel
     2. **Stress Testing:** Finds the upper capacity of the system. 
 - **Spike Testing:** Determines the ability of the system to handle large increases in usage in a small amount of time. Can be done with a variety of performance testing tools, including JMeter.
 
-Load testing and endurance testing seem most useful to the expected usage of Lagunitas software which will likely endure sustained usage, with minimal high loads or spikes. 
-
 #### Session Based Testing
 Session based testing is when a developer takes 90 ± 45 minutes to try to find errors and break a program. It is very exploratory and spontaneous, as opposed to scripted testing with software. As a result, new errors can be found while also verifying software requirements. Session based testing in conjunction with more traditional, regimented testing is recommended by experts at Microsoft. 
-
-Pros: 
-- **Can find previously unknown errors**
-- **Low Cost:** no need to create unit tests, instead the developers get instantaneous feedback on software performance.
-
-Cons: 
-- **Limited by the domain of knowledge of the tester and cannot be done for long period of time**
 
 Session testing basics: 
 - **Goal-based:** Set a focus for the tester. Without a clear testing procedure, the session tester will approach the problem in their own way.
@@ -333,28 +326,41 @@ Session testing basics:
    - **Scenario #2:** Dragging the Open File dialog window around, and this seems to work fine as expected.  Also drag the window outside of the screen and the window redraws itself back correctly.
    - **Scenario #3:** Tried opening file without extension, and Notepad crashes!  Bug #456 filed.
 
+Pros: 
+- **Can find previously unknown errors**
+- **Low Cost:** No need to create unit tests, so developers get instantaneous feedback on software performance.
+
+Cons: 
+- **Limited by the domain of knowledge of the tester**
+-  **Cannot be done for long period of time**
+
 ### Acceptance Tests
 
-Acceptance tests verify if the full system meets all requirements and if the program is prepped for delivery. You should have a set of pre-written scenarios and test cases that will be used to test the application. More ideas will be shared about the application and more tests can be performed on it to gauge its accuracy and the reasons why the project was initiated. Acceptance tests are not only intended to point out simple spelling mistakes, cosmetic errors, or interface gaps, but also to point out any bugs in the application that will result in system crashes or major errors in the application.
-By performing acceptance tests on an application, the testing team will deduce how the application will perform in production. 
+Acceptance tests verify if the full system meets all requirements and if the program is prepped for delivery. At this stage, the focus is on the user-experience. Acceptance tests are not only intended to point out simple spelling mistakes, cosmetic errors, or interface gaps, but also determine:
+
+	- **Usability:** Is the UI configured to their liking? Did we put the customer branding in all the right places? Do   we have all the fields/screens they asked for?
+	- **Maintainability:** How will we deliver software updates/patches?
+	- **Configurability:** Can user modify the system to suit their needs?
 
 Here is a <a href="https://blog.8thlight.com/doug-bradbury/2011/04/26/ten-ways-to-do-acceptance-testing-wrong.html">link</a> to some common mistakes that teams make when doing Acceptance Tests.
 
-There is a variety of software out there that can perform automated Acceptance Tests, and we suggest using [CasperJS](#casperjs). 
+There is a variety of software out there that can perform automated front-end tests, and we suggest using [CasperJS](#casperjs). These should always be supplemented by manual human testers verifying if everything does in fact look correct. 
 
 Here is a breakdown of the good and the bad with Selenium and Casper:
 
 Selenium WebDriver
 
-- **The good:** You can automate most browsers and mobile devices in many different programming languages. It’s pretty widely adopted across other frameworks as well, and can integrate with BDD tools such as Cucumber. There are meetups and conferences and Google Hangouts where you can find support. Selenium is pretty easy to pick up with some programming knowledge. You can also use Selenium Grid/Server or SauceLabs to run your tests in parallel across multiple machines.
-- **The bad:** Just because you can do almost anything doesn’t mean you should. It’s very tempting to try to make your test suite run on every browser and support mobile devices, but the maintenance cost is very high and it’ll take you a while to figure out how to make each browser’s driver work with your code. Utilizing Selenium’s capabilities to run across browsers and devices and in parallel on Sauce was a lot of effort for very little reward. I can remember only one instance where the other browsers caught a bug, because many cross-browser bugs are visual and won’t be caught by automation. All of that effort you spend maintaining can’t be spent making new tests, and you still have to manually check those browsers for visual bugs.
-- We would mainly recommend Selenium for large teams who intend to utilize the cross-platform and cross-browser testing features or use Sauce Labs. The maintenance cost will be high, but if you have the patience and bandwidth, go for it. Selenium is a widely-adopted and powerful tool for automation and can help you achieve your wildest automated testing dreams if you’re dedicated enough.
+- **The good:** You can automate most browsers and mobile devices in many different programming languages. It’s pretty widely adopted across other frameworks as well, and can integrate with BDD (Behavior Driven Development) tools such as Cucumber. There are meetups and conferences and Google Hangouts where you can find support. Selenium is pretty easy to pick up with some programming knowledge. You can also use Selenium Grid/Server or <a href = "https://saucelabs.com/">SauceLabs</a> to run your tests in parallel across multiple machines.
+- **The bad:** Just because you can do almost anything doesn’t mean you should. It’s very tempting to try to make your test suite run on every browser and support mobile devices, but the maintenance cost is very high and it’ll take you a while to figure out how to make each browser’s driver work with your code. Utilizing Selenium’s capabilities to run across browsers and devices and in parallel on Sauce was a lot of effort for very little reward. All of that effort you spend maintaining can’t be spent making new tests, and you still have to manually check those browsers for visual bugs.
+
+Selenium is excellent for large teams who intend to utilize the cross-platform and cross-browser testing features or use Sauce Labs. The maintenance cost will be high, but if you have the patience and bandwidth, go for it. Selenium is a widely-adopted and powerful tool for automation and can help you achieve your wildest automated testing dreams if you’re dedicated enough.
 
 CasperJS
 
-- **The good:** CasperJS’s <a href="http://docs.casperjs.org/en/latest/modules/">API</a> is incredibly helpful compared to the digging with Selenium. The tester module makes your passes and fails very clear, and the tester API is also nice to work with. You can write your tests in CoffeeScript or JavaScript, and if you can’t figure out how to do what you want in CasperJS you can do it in JavaScript or CoffeeScript. CasperJS is quick, light-weight, and easy to set up. There are very helpful getting started guides for beginners. Automated tests will most likely not completely replace manual testing, and headless browsing takes less time and minimizes the maintenance burden, because you’re not trying to figure out why your tests don’t work a certain way in one browser. This will leave you time for the inevitable manual testing, or for writing even more CasperJS scripts. While CasperJS doesn’t have quite as wide an adoption as Selenium, there are already a lot of great open-source tools to help you do a lot of cool things with it.
-- **The bad:** It’s a bit harder to get answers to your questions on the framework because of its newness. A lot of the tools that work with CasperJS are very new and still have bugs to work out, so you may invest a good chunk of time into them before realizing that they are not mature enough to use for your testing. Headless browsing is sometimes intimidating; debugging is not incredibly fun to do when you can’t see what your code is doing in a browser. CasperJS’s debug mode combined with its methods to capture screenshots are a good substitute in my opinion, but be patient when you start learning this framework.
-- CasperJS is a great tool for small teams like Lagunitas. The output of test passes and fails gets kind of unmanageable once you have a lot of test files, so you may want to look into writing something that outputs a digest of test results to avoid minutes of scrolling. Use this if you’re a small team who wants to make tests quickly. Use this if you know and love Javascript or Coffeescript and want to write your tests in one of those languages. Use this if you want to learn basic Javascript or Coffeescript.
+- **The good:** CasperJS’s <a href="http://docs.casperjs.org/en/latest/modules/">API documentation</a> is incredibly helpful compared to the digging with Selenium. The tester module makes your passes and fails very clear. You can write your tests in CoffeeScript or JavaScript, or CasperJS. CasperJS, as a headless browser is quick, light-weight, and easy to set up. There are very helpful guides for beginners. This will leave you time for the inevitable manual testing, or for writing even more CasperJS scripts. While CasperJS doesn’t have quite as wide an adoption as Selenium, there are already a lot of great open-source tools to help you do a lot of cool things with it.
+- **The bad:** Headless browsing is sometimes intimidating; debugging is not incredibly fun to do when you can’t see what your code is doing in a browser. CasperJS’s debug mode combined with its methods to capture screenshots are a good substitute in my opinion, but be patient when you start learning this framework.
+
+CasperJS is a great tool for small teams like Lagunitas, who want to test quickly. 
 
 A detailed slideshow on how to perform using Selenium WebDriver can be found <a href="http://www.slideshare.net/NickBelhomme/mastering-selenium-for-automated-acceptance-tests/34-Setting_up_the_grid">here</a>.
 
@@ -364,7 +370,7 @@ A rundown of acceptance testing in CasperJS can be found <a href="https://github
 
 There are many frameworks that can be used to test software built here at Lagunitas. Many of the platforms that are used here are made for TDD and easily support unit testing, easily the most critical step in the testing process. 
 
-With that said, here are how the testing frameworks for Django, JavaScript, and Selenium:
+With that said, here are how the testing frameworks for Django, JavaScript, and Selenium work:
 
 #### Django
 
@@ -401,7 +407,7 @@ Once you've written tests, run them using the **test** command of your project's
 $ ./manage.py test
 ```
 
-Django's test library also has the ability to do built-in test discovery.You can specify particular tests to run by supplying any number of “test labels” to `./manage.py test`. Each test label can be a full Python dotted path to a package, module, `TestCase` subclass, or test method.
+Django's test library also has the ability to do built-in test discovery. You can specify particular tests to run by supplying any number of “test labels” to `./manage.py test`. Each test label can be a full Python dotted path to a package, module, `TestCase` subclass, or test method.
 
 Some examples of this include:
 
@@ -448,7 +454,7 @@ Some of the things you can do with the test client are:
 This framework by no means is meant to replace [Selenium](#selenium). It has a different focus. In short:
 
 - Use Django’s test client to establish that the correct template is being rendered and that the template is passed the correct context data.
-- Use in-browser frameworks like Selenium to test *rendered* HTML and the *behavior* of Web pages, namely JavaScript functionality. Django also provides special support for those frameworks.
+- Use in-browser frameworks like Selenium to test *rendered* HTML and the *behavior* of Web pages, namely JavaScript functionality. 
 
 In the best case scenario, teams would use both the Django test client and Selenium.
 
@@ -477,7 +483,7 @@ The Django Client can perform `GET` and `POST` requests and should be looked at 
 
 ##### Testing Django with Mocking
 
-It is also possible to run mocks using Django. Mocking Django can be useful for the reason detail in the [Mocking section](#mocking). Mocking can be done using the <a href="https://pypi.python.org/pypi/mock/">mock</a> library in conjunction with Django and <a href="https://docs.python.org/2.7/library/unittest.html">unittest</a>. Mocking generally uses unittest's `TestCase` object as opposed to the django `TestCase` object because it saves the database cleanup between tests.
+It is also possible to run [mocks](#mocking) using Django. Mocking can be done using the <a href="https://pypi.python.org/pypi/mock/">mock</a> library in conjunction with Django and <a href="https://docs.python.org/2.7/library/unittest.html">unittest</a>. Mocking generally uses unittest's `TestCase` object as opposed to the django `TestCase` object because it saves the database cleanup between tests.
 
 ```python
 from django.db import models
@@ -503,7 +509,10 @@ class SampleTests(unittest.TestCase):
         manager.filter.assert_called_with(user=user)
 ```
 
-Let's walk though the test line by line. First, create a mock user. `user = mock.Mock()` Second, create a mock manager. `manager = mock.Mock(spec=models.SampleManager)` Next, call the method that you want to have do something. You'll notice something a bit of trickery here by using the actual `SampleManager` class and passing the manager mock object in as the self argument. This allows you to capture what the implementation code does with the manager inside the `get_by_user` method. `models.SampleManager.get_by_user(manager, user)` Finally, assert that your desired result occured. Here, you are asserting that the filter method of the manager mock object was called with the keyword user argument with the value of your user mock. `manager.filter.assert_called_with(user=user)`
+Let's walk though the test line by line. 
+1. Create a mock user. `user = mock.Mock()` 
+2. Create a mock manager. `manager = mock.Mock(spec=models.SampleManager)` 
+3. Call the method that you want to have do something. You'll notice something a bit tricky here by using the actual `SampleManager` class and passing the manager mock object in as the self argument. This allows you to capture what the implementation code does with the manager inside the `get_by_user` method. `models.SampleManager.get_by_user(manager, user)` 4. Assert that your desired result occured. Here, you are asserting that the filter method of the manager mock object was called with the keyword user argument with the value of your user mock. `manager.filter.assert_called_with(user=user)`
 
 Let's take a look at a different way to write that same test.
 
@@ -565,7 +574,7 @@ Compared to Selenium GUI interface, CasperJS is lightweight and simple and can b
 
 ##### CasperJS
 
-To use Casper, you simply write some JavaScript, save it to a file, then run it from the command line like so: `casperjs my-source.js`. If you will be running unit tests, you must include the `test` command, like so: `casperjs test my-test.js`. All of the examples in this post should be run with the `test` command. 
+To use Casper, you simply write some JavaScript, save it to a file, then run it from the command line like so: `casperjs my-source.js`. If you will be running unit tests, you must include the `test` command, like so: `casperjs test my-test.js`. All of the examples below should be run with the `test` command. 
 
 Casper has a fantastic API full of convenience methods to help you interact with your phantasmic browser. There are two main modules that you can use, the <a href="http://docs.casperjs.org/en/latest/modules/casper.html">casper module</a> and the <a href="http://docs.casperjs.org/en/latest/modules/tester.html">tester module</a>. Methods in the tester module are only available when you run Casper with casperjs test `my-test.js`.
 
@@ -627,7 +636,7 @@ casper.test.begin("Searching Reddit", testCount, function redditSearch(test) {
 
 Sometimes, to really test something complicated, you need to jump into the Document Object Model (DOM) of the browser itself. Casper provides the ability to do just that with the <a href="http://docs.casperjs.org/en/latest/modules/casper.html#evaluate">`evaluate()`</a> method. If you find this a bit confusing, they have a nice <a href="http://docs.casperjs.org/en/latest/_images/evaluate-diagram.png">diagram</a> to help you picture this.
 
-Here's an example where we will jump into the context of the r/programming page, click on upvote, confirm that the login modal appears, then click on the `.close` backdrop and confirm that the modal disappears. The results are then returned to the casper environment.
+Here's an example where we will jump into the context of the r/programming page, click on upvote, confirm that the login modal appears, then click on the `.close` backdrop and confirm that the modal disappears. The results are then returned to the Casper environment.
 
 ```javascript
 casper.options.viewportSize = {width: 1024, height: 768};
@@ -653,7 +662,7 @@ An important thing to note when using `casper.evaluate()` is that unlike almost 
 
 #### Selenium
 
-Django supports Seleium test case integration, which can help facilitate the testing process, with the class `LiveServerTestCase` within `django.test`. This class will automatically run a test server in the background and your Selenium tests will be run against that server. It not only simplifies the process, but it also means your tests can be setup the same way your Django tests are, and so both can be run together without any aditional setup using the standard `manage.py test` command.
+Django supports Seleium test case integration, which can help facilitate the testing process, with the class `LiveServerTestCase` within `django.test`. This class will automatically run a test server in the background and your Selenium tests will be run against that server. It not only simplifies the process, but it also means your tests can be setup the same way your Django tests are, and so both can be run together without any additional setup using the standard `manage.py test` command.
 
 Selenium tests can be setup inside each app’s test directory just like a regular test would be, but since they’re very tied to the specific project, we suggest creating an app where all the tests are stored.
 
@@ -698,7 +707,7 @@ In this example, we have only one method, which is very handy:
 - `find_css` is basically a shortcut for both “find_elements_by_css_selector” and “find_element_by_css_selector”, and as the method names imply, it enables you to find DOM elements using regular CSS selectors.
 - `wait_for_css` is a helpful method to block the test from progressing until a element (css selector) is found on the page. This method is commonly used in non-blocking instructions (such as AJAX requests) or some JavaScript interactions that do DOM manipulation. Whenever you get an “element not found” error due to JavaScript being slower than your test instructions, this is the method to use.
 
-As you start writing more and more tests, you’ll find yourself writing similar code to deal with selects or custom widgets for example. webdriver.py is where you can add these so your tests can be more DRY. As a rule of thumb, We tend to use `webdriver.py` to add “generic” shortcuts and `test.py` for “app specific” shortcuts (like sign in).
+As you start writing more and more tests, you’ll find yourself writing similar code to deal with selects or custom widgets for example. webdriver.py is where you can add these so your tests can be less repetitive. As a rule of thumb, We tend to use `webdriver.py` to add “generic” shortcuts and `test.py` for “app specific” shortcuts (like sign in).
 
 Here is an example webdriver test that tests admin sign in:
 
@@ -751,6 +760,4 @@ class Auth(SeleniumTestCase):
 
 This is an introduction to how Django/Selenium testing can work. Of course, one can test in the Selenium GUI. More info on that can be found <a href="http://www.seleniumhq.org/docs/02_selenium_ide.jsp">here</a>. 
 
-Advanced testing topics in Django/Selenium-specifc testing can be found <a href="http://agiliq.com/blog/2014/09/advanced-functional-testing-with-selenium/">here</a>.
-
-### An Example
+Advanced testing topics in Django/Selenium-specific testing can be found <a href="http://agiliq.com/blog/2014/09/advanced-functional-testing-with-selenium/">here</a>.
