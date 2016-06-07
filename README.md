@@ -12,6 +12,7 @@
 1. [Getting Started](#getting-started)
   * [Quality Overview](#quality-overview)
   * [Requirements and Design Development](#requirements-and-design-development)
+  * [Test Driven Development (TDD)](#TDD)
   * [Skepticism Toward Test Driven Development](#skepticism-toward-test-driven-development)
 2. [Test Planning and Designing](#test-planning-and-designing)
   * [Test Cases](#test-cases)
@@ -66,9 +67,11 @@ Each of the following should be reviewed and understood by all developers on the
 
 Develop clear, and mutually agreeable goals for the final product. These should be well communicated and delegated. Developers should commit to deadlines for each stage. In addition, standards should be established for security of the software metrics.
 
-### Skepticism Toward Test Driven Development
+### Test Driven Development (TDD)
 
-With TDD, you build the test and then develop functionality until the code passes the test. As each new addition to the code is made, its test can be added to the suite of tests that are run when you build the integrated work. Test Driven Development also can be thought of as "Test Driven Design", allowing the structure of the tests to allow your development to proceed with smaller less complex units of code more clearly coming together. 
+TDD is when the tests are developed BEFORE the code. That way sofware engineers develop functionality until the code passes the test. As each new addition to the code is made, its test can be added to the suite of tests that are run when you build the integrated work. This front-loading of test creation allows the CI process to accelerate smoothly. Test Driven Development also can be thought of as "Test Driven Design", allowing the structure of the tests to allow your development to proceed with smaller less complex units of code more clearly coming together. 
+
+### Skepticism Toward Test Driven Development
 
 #### Pros of TDD
 
@@ -81,13 +84,13 @@ With TDD, you build the test and then develop functionality until the code passe
 #### Cons of TDD
 
 - Like any programming, there is a big difference between doing it and doing it well.  Writing good unit tests is an art form. (We will get to that in this document.)
-- Initially unit testing is slower.
+- Initially slower while unit tests are developed.
 - Unit testing is something the whole team has to buy into. Team Leaders have to enforce policies and actually get in and check the tests.
-- Complex cases are much harder to design test cases for. 
+- Complex cases are much harder to design test cases for. This is why the cases must be broken down AHEAD of development.
 
-While test driven development (TDD) project have higher quality, there is a tradeoff between the benfit of less bugs versus the cost of increased deployment time. This time expense is a valid concern; however, for Lagunitas, a company in the process of scaling, TDD can be advantageous for developing quality applications with minimized time wasted fixing bugs. 
+While test driven development (TDD) projects have higher quality, there is a cost of increased deployment time for less bugs. This time expense is a valid concern; however, for Lagunitas, a company in the process of scaling, TDD can be advantageous for developing quality applications with minimized time wasted fixing bugs long term. 
 
-Agile-development group like Lagunitas, do not use TDD; however, it is a critical part of Agile development, according to the Agile <a href="http://programmers.stackexchange.com/questions/21870/can-you-be-agile-without-doing-tdd-test-driven-development">community</a>.
+TDD is a critical part of Agile development, according to the Agile <a href="http://programmers.stackexchange.com/questions/21870/can-you-be-agile-without-doing-tdd-test-driven-development">community</a>.
 
 <p align="center">
 <b>According to "Exploding Software-Engineering Myths" by Microsoft Research, which used Microsoft to test the efficiency of TDD, test-driven development reduces defects in software by 60-90% while increasing time investment by 15-35%.</b>
@@ -101,14 +104,14 @@ TDD is helpful to learn, understand, and internalise key principles of modular d
 <b>Furthermore, the software Lagunitas currently employs for testing (Selenium, Jenkins, Django) are made to be used with TDD.</b>
 </p>
 
-With that being said, we strongly recommend TDD be used by Lagunitas except for extreme cases in which a project must be completed on a given day or the project is too small or trivial to even consider testing extensively.
+With that being said, we strongly recommend TDD be used by Lagunitas. (except for cases in which a project is too small or trivial to consider testing extensively)
 
 ## Test Planning and Designing
 
 Test driven development fosters clear goals and allows for those key requirements to be checked at each step in the development process. 
 
 ### Test Cases
-These depend on the product, but they should address the desired requirements and functionality. Test cases form the backbone of any software platform and should be create painstakingly. It is important to not write trivial tests for your project; they contribute to code rot and generally make you and your team test-resistant, which is not a good thing for the quality of your software. 
+These depend on the product, but they should address the desired requirements and functionality. Test cases form the backbone of any software platform and should be create painstakingly. It is important to NOT write trivial tests for your project; they contribute to code rot and generally make you and your team test-resistant, which is not a good thing for the quality of your software. 
 
 A good test should be able to answer the following questions clearly:
 
@@ -131,7 +134,7 @@ Also known as "macrotesting" or regression testing, exhaustive testing at night 
 When faced with a system with multiple bugs, it is important to address those that affect the most people/users first. Integrating a tool like <a href="https://www.google.com/analytics/#?modal_active=none">Google Analytics</a> or a custom software tool to evaluate the most pertinent bugs is recommended.
 
 ### Metrics
-Metrics are critical to understanding the level and quality of the software’s progress. A 100% success rate is not always advised, as sufficient rates will allow for quality while not overly burdening progress. 
+Metrics are critical to understanding the level and quality of the software’s progress. A 100% success rate is not always advised, as sufficient rates will allow for quality while not restraining progress. 
 
 Some metrics include:
 - **User sentiment**
@@ -145,7 +148,7 @@ Some metrics include:
 &#9;While these metrics are helpful, they are certainly not complete; metrics may be project-specific and establishing these before a project starts accelerates the software development process while maintaining quality.
 
 ## Development and Repeated Testing
-This step of the Quality Assurance process will be the most time-consuming and important. Testing during development is critical to keeping track of the progress of the project. 
+This step of the Quality Assurance process will be the most time-consuming and important. Testing during development keeps track of the project's progress. 
 
 In general, the testing of a project will follow the following ascending order:
 
@@ -156,7 +159,7 @@ In general, the testing of a project will follow the following ascending order:
 During the development process, unit tests are the most critical to ensure quality in the software. We recommend in [Tier 1](#tier-1) testing that tests be 70% unit tests & 20% integration tests. [Tier 2](#tier-2) tests that are end-to-end should account for 10% of total tests according to <a href="http://googletesting.blogspot.com/2015/04/just-say-no-to-more-end-to-end-tests.html"> Google Testing </a>. 
 
 ### Unit Tests
-Unit testing focuses on individual units of source code, making sure it is up to the expected code standards. This type of testing is important to address any issues before progressing. Overall, the goal of unit testing is to take the smallest piece of testable software in your project, isolate it, and determine whether its behavior matches what you expect from it. It is at this level that a large percentage of defects in software can be detected and identified. 
+Unit tests take the smallest piece of testable software in your project, isolate it, and determine whether its behavior matches what you expect from it. This type of testing is a critical initial part of the quality assurance process. Unit tests provide fast, reliable, isolation of failures. This fuels efficient and effective error removal. 
 
 Studies from Microsoft Research, IBM, and Springer tested the efficacy of test-first vs test-after methodologies and consistently found that a test-first process produces better results than adding tests later. It is resoundingly clear:
 
@@ -171,24 +174,27 @@ Some general topics to cover when unit testing are the following:
 - **Boundary conditions**
 - **Error handling paths:** The system's behavior surrounding errors should be controlled and useful [(see more)](#quality-overview)
 
-It is important to document each test extensively in order to promote reusability and keep communication clear. Additionally, a failing test should read like a high-quality bug report. Failed test reports should include what was being tested, what the program should do, the expected output, and the actual output. Having these clear channels can improve quality dramatically.
+It is important to document each test extensively in order to promote reusability and clarity. Additionally, a failing test should read like a high-quality bug report. Failed test reports should include what was being tested, the expected output, and the actual output. 
 
-A common approach to unit testing involves writing drivers and stubs. The driver simulates a calling unit and a stub simulates a called unit. While creating these tests can be bothersome, unit testing can provide enchanced code coverage, reducing difficulties in finding errors in complex pieces of an application, and [test automation](#test-automation). 
+How do you unit test? <br>
 
-Furthermore, while it may be tempting/cost-effective to "glue" together two units and test them as an integrated unit, an error can occur in a variety of places, creating confusion and uncertainty. With an integrated unit composed of unit 1 and unit 2, an error can occur in either of the units, both of the units, in the interface between the units, and in the test itself. These possibilities really demonstrate the importance of only testing one unit as your baseline to lower the level of uncertainty and raise the quality associated with testing your project.
+A common approach to unit testing involves writing drivers and stubs. The driver simulates a calling unit and a stub simulates a called unit. While creating these tests can be bothersome, they pay back when errors must be found in the complex application later, and support [test automation](#test-automation). 
+
+Furthermore, while it may be tempting/cost-effective to "glue" together two units and test them as an integrated unit, an error can occur in a variety of places, creating confusion and uncertainty. With an integrated unit composed of unit 1 and unit 2, an error can occur in either of the units, both of the units, in the interface between the units, and in the test itself. These possibilities demonstrate why unit tests must come first, then integration, then system tests. 
 
 ### Mocking
-Mocks simulate the behavior of actual objects to allow testers to isolate a smaller component of the program during unit testing, such as a class. Mocking is more elaborate than stubbing. Stubs perform state verification, or simply provide input (the minimal amount of object behavior to enable the tested module to run). When unit testing, mocks perform behavior verification. 
+
+There are lots of definitions things which are under the umbrella of test doubles. Here I will focus on Mocks and stubs. Mocks simulate the behavior of actual objects to allow testers to isolate a smaller component of the program during unit testing, such as a class. Mocking is more elaborate than stubbing. Stubs perform state verification, or simply provide input (the minimal amount of object behavior to enable the tested module to run). When unit testing, mocks perform behavior verification. 
 
 For example, you want to test your software’s ability to send an email if an order wasn’t received. A stub in this case would count how many emails were sent. A mock would track if the program sent the email with the right contents and to the correct person. We have a detailed example of mocking in Django [here](#testing-django-with-mocking).
 
-When to use mocks?
+When to use test doubles?
 
-When your method being unit tested has dependencies. Mock every dependency your unit test touches. When creating a mock, set the exact return values the dependency should return when tested, and exceptions to throw to test the method’s error handling. 
+When your method being unit tested has dependencies. Use test doubles for every dependency your unit test touches. The choice to implement a mock vs a stub is the testers decision based on what they need. When creating a mock, set the exact return values the dependency should return when tested, and exceptions to throw to test the method’s error handling. 
 
 Mock Shortcomings:
 
-Excessive mocking calls in a unit test can lead to unit tests that are too tightly coupled to the internal implementation of the very dependency you’re trying to mock.  This can make your code very difficult to refactor because the unit tests are very specific. 
+Excessive mocking calls in a unit test can lead to unit tests that are too tightly coupled to the internal implementation of the very dependency you’re trying to mock.  This can make your test ineffective because the mock is too similar to the actual dependedency so if your dependency implementation. 
 
 Usage of mocks usually follows this pattern:
 
