@@ -215,7 +215,7 @@ As a rule of thumb:
 
 Of particular interest for Lagunitas is the interaction of the software being written and the third-party libraries and external resources such as file systems, databases, and network services.  This is due to the fact that the behavior of such dependencies may not be fully known or controlled, or may change in unexpected ways when new versions are introduced. In context of external webservices that may be used in conjunction with a project, this means that integration testing can prove vital to the success of the project.
 
-You and your team can do integration testing in a variety of ways, but it is important to automate them and run them in the 70:20 unit:integration test ratio on Jenkins or Selenium. It is important that you and your team come to a consensus on what the strategy will be in order to improve workflow and the organization/quality of your work. 
+You and your team can do integration testing in a variety of ways, but it is important to automate them. It is important that you and your team come to a consensus on what the strategy will be in order to improve workflow and the organization/quality of your work. 
 
 The following are three common approaches to integration testing:
 
