@@ -415,14 +415,139 @@ casper.wait(2000, function(){
         $('table#tbl-order-data-ss td div.input-group input.form-control').each( function(index, element){
             if ($(this).val() > 9999){
                 ret = false;
-        }
+            }
+        });
+        return ret;
     });
-    return ret;
-});
-    // test.assertTruthy(correct, "All fields are less than limit.");
+    test.assertTruthy(correct, "All fields are less than limit.");
     // We test the system for unauthorized navigation.
     test_nav();
 });
+```
+
+We first fill the seasonal beers inputs with the max possible value, and save the order to see how the values are changed. We then check that these orders' values do not go over the specified limit, which they do. Another bug! This means that `test.assertTruthy(correct, "All fields are less than limit.")` will fail.
+
+This is what I mean by how the orders' values are changed:
+
+<p align="center">
+<img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/adj_prompt.png">
+</p>
+
+Note that when these tests fail, the entire test suite stops. In order to continue on with tests, I just commented out those lines.
+
+Now we are done with this user account, and we want to test authentication from an external party, one that is not logged in. We can accomplish all of that with this code:
+
+```javascript
+casper.then(function(){
+    //Then, we logout.
+    test.assertExists('a[href="/logout"]', "Find logout button.");
+    casper.capture('test_img/logout.png');
+    this.click('a[href="/logout"]');
+    test.comment('Testing unauthorized navigation.');
+    //Afterward, we try to access orders and forecasts that are unauthorized. We also try to go to the dashboard.
+    //We verify the correct response is taken by checking URL.
+    casper.thenOpen('http://192.168.0.236/orderportal/order/42', function(response){
+        test.assertUrlMatch('http://192.168.0.236/accounts/login/?next=/orderportal/order/42', "Cannot view Order not associated with user.");
+    });
+    casper.wait(1200, function(){
+        casper.back();
+    });
+    casper.thenOpen('http://192.168.0.236/orderportal/forecast/42', function(response){
+        test.assertUrlMatch('http://192.168.0.236/accounts/login/?next=/orderportal/forecast/42', "Cannot view Forecast not associated with user.")
+    });
+    casper.wait(1200, function(){
+        casper.back();
+        test.comment('Navigating back to page of origin.')
+    });
+});
+```
+
+Instead of a `assertEquals` with status codes, we simply did a `assertUrlMatch`. This demonstrates how we can accomplish the same thing multiple ways with CasperJS. We were able to logout with a simple `.click` command and execute the rest of our testing.
+
+After writing all your tests, it is vital that you inclue these lines at the end:
+
+```javascript
+//This last function is critical. Without it, the tests won't run.
+    casper.run(function(){
+        //This line is just for aesthetics.
+        this.echo('\n');
+        //End testing.
+        test.done();
+    })
+```
+
+This allows the tests to complete. Now that we have walked through an entire test suite, I will give you the code in its entirety <a href="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/test.js">here</a>.
+
+After being run with `casperjs test test.js --engine=slimerjs`, we get the following output:
+
+```
+Test file: test.js                                                              
+# Testing Lagunitas Ordering Portal
+PASS Testing Lagunitas Ordering Portal (32 tests)
+PASS Page title is: "Lagunitas Apps"
+PASS Find username field.
+PASS Find password field.
+PASS Find login button.
+# Attempting to login...
+PASS Logging in.
+# Taking photo of account dashboard...
+PASS Find Admin Portal button.
+PASS Admin page navigation.
+# Taking photo of admin dashboard...
+PASS Customers (Distributors) button clicked.
+# Taking photo of Customers (Distributors) interface...
+PASS Find Edit User Button.
+# Taking photo of Editing User HTML...
+PASS Find Login As User Button.
+# Taking photo of Login As User prompt...
+PASS Find Login as XXXXX Button.
+# Taking photo of new account...
+# Testing unauthorized navigation.
+PASS Cannot view Order not associated with user.
+PASS Cannot view Forecast not associated with user.
+# Navigating back to page of origin.
+PASS Find View Details for Forecast Button.
+# Taking photo of Forecast...
+# Testing unauthorized navigation.
+PASS Cannot view Order not associated with user.
+PASS Cannot view Forecast not associated with user.
+# Navigating back to page of origin.
+# Clicking Forecast Comments Button...
+# Entering Comment...
+# Testing unauthorized navigation.
+PASS Cannot view Order not associated with user.
+PASS Cannot view Forecast not associated with user.
+# Navigating back to page of origin.
+# Navigating back to Dashboard...
+# Taking photo of Dashboard after commenting on forecast...
+PASS Confirm Navigation from Forecast to Dashboard
+PASS Find Table with Forecast data.
+PASS Comment displayed on Dashboard
+PASS Find View Details for Forecast Button.
+# Navigating to Forecast Page.
+# Re-entering comment to be blank.
+# Navigating back to dashboard.
+PASS Confirm Navigation from Forecast to Dashboard.
+PASS Find Table with Forecast data.
+# Taking photo of second comment input...
+PASS Find View Details Button for Orders.
+# Navigating to Order page.
+# Entering Limit for Units Ordered...
+# Taking photo of inputted data...
+PASS Find Save Button
+PASS Find Adjustment Prompt OK Button.
+# Make sure all adjustments are consistent with 9999 limit implemented.
+# Testing unauthorized navigation.
+PASS Cannot view Order not associated with user.
+PASS Cannot view Forecast not associated with user.
+# Navigating back to page of origin.
+PASS Find logout button.
+# Testing unauthorized navigation.
+PASS Cannot view Order not associated with user.
+PASS Cannot view Forecast not associated with user.
+# Navigating back to page of origin.
+
+PASS 32 tests executed in 93.112s, 32 passed, 0 failed, 0 dubious, 0 skipped.  
 ```
 
 ## Locust
