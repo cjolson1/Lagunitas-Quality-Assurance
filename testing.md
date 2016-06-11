@@ -552,5 +552,13 @@ PASS 32 tests executed in 93.112s, 32 passed, 0 failed, 0 dubious, 0 skipped.
 
 ## Locust
 
+Locust is a open-source performance testing tool that "spawns" thousands of "locusts" (users) to test your program. It relies on micro-threads, so that a single machine can simulate many more users in comparison to older technologies such as Jmeter. It is python based which will allow Lagunitas' django experience to be easily relied upon. 
+
 ### Installing Locust
+```
+pip install locustio
+```
+That simple.
+
 ### Using Locust
+
