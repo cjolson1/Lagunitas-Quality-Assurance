@@ -578,7 +578,7 @@ This allows the tests to complete. Now that we have walked through an entire tes
 
 ## Locust
 
-Locust is a open-source performance testing tool that "spawns" thousands of "locusts" (users) to test your program's http requests efficiently. So it's important to note that the HTML page rendering time is NOT evaluated. Locust's event-based architecture relies on micro-threads. This allows a single machine to asynchronously simulate many more users in comparison to technologies such as Jmeter which create much more load on your machine. Locust is python-based pairs well with Lagunitas' Django experience. 
+Locust is a open-source performance testing tool that spawns "locusts" (users) to test your program's http requests efficiently. So it's important to note that the HTML page rendering time is NOT evaluated. Locust's event-based architecture relies on micro-threads. This allows a single machine to asynchronously simulate many more users in comparison to technologies such as Jmeter which create much more load on your machine. Locust is Python-based pairs well with Lagunitas' Django experience. 
 
 ### Installing Locust
 ```
@@ -601,7 +601,7 @@ pip install pyzmq
 
 <b>Locust tests http request performance under load</b>
 
-The <a href="http://docs.locust.io/en/latest/quickstart.html">Locust official documentation</a> has a good basic example, so I won’t repeat it here. The basic idea is you write a python file to test your code and then run it from the commandline: 
+The <a href="http://docs.locust.io/en/latest/quickstart.html">Locust official documentation</a> has a good basic example, so I won’t repeat it here. The basic idea is you write a Python file to test your code and then run it from the commandline: 
 
 To run Locust with the above locust file, if it was named locustfile.py, we could run (in the same directory as locustfile.py):
 
@@ -615,7 +615,7 @@ or if the locust file is located elsewhere we could run:
 locust -f ../locust_files/my_locust_file.py --host=http://example.com
 ```
 
-Once it is running you will go to the local host address it specifies. A nice UI will pop up where you will input the number of users you want to simulate and the “hatch rate” (how fast you want the users to be created to hit your total user goal).
+Once it is running you will go to the local host address it specifies. A nice UI will pop up where you will input the number of users you want to simulate and the “hatch rate” (users spawned/second).
 
 <p align="center">
   <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/Screen%20Shot%202016-06-13%20at%2011.13.30%20AM.png">
@@ -626,8 +626,8 @@ Once you want the test to stop press STOP. Stats will be displayed in the UI, an
 #### Writing a Locustfile
 
 At a minimum, you simply need to define two classes:
-  - A subclass of <a href=”http://docs.locust.io/en/latest/writing-a-locustfile.html#making-http-requests”>HttpLocust</a> (runs the test).
-  - A subclass of TaskSet (defines what will be tested).
+  - A subclass of <a href=”http://docs.locust.io/en/latest/writing-a-locustfile.html#making-http-requests”>`HttpLocust`</a> (runs the test).
+  - A subclass of `TaskSet` (defines what will be tested).
 
 ```python
 from locust import HttpLocust, TaskSet, task
@@ -655,11 +655,11 @@ class WebsiteUser(HttpLocust):
     max_wait = 15000
 ```
   
-Each “locust” will be an instance of the class `WebsiteUser`. Each `WebsiteUser` will perform the tasks assigned to `task_set`. The class `WebsiteTasks` defines the different tasks. `Min_wait` and `max_wait` are the minimum and maximum wait times between each task (this variation is used to simulate users more realistically). 
+Each “locust” will be an instance of the class `WebsiteUser`. Each `WebsiteUser` will perform the tasks assigned to `task_set`. The class `WebsiteTasks` defines the different tasks. `min_wait` and `max_wait` are the minimum and maximum wait times (milliseconds) between each task (this variation is used to simulate users more realistically). 
 
-`TaskSet` subclass can include a method called `on_start`, often for login purposes. The `on_start` function is called when a simulated user starts executing that `TaskSet` class.
+The `TaskSet` subclass can include a method called `on_start`, often for login purposes. The `on_start` function is called when a simulated user starts executing that `TaskSet` class.
 
-`HttpLocust` inherits from Locust, and it allows the user to preserve cookies between requests so that it can be used to log in to websites and keep a session between http requests:
+`HttpLocust` inherits from `locust`, and it allows the user to preserve cookies between requests so that it can be used to log in to websites and keep a session between http requests:
 
 POST example:
 
@@ -667,7 +667,7 @@ POST example:
 response = self.client.post("/login", {"username":"testuser", "password":"secret"})
 ```
 
-GET exmaple:
+GET example:
 
 ```python
 response = self.client.get("/about")
