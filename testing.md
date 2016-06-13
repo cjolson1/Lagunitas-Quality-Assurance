@@ -11,9 +11,9 @@
   - [Using Locust](#using-locust)
 
 ## CasperJS
-CasperJS is a webscraping and testing framework for the front-end of any web application. It is simple and lightweight, and uses a headless browser to navigate quickly. It comes bundled with very useful APIs that allow the user to take screenshots, assert conditions about almost anything, and overall mimic user behavior. In this document we will take you through writing a CasperJS test suite for the Lagunitas Ordering Portal. Casper is a great tool overall, but the one downside to the Casper module is that if one test fails, the entire test suite aborts.
+CasperJS is a webscraping and testing framework for the front-end of any web application. It is simple and lightweight, and uses a headless browser to test quickly. It comes bundled with very useful APIs that allow the user to take screenshots, assert conditions about almost anything, and overall mimic user behavior. In this document we will take you through writing a CasperJS test suite for the Lagunitas Ordering Portal. Casper is a great tool overall, but the one downside to the Casper module is that if one test fails, the entire test suite aborts. There is a solution to this, but as you will see, it is not a very graceful one.
 
-The documentation for Casper is extensive and can be found <a href="http://docs.casperjs.org/en/latest/modules/">here</a>. It runs by default on the PhantomJS engine, but we will be using SlimerJS to execute our tests because it is less buggy in my experience.
+The documentation for Casper is extensive and can be found <a href="http://docs.casperjs.org/en/latest/modules/">here</a>. It runs by default on the PhantomJS engine, but we will be using SlimerJS to execute tests because it is less buggy in my experience.
 
 ### Installing Casper
 
@@ -480,7 +480,7 @@ This allows the tests to complete. Now that we have walked through an entire tes
 
 ## Locust
 
-Locust is a open-source performance testing tool that "spawns" thousands of "locusts" (users) to test your program. It relies on micro-threads, so that a single machine can simulate many more users in comparison to older technologies such as Jmeter. It is python based which will allow Lagunitas' django experience to be easily relied upon. 
+Locust is a open-source performance testing tool that "spawns" thousands of "locusts" (users) to test your program's http requests efficiently. So it's important to note that the HTML page rendering time is NOT evaluated. Locust's event-based architecture relies on micro-threads. This allows a single machine to asynchronously simulate many more users in comparison to technologies such as Jmeter which create much more load on your machine. Locust is python-based pairs well with Lagunitas' django experience. 
 
 ### Installing Locust
 ```
@@ -488,5 +488,23 @@ pip install locustio
 ```
 That simple.
 
+
+For OS X specifically (if you have Homebrew): 
+```
+brew install libevent
+```
+
+To install software to do distributed processing:
+```
+pip install pyzmq
+```
+
 ### Using Locust
+
+<b>Locust tests http request performance under load</b>
+
+The <a href="http://docs.locust.io/en/latest/quickstart.html">Locust official documentation</a> has a good basic example, so I won’t repeat it here. At a minimum, you simply need to define two classes:
+  - A subclass of Locust (runs the test)
+  - A subclass of TaskSet (defines what will be tested) 
+  
 
