@@ -8,7 +8,7 @@
 
 //We begin the test with the casper.test.begin function. You must specify the number of tests that are going to be run.
 // casper.test.begin(testTitle, numberOfTests, callback)
-casper.test.begin('Testing Lagunitas Ordering Portal', 32, function(test){
+casper.test.begin('Testing Lagunitas Ordering Portal', 34, function(test){
     //It is important that we start at a designated URL and set the size of the screenshots we are going to be taking.
     casper.start('http://192.168.0.236/').viewport(1600,1000);
     //This line allows casper to emulate the browsers below:
