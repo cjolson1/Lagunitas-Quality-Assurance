@@ -1,5 +1,5 @@
 #Testing with CasperJS and Locust
-###### Christopher Olson | Maria Casciani &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; June 10, 2016 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Last Revision: June 13, 2016 9:33
+###### Christopher Olson | Maria Casciani &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; June 10, 2016 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Last Revision: June 13, 2016 14:15
 <br/>
 
 ## Table of Contents
@@ -13,7 +13,7 @@
 ## CasperJS
 CasperJS is a webscraping and testing framework for the front-end of any web application. It is simple and lightweight, and uses a headless browser to test quickly. It comes bundled with very useful APIs that allow the user to take screenshots, assert conditions about almost anything, and overall mimic user behavior. In this document we will take you through writing a CasperJS test suite for the Lagunitas Ordering Portal. Casper is a great tool overall, but the one downside to the Casper module is that if one test fails, the entire test suite aborts. There is a solution to this, but as you will see, it is not a very graceful one.
 
-The documentation for Casper is extensive and can be found <a href="http://docs.casperjs.org/en/latest/modules/">here</a>. It runs by default on the PhantomJS engine, but we will be using SlimerJS to execute tests because it is less buggy in my experience.
+The documentation for Casper is extensive and can be found <a href="http://docs.casperjs.org/en/latest/modules/">here</a>. It runs by default on the PhantomJS engine, but we will be using SlimerJS to execute tests because it is less buggy.
 
 ### Installing Casper
 
@@ -74,7 +74,7 @@ Before I elaborate, it is essential that you do NOT instantiate any variable as 
 
 The first line in any `casper.test.begin` function should be that call to `casper.start`. It gives Casper a URL to start at, and with the `viewport` extension, we can set the size of the screenshots we will be taking.
 
-After writing all your tests, it is vital that you inclue these lines at the end:
+After writing all your tests, it is vital that you include these lines at the end:
 
 ```javascript
 // This last function is critical. Without it, the tests won't run.
@@ -132,7 +132,7 @@ This test is beginning by viewing this page:
 We encapsulate our tests with `casper.then` as a CasperJS convention which separates our testing into steps. The first line with `test.comment` allows you to annotate the output of your testcases. You may notice the try/catch loops surrounding each test. This is an unfortunate cosequence of Casper aborting whenever a test fails.
 
 <p align="center">
-<b>In order to avoid this, you must wrap each test in a try/catch loop. It's a travesty, but will improve the quality of your test suite.</b>
+<b>In order to avoid this, you must wrap each test in a try/catch loop. It's a pain, but will improve the quality of your test suite.</b>
 </p>
 
 The next series of lines utilize several CasperJS APIs to determine the existence of several HTML elements, like the username field, password field, and submit button. We also check that the webpage title matches what we expect it to be. The design of your `test.assertWhatever` commands should be around the expected behavior of your website. There is a optional parameter to customize the title of a specific test by passing in a string, which can be used to clarify the intent of a test like in the `test.assertExits` calls. Inherent to the behavior of Casper with `test.assertWhatever` is that it will select only the first instance that it finds of what is specified.
@@ -562,7 +562,7 @@ casper.then(function(){
 
 Instead of an `assertEquals` with status codes, we simply did an `assertUrlMatch`. This demonstrates how we can accomplish the same thing multiple ways with CasperJS. We were able to logout with a simple `.click` command and execute the rest of our testing.
 
-After writing all your tests, it is vital that you inclue these lines at the end:
+After writing all your tests, it is vital that you incldue these lines at the end:
 
 ```javascript
 // This last function is critical. Without it, the tests won't run.
@@ -576,6 +576,33 @@ After writing all your tests, it is vital that you inclue these lines at the end
 
 This allows the tests to complete. Now that we have walked through an entire test suite, I will give you the code in its entirety <a href="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/test.js">here</a>.
 
+#### Some Good Practices
+
+When looking for an element that you want to interact with, it can be good practice to put both the assertion and the interaction call in the try/catch loop.
+
+For example:
+
+```javascript
+try{
+    test.assertExists("input.class_name");
+    this.sendKeys("input.class_name", "text");
+    this.click("input.class_name");
+}catch(e){}
+```
+
+As for the code in the catch section, it can be useful to define a function that handles these failures. Let's define a function `onFail(e)` that thakes an error as input.
+
+```javascript
+var count = 0;
+function onFail(e){
+    test.processAssertionResult(e.result);
+    casper.capture('error'+count.toString()+'.png');
+    count += 1;
+}
+```
+
+If we put `onFail(e)` inside the catch loop, we can capture failures and help streamline the debugging process, continue on test failures, and write less code that is of higher quality.
+
 ## Locust
 
 Locust is a open-source performance testing tool that spawns "locusts" (users) to test your program's http requests efficiently. Locust is Python-based pairs well with Lagunitas' Django experience. 
@@ -584,6 +611,10 @@ Why Locust is able to simulate so many users on one machine:
 Locust's event-based architecture relies on <a href="https://greenlet.readthedocs.io/en/latest/">greenlets</a>. Greenlets rely on switching to minimize the amount of energy because no callbacks are used. Instead a greenlet calculates then suspends and hands off its result to another greenlet. Once a greenlet explicitly switches to another greenlet its task it suspends where it is and the other resumes where it was suspended. This underlying technology allows for efficient encapsulation of processing and asyncronous execution between different "locusts". This allows a single machine to simulate many more users in comparison to technologies such as Jmeter which create much more load on your machine.
 
 Below are photos of the Locust statistics from thier web application and on the command line:
+
+<p align="center">
+  <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/Screen%20Shot%202016-06-13%20at%201.27.34%20PM.png">
+</p>
 
 
 ### Installing Locust
@@ -627,7 +658,11 @@ Once it is running you will go to the local host address it specifies. A nice UI
   <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/Screen%20Shot%202016-06-13%20at%2011.13.30%20AM.png">
 </p>
 
-Once you want the test to stop press STOP. Stats will be displayed in the UI, and also will be printed to the command line. 
+Once you want the test to stop press STOP. Stats will be displayed in the UI, and also will be printed to the command line.
+
+<p align="center">
+  <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/Screen%20Shot%202016-06-13%20at%201.26.12%20PM.png">
+</p>
 
 #### Writing a Locustfile
 
@@ -668,7 +703,7 @@ Each “locust” will be an instance of the class `WebsiteUser`. Each `WebsiteU
 
 The `TaskSet` subclass can include a method called `on_start`, often for login purposes. The `on_start` function is called when a simulated user starts executing that `TaskSet` class.
 
-`HttpLocust` inherits from `locust`, and it allows the user to preserve cookies between requests so that it can be used to log in to websites and keep a session between http requests. Any http methods can be used such as: get, post, put, delete, head, patch and options. Get takes in a URL as a perameter. Post takes in a URL and the data to be sent such as username and password. Get and post will likely be the most commonly used methods. For more information on the different methods and their perameters go <a href="http://docs.locust.io/en/latest/api.html#locust.clients.HttpSession.delete">here</a>. 
+`HttpLocust` inherits from `locust`, and it allows the user to preserve cookies between requests so that it can be used to log in to websites and keep a session between http requests. Any http methods can be used such as: get, post, put, delete, head, patch and options. Get takes in a URL as a parameter. Post takes in a URL and the data to be sent such as username and password. Get and post will likely be the most commonly used methods. For more information on the different methods and their parameters go <a href="http://docs.locust.io/en/latest/api.html#locust.clients.HttpSession.delete">here</a>. 
 
 #### Specifying Task Ratios
 
