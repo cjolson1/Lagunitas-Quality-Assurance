@@ -705,7 +705,7 @@ Most web pages have pages are hierarchical so <a href=”http://docs.locust.io/e
     * Reply to that thread
   - Read a new thread
   - Go to next page
-  - 
+
 To do this in Locust you nest these `TaskSet` classes:
 
 ```python
