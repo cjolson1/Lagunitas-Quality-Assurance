@@ -618,7 +618,7 @@ locust -f ../locust_files/my_locust_file.py --host=http://example.com
 Once it is running you will go to the local host address it specifies. A nice UI will pop up where you will input the number of users you want to simulate and the “hatch rate” (how fast you want the users to be created to hit your total user goal).
 
 <p align="center">
-  <img src="">
+  <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/Screen%20Shot%202016-06-13%20at%2011.13.30%20AM.png">
 </p>
 
 Once you want the test to stop press STOP. Stats will be displayed in the UI, and also will be printed to the command line. 
