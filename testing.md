@@ -610,13 +610,6 @@ Locust is a open-source performance testing tool that spawns "locusts" (users) t
 Why Locust is able to simulate so many users on one machine:
 Locust's event-based architecture relies on <a href="https://greenlet.readthedocs.io/en/latest/">greenlets</a>. Greenlets rely on switching to minimize the amount of energy because no callbacks are used. Instead a greenlet calculates then suspends and hands off its result to another greenlet. Once a greenlet explicitly switches to another greenlet its task it suspends where it is and the other resumes where it was suspended. This underlying technology allows for efficient encapsulation of processing and asyncronous execution between different "locusts". This allows a single machine to simulate many more users in comparison to technologies such as Jmeter which create much more load on your machine.
 
-Below are photos of the Locust statistics from thier web application and on the command line:
-
-<p align="center">
-  <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/Screen%20Shot%202016-06-13%20at%201.27.34%20PM.png">
-</p>
-
-
 ### Installing Locust
 ```
 pip install locustio
@@ -662,6 +655,9 @@ Once you want the test to stop press STOP. Stats will be displayed in the UI, an
 
 <p align="center">
   <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/Screen%20Shot%202016-06-13%20at%201.26.12%20PM.png">
+</p>
+<p align="center">
+<img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/Screen%20Shot%202016-06-13%20at%201.27.34%20PM.png">
 </p>
 
 #### Writing a Locustfile
@@ -773,22 +769,22 @@ class UserBehavior(TaskSet):
                 
        @task
        def schedule(self):
-           self.client.get("/schedule")
+            self.client.get("/schedule")
 
        @task
        def export(self):
-           self.client.get("/om_export")
+            self.client.get("/om_export")
 
-# tests the "view details" forecast requests
-@task(5)
-def order_adjust(self):
-self.client.get("/order/1354")
+        # tests the "view details" forecast requests
+        @task(5)
+        def order_adjust(self):
+            self.client.get("/order/1354")
 
 
 class WebsiteUser(HttpLocust):
-   task_set = UserBehavior # outer nest
-   min_wait=800
-   max_wait=12000
+    task_set = UserBehavior # outer nest
+    min_wait=800
+    max_wait=12000
 ```
 
 In the example above, the task nesting structure looks like this:
