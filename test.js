@@ -1,10 +1,10 @@
 /* This test requires account information with admin rights that is managing
-* at least one distributor with at least one forecast and at least one order,
-* with the most recent order having a status of 'Needs approval'.
-*
-* In this test, we will log in as an admin, log in as a distributor, comment repeatedly on a forecast, modify an
-* order, and logout. Throughout these tests we will be checking if we can navigate from a page to other pages that
-* are unauthorized. We will also be doing basic tests for HTML elements and variables.*/
+ * at least one distributor with at least one forecast and at least one order,
+ * with the most recent order having a status of 'Needs approval'.
+ *
+ * In this test, we will log in as an admin, log in as a distributor, comment repeatedly on a forecast, modify an
+ * order, and logout. Throughout these tests we will be checking if we can navigate from a page to other pages that
+ * are unauthorized. We will also be doing basic tests for HTML elements and variables.*/
 
 //We begin the test with the casper.test.begin function. You must specify the number of tests that are going to be run.
 // casper.test.begin(testTitle, numberOfTests, callback)
@@ -21,7 +21,9 @@ casper.test.begin('Testing Lagunitas Ordering Portal', 32, function(test){
         //A lot of Casper's functionality comes from casper.then. It is used to separate steps in the testing process.
         casper.thenOpen('http://192.168.0.236/orderportal/order/42', function(response){
             //Tests the server response to a POST request to the page.
-            test.assertEqual(response.status, 403, "Cannot view Order not associated with user.");
+            try{
+                test.assertEqual(response.status, 403, "Cannot view Order not associated with user.");
+            }catch(e){test.processAssertionResult(e.result)}
             casper.capture('test_img/403.png')
         });
         //Casper.wait allows us to wait a specific number of milliseconds for pages to load etc.
@@ -31,7 +33,9 @@ casper.test.begin('Testing Lagunitas Ordering Portal', 32, function(test){
         });
 
         casper.thenOpen('http://192.168.0.236/orderportal/forecast/42', function(response){
-            test.assertEqual(response.status, 403, "Cannot view Forecast not associated with user.")
+            try{
+                test.assertEqual(response.status, 403, "Cannot view Forecast not associated with user.");
+            }catch(e){test.processAssertionResult(e.result)}
         });
 
         casper.wait(1200, function(){
@@ -42,57 +46,77 @@ casper.test.begin('Testing Lagunitas Ordering Portal', 32, function(test){
 
     casper.then(function(){
         /*In general, with test.assertXXX the first field is what is being asserted and the second input is
-        * what the tester will spit out as the title of the test. 
-        * First, we test some basic functionality, like the webpage's title, and fields.*/
-        test.assertTitle('Lagunitas Apps');
-        test.assertExists('input[name="username"]', "Find username field.");
-        test.assertExists('input#id_password', 'Find password field.');
-        test.assertExists('a#login_id', 'Find login button.');
+         * what the tester will spit out as the title of the test.
+         * First, we test some basic functionality, like the webpage's title, and fields.*/
+        try{
+            test.assertTitle('Lagunitas Apps');
+        }catch(e){test.processAssertionResult(e.result)}
+        try{
+            test.assertExists('input[name="username"]', "Find username field.");
+        }catch(e){test.processAssertionResult(e.result)}
+        try{
+            test.assertExists('input#id_password', 'Find password field.');
+        }catch(e){test.processAssertionResult(e.result)}
+        try{
+            test.assertExists('a#login_id', 'Find login button.');
+        }catch(e){test.processAssertionResult(e.result)}
         /*this.fill is used to fill forms. the username and password parameters in the dictionary correspond
-        * to the name of the input fields. We use this to login. The true parameter tells casper to submit the form.*/
+         * to the name of the input fields. We use this to login. The true parameter tells casper to submit the form.*/
         this.fill('form#form-login', {
             'username': 'cj.olson',
             'password': 'cj.olson123'
         }, true);
         test.comment('Attempting to login...')
     });
-    
+
     //casper.wait is used to allow pages to load; without it we will encounter errors because casper will just go.
     casper.wait(2000, function(){
         //We determine if we navigated to the expected page.
-        test.assertUrlMatch('http://192.168.0.236/orderportal/dashboard', 'Logging in.');
+        try{
+            test.assertUrlMatch('http://192.168.0.236/orderportal/dashboard', 'Logging in.');
+        }catch(e){test.processAssertionResult(e.result)}
         test.comment('Taking photo of account dashboard...');
         //casper.capture takes a photo of what the browser is looking at.
         casper.capture('test_img/login.png');
         //We determine if we can go to the admin portal and do it if we can.
-        test.assertExists('a[href="/orderportal/admin"]', 'Find Admin Portal button.');
+        try{
+            test.assertExists('a[href="/orderportal/admin"]', 'Find Admin Portal button.');
+        }catch(e){test.processAssertionResult(e.result)}
         this.click('a[href="/orderportal/admin"]');
     });
 
     casper.wait(2000, function(){
         //Again, we check if we navigated to the right page.
-        test.assertUrlMatch('http://192.168.0.236/orderportal/admin', 'Admin page navigation.');
+        try{
+            test.assertUrlMatch('http://192.168.0.236/orderportal/admin', 'Admin page navigation.');
+        }catch(e){test.processAssertionResult(e.result)}
         test.comment('Taking photo of admin dashboard...');
         casper.capture('test_img/admin-dash.png');
         //clicklabel clicks on the given HTML element with innerHTML of the first parameter
         //We click on a label to get to more information.
         var match = this.clickLabel(" Customers (Distributors)", "a");
         //If the element is click, it will be truthy.
-        test.assertTruthy(match, 'Customers (Distributors) button clicked.');
+        try{
+            test.assertTruthy(match, 'Customers (Distributors) button clicked.');
+        }catch(e){test.processAssertionResult(e.result)}
     });
 
     casper.wait(2000, function(){
         casper.capture('test_img/customer_interface.png');
         test.comment('Taking photo of Customers (Distributors) interface...');
         //We find and click on the edit user button so we can log in as them.
-        test.assertExists('a.editCustomers span.glyphicon.glyphicon-cog', 'Find Edit User Button.');
+        try{
+            test.assertExists('a.editCustomers span.glyphicon.glyphicon-cog', 'Find Edit User Button.');
+        }catch(e){test.processAssertionResult(e.result)}
         this.click('a.editCustomers span.glyphicon.glyphicon-cog')
     });
-    
+
     casper.wait(2000, function(){
         test.comment('Taking photo of Editing User HTML...');
         casper.capture('test_img/editing_user.png');
-        test.assertExists('div.login-as-user.pull-right.btn.btn-link', 'Find Login As User Button.');
+        try{
+            test.assertExists('div.login-as-user.pull-right.btn.btn-link', 'Find Login As User Button.');
+        }catch(e){test.processAssertionResult(e.result)}
         //We progress with logging in as someone.
         this.click('div.login-as-user.pull-right.btn.btn-link');
     });
@@ -101,7 +125,9 @@ casper.test.begin('Testing Lagunitas Ordering Portal', 32, function(test){
         test.comment('Taking photo of Login As User prompt...');
         casper.capture('test_img/login_as_user.png');
         //We login as someone
-        test.assertExists('button.confirm', "Find Login as XXXXX Button.");
+        try{
+            test.assertExists('button.confirm', "Find Login as XXXXX Button.");
+        }catch(e){test.processAssertionResult(e.result)}
         this.click('button.confirm');
     });
 
@@ -111,10 +137,12 @@ casper.test.begin('Testing Lagunitas Ordering Portal', 32, function(test){
         casper.capture('test_img/new_acc.png');
         test_nav();
     });
-    
+
     casper.wait(2000, function(){
         //We now are going to interact with forecasts. We view details on one of them.
-        test.assertExists('a[class="btn btn-primary btn-xs btn-view-forecast"]', 'Find View Details for Forecast Button.');
+        try{
+            test.assertExists('a[class="btn btn-primary btn-xs btn-view-forecast"]', 'Find View Details for Forecast Button.');
+        }catch(e){test.processAssertionResult(e.result)}
         this.click('a[class="btn btn-primary btn-xs btn-view-forecast"]');
     });
 
@@ -124,7 +152,7 @@ casper.test.begin('Testing Lagunitas Ordering Portal', 32, function(test){
         casper.capture('test_img/forecast.png');
         test_nav();
     });
-    
+
     casper.wait(2000, function(){
         //We begin adding a comment to the forecast.
         test.comment('Clicking Forecast Comments Button...');
@@ -140,7 +168,7 @@ casper.test.begin('Testing Lagunitas Ordering Portal', 32, function(test){
         this.click('button.confirm');
         test_nav();
     });
-    
+
     casper.wait(2000, function(){
         //We go back to the dashboard and look if the comment we just made shows up.
         this.click('a[href="/orderportal/dashboard"]');
@@ -150,19 +178,27 @@ casper.test.begin('Testing Lagunitas Ordering Portal', 32, function(test){
     casper.wait(2000, function(){
         test.comment('Taking photo of Dashboard after commenting on forecast...');
         casper.capture('test_img/dash_after_comment.png');
-        test.assertUrlMatch("http://192.168.0.236/orderportal/dashboard", 'Confirm Navigation from Forecast to Dashboard');
-        test.assertExists('table#tbl-recent-forecasts', 'Find Table with Forecast data.');
+        try{
+            test.assertUrlMatch("http://192.168.0.236/orderportal/dashboard", 'Confirm Navigation from Forecast to Dashboard');
+        }catch(e){test.processAssertionResult(e.result)}
+        try{
+            test.assertExists('table#tbl-recent-forecasts', 'Find Table with Forecast data.');
+        }catch(e){test.processAssertionResult(e.result)}
         //We evaluate if we have indeed put the comment on the forecast.
         var comment = this.evaluate(function(){
             return $("table#tbl-recent-forecasts td:contains('testing')").size() === 1
         });
-        test.assertTruthy(comment, "Comment displayed on Dashboard");
+        try{
+            test.assertTruthy(comment, "Comment displayed on Dashboard");
+        }catch(e){test.processAssertionResult(e.result)}
         //We go back to the forecast page to comment some more.
-        test.assertExists('a[class="btn btn-primary btn-xs btn-view-forecast"]', "Find View Details for Forecast Button.");
+        try{
+            test.assertExists('a[class="btn btn-primary btn-xs btn-view-forecast"]', 'Find View Details for Forecast Button.');
+        }catch(e){test.processAssertionResult(e.result)}
         this.click('a[class="btn btn-primary btn-xs btn-view-forecast"]');
         test.comment('Navigating to Forecast Page.')
     });
-    
+
     casper.wait(2000, function(){
         //On that same forecast, we try to erase the comment but submitting a blank field.
         this.click('a[id="btn-comments"]');
@@ -175,21 +211,29 @@ casper.test.begin('Testing Lagunitas Ordering Portal', 32, function(test){
         this.click('a[href="/orderportal/dashboard"]');
         test.comment('Navigating back to dashboard.')
     });
-    
+
     casper.wait(2000, function(){
-        test.assertUrlMatch("http://192.168.0.236/orderportal/dashboard", "Confirm Navigation from Forecast to Dashboard.");
-        test.assertExists('table#tbl-recent-forecasts', "Find Table with Forecast data.");
+        try{
+            test.assertUrlMatch("http://192.168.0.236/orderportal/dashboard", "Confirm Navigation from Forecast to Dashboard.");
+        }catch(e){test.processAssertionResult(e.result)}
+        try{
+            test.assertExists('table#tbl-recent-forecasts', "Find Table with Forecast data.");
+        }catch(e){test.processAssertionResult(e.result)}
         /*this.evaluate is a special functionality to casperjs. It executes the code as if it's on the page itself,
-        * so we can use things like jQuery to make selecting elements easier.*/
+         * so we can use things like jQuery to make selecting elements easier.*/
         //We determine if the testing comment can be found.
         var commentt = this.evaluate(function(){
             return $("table#tbl-recent-forecasts td:contains('testing')").size() === 0;
         });
         test.comment('Taking photo of second comment input...');
         casper.capture('test_img/empty_comment_forecast.png');
-        // test.assertTruthy(commentt, "New empty comment is reflected in table.");
+        try{
+            test.assertTruthy(commentt, "New empty comment is reflected in table.");
+        }catch(e){test.processAssertionResult(e.result)}
         //We now progress to orders and begin messing with those.
-        test.assertExists('a[class="btn btn-primary btn-xs btn-view-order"]', "Find View Details Button for Orders.");
+        try{
+            test.assertExists('a[class="btn btn-primary btn-xs btn-view-order"]', "Find View Details Button for Orders.");
+        }catch(e){test.processAssertionResult(e.result)}
         this.click('a[class="btn btn-primary btn-xs btn-view-order"]');
         test.comment('Navigating to Order page.')
     });
@@ -204,12 +248,16 @@ casper.test.begin('Testing Lagunitas Ordering Portal', 32, function(test){
         this.sendKeys('input[data-key-name="B3-SUMPIN-155"]', '9999', {reset: true});
         test.comment('Taking photo of inputted data...');
         casper.capture('test_img/order_data.png');
-        test.assertExists('a#btn-save-order', "Find Save Button");
+        try{
+            test.assertExists('a#btn-save-order', "Find Save Button");
+        }catch(e){test.processAssertionResult(e.result)}
         this.click('a#btn-save-order');
     });
-    
+
     casper.wait(2000, function(){
-        test.assertExists('button.confirm', "Find Adjustment Prompt OK Button.");
+        try{
+            test.assertExists('button.confirm', "Find Adjustment Prompt OK Button.");
+        }catch(e){test.processAssertionResult(e.result)}
         casper.capture('test_img/adj_prompt.png');
         this.click('button.confirm');
         test.comment('Make sure all adjustments are consistent with 9999 limit implemented.');
@@ -223,27 +271,35 @@ casper.test.begin('Testing Lagunitas Ordering Portal', 32, function(test){
             });
             return ret;
         });
-        // test.assertTruthy(correct, "All fields are less than limit.");
+        try{
+            test.assertTruthy(correct, "All fields are less than limit.");
+        }catch(e){test.processAssertionResult(e.result)}
         // We test the system for unauthorized navigation.
         test_nav();
     });
 
     casper.then(function(){
         //Then, we logout.
-        test.assertExists('a[href="/logout"]', "Find logout button.");
+        try{
+            test.assertExists('a[href="/logout"]', "Find logout button.");
+        }catch(e){test.processAssertionResult(e.result)}
         casper.capture('test_img/logout.png');
         this.click('a[href="/logout"]');
         test.comment('Testing unauthorized navigation.');
         //Afterward, we try to access orders and forecasts that are unauthorized. We also try to go to the dashboard.
         //We verify the correct response is taken by checking URL.
         casper.thenOpen('http://192.168.0.236/orderportal/order/42', function(response){
-            test.assertUrlMatch('http://192.168.0.236/accounts/login/?next=/orderportal/order/42', "Cannot view Order not associated with user.");
+            try{
+                test.assertUrlMatch('http://192.168.0.236/accounts/login/?next=/orderportal/order/42', "Cannot view Order not associated with user.");
+            }catch(e){test.processAssertionResult(e.result)}
         });
         casper.wait(1200, function(){
             casper.back();
         });
         casper.thenOpen('http://192.168.0.236/orderportal/forecast/42', function(response){
-            test.assertUrlMatch('http://192.168.0.236/accounts/login/?next=/orderportal/forecast/42', "Cannot view Forecast not associated with user.")
+            try{
+                test.assertUrlMatch('http://192.168.0.236/accounts/login/?next=/orderportal/forecast/42', "Cannot view Forecast not associated with user.");
+            }catch(e){test.processAssertionResult(e.result)}        
         });
         casper.wait(1200, function(){
             casper.back();
