@@ -1,5 +1,5 @@
 #Testing with CasperJS and Locust
-###### Christopher Olson | Maria Casciani &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; June 10, 2016 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Last Revision: June 10, 2016 13:33
+###### Christopher Olson | Maria Casciani &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; June 10, 2016 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Last Revision: June 13, 2016 9:33
 <br/>
 
 ## Table of Contents
@@ -11,7 +11,7 @@
   - [Using Locust](#using-locust)
 
 ## CasperJS
-CasperJS is a scraping and testing framework for the front-end of any web application. It is simple and lightweight, and uses a headless browser to navigate quickly. It comes budled with very useful APIs that allow the user to take screenshots, assert conditions about almost anything, and mimic user behavior. In this document we will take you throught writing a CasperJS test suite for the Lagunitas Ordering Portal. The one downside to the Casper module is that if one test fails, the entire test suite aborts.
+CasperJS is a webscraping and testing framework for the front-end of any web application. It is simple and lightweight, and uses a headless browser to navigate quickly. It comes bundled with very useful APIs that allow the user to take screenshots, assert conditions about almost anything, and overall mimic user behavior. In this document we will take you through writing a CasperJS test suite for the Lagunitas Ordering Portal. Casper is a great tool overall, but the one downside to the Casper module is that if one test fails, the entire test suite aborts.
 
 The documentation for Casper is extensive and can be found <a href="http://docs.casperjs.org/en/latest/modules/">here</a>. It runs by default on the PhantomJS engine, but we will be using SlimerJS to execute our tests because it is less buggy in my experience.
 
@@ -51,7 +51,7 @@ casperjs test TEST_FILE_NAME.js --engine=slimerjs
 
 This will let CasperJS know that you want to use the test module and SlimerJS as the engine.
 
-In this example, we will login to the Ordering Portal as an admin, navigate to the admin page to login as a user managed by the admin, perform a variety of tasks as that user, and logout. Throughout this proceess we will be testing if we can navigate away from these pages to see orders and forecasts that are not associated with our user and consequently cannot see.
+In this example, we will login to the Ordering Portal as an admin, navigate to the admin page to login as a user managed by the admin, perform a variety of tasks as that user, and logout. Throughout this proceess we will be testing if we can navigate away from these pages to see orders and forecasts that are not associated with our user and consequently should not be able to see.
 
 To begin any test, we begin with the following command:
 
@@ -100,9 +100,9 @@ This test is beginning by viewing this page:
   <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/Screen%20Shot%202016-06-10%20at%203.09.25%20PM.png">
 </p>
 
-We encapsulate our tests with `casper.then` as a CasperJS convention. The first line with `test.comment` allows you to annotate the output of your testcases. The next series of lines utilize several CasperJS APIs to determine the existence of several HTML elements, like the username field, password field, and submit button. We also check that the webpage title matches what we expect it to be. The design of your `test.assert[whatever]` commands should be around the expected behavior of your website. There is a optional parameter to customize the title of a specific test by passing in a string, which can be used to clarify the intent of a test. Inherent to the behavior of Casper with `test.assert[whatever]` is that it will select only the first instance that it finds of what is specified, provided that there are multiple instances of what's being searched for.
+We encapsulate our tests with `casper.then` as a CasperJS convention which separates our testing into steps. The first line with `test.comment` allows you to annotate the output of your testcases. The next series of lines utilize several CasperJS APIs to determine the existence of several HTML elements, like the username field, password field, and submit button. We also check that the webpage title matches what we expect it to be. The design of your `test.assertWhatever` commands should be around the expected behavior of your website. There is a optional parameter to customize the title of a specific test by passing in a string, which can be used to clarify the intent of a test. Inherent to the behavior of Casper with `test.assertWhatever` is that it will select only the first instance that it finds of what is specified.
 
-The next command `this.fill` really demonstrates the power of Casper. The first parameter is the form that we want to fill, which we can select how we would with CSS. The next parameter is a dictionary with the name of input tags that are going to be filled with their corresponding values. The `true` at the end tells Casper that we want to submit this form. We then comment that we are attempting to login. We use `this` instead of `test` because the casper test module is `this` in this case, which we want to utilize to navigate through the webapp.
+The next command `this.fill` really demonstrates the power of Casper. The first parameter is the form that we want to fill, which we can select with CSS identifiers. The next parameter is a dictionary with the name property of input tags that are going to be filled with their corresponding values. The `true` at the end tells Casper that we want to submit this form. We then comment that we are attempting to login. We use `this` instead of `test` because the casper test module is `this` in this case, which we want to utilize to navigate through the webapp.
 
 The output from running this code would look something like the following:
 
@@ -126,7 +126,9 @@ After submitting this login request, we need to check if we logged in successful
 <b>We need to consider the speed of CasperJS, and write code that pauses accordingly.</b>
 </p>
 
-We can accomplish this by telling casper to wait with the `casper.wait` commands. There are a variety of wait-specific commands like `casper.waitForPopup`, `casper.waitForAlert`, etc. but they timeout by default at 5000 ms so we can make due with a simple `casper.wait(5000, function(){})`. We need to give the browser some time to render the account page, so we do:
+We can accomplish this by telling casper to wait with the `casper.wait` commands. There are a variety of wait-specific commands like `casper.waitForPopup`, `casper.waitForAlert`, etc. but they timeout by default at 5000 ms so we can make due with a simple `casper.wait(5000, function(){})`.
+
+We need to give the browser some time to render the account page, so we do:
 
 ```javascript
 casper.wait(2000, function(){
@@ -149,25 +151,25 @@ Here is that image:
 <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/login.png">
 </p>
 
-We then search for the Admin anchor and click on it.
+We then search for the Admin button and click on it.
 
 As you can see, the CasperJS language is very simple, yet powerful. This will only become more apparent as we continue.
 
 ```javascript
 casper.wait(2000, function(){
-    //Again, we check if we navigated to the right page.
+    // Again, we check if we navigated to the right page.
     test.assertUrlMatch('http://192.168.0.236/orderportal/admin', 'Admin page navigation.');
     test.comment('Taking photo of admin dashboard...');
     casper.capture('test_img/admin-dash.png');
-    //clickLabel clicks on the given HTML element with innerHTML of the first parameter
-    //We click on a label to get to more information.
+    // clickLabel clicks on the given HTML element with innerHTML of the first parameter
+    // We click on a label to get to more information.
     var match = this.clickLabel(" Customers (Distributors)", "a");
-    //If the element is click, it will be truthy.
+    // If the element is click, it will be truthy.
     test.assertTruthy(match, 'Customers (Distributors) button clicked.');
 });
 ```
 
-We wait again for the Admin Dashboard to load and check if indeed we are at the right URL path. We take a photo of the page, click on a button on the page, and check that we indeed clicked that button with `test.assertTruthy`. `this.clickLabel` allows us to search for an HTML element, in this case `a`, with the innerHTML of `" Customers (Distributors)"`. This is a very useful instruction when HTML elements and their properties are indistinguishable.
+We wait again for the Admin Dashboard to load and check if indeed we are at the right URL path. We take a photo of the page, click on a button, and check that we indeed clicked the button with `test.assertTruthy`. Furthermore, `this.clickLabel` allows us to search for an HTML element, in this case an anchor with the innerHTML of `" Customers (Distributors)"`. This is a very useful instruction when HTML elements and their properties are indistinguishable.
 
 At this point in the process we have navigated here:
 
@@ -181,18 +183,18 @@ We then continue to try to login as a user by clicking the gear next to `LOVELAN
 casper.wait(2000, function(){
     casper.capture('test_img/customer_interface.png');
     test.comment('Taking photo of Customers (Distributors) interface...');
-    //We find and click on the edit user button so we can log in as them.
+    // We find and click on the edit user button so we can log in as them.
     test.assertExists('a.editCustomers span.glyphicon.glyphicon-cog', 'Find Edit User Button.');
     this.click('a.editCustomers span.glyphicon.glyphicon-cog')
 });
 ```
 
-We first test that the gear exists as a complicated expression of a span within an anchor element which CasperJS can understand. 
+We first test that the gear exists as a CSS identifier that CasperJS can understand. 
 <p align="center">
 <b>In writing this test, I found that PhantomJS could not execute this command, but SlimerJS could, leading to my intuition that SlimerJS is more reliable.</b>
 </p>
 
-We then click on it, yielding the following screenshot:
+We then click on it, yielding the following:
 
 <p align="center">
 <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/editing_user.png">
@@ -205,7 +207,7 @@ casper.wait(2000, function(){
     test.comment('Taking photo of Editing User HTML...');
     casper.capture('test_img/editing_user.png');
     test.assertExists('div.login-as-user.pull-right.btn.btn-link', 'Find Login As User Button.');
-    //We progress with logging in as someone.
+    // We progress with logging in as someone.
     this.click('div.login-as-user.pull-right.btn.btn-link');
 });
 ```
@@ -234,23 +236,21 @@ And just like that, we are logged in:
 <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/new_acc.png">
 </p>
 
-As you can see the number of lines of code are minimal. A well-practiced test-writer will spend most of their time writing `casper.wait` or `casper.then` than the actual tests with how easy CasperJS's interface is.
-
 Now that we are logged in as another user, we can begin testing permissions and the forecasts and orders of that user, in this case LOVELAND.
 
 As I mentioned before, we are going to repeatedly test the ability of a user to access unauthorized forecasts and orders that are not associated with LOVELAND. In order to promote reusability of code, we can write one function to accomplish this:
 
 ```javascript
-//This function will be called throughout; it will test the ability to see orders/forecasts that are not allowed.
+// This function will be called throughout; it will test the ability to see orders/forecasts that are not allowed.
 function test_nav() {
     test.comment('Testing unauthorized navigation.');
     casper.thenOpen('http://192.168.0.236/orderportal/order/42', function(response){
-        //Tests the server response to a POST request to the page.
+        // Tests the server response to a POST request to the page.
         test.assertEqual(response.status, 403, "Cannot view Order not associated with user.");
         casper.capture('test_img/403.png')
     });
     casper.wait(1200, function(){
-        //Allows us to go back a page in history.
+        // Allows us to go back a page in history.
         casper.back();
     });
     casper.thenOpen('http://192.168.0.236/orderportal/forecast/42', function(response){
@@ -269,7 +269,7 @@ This function redirects us to another url, particulary that of a forecast and or
 <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/403.png">
 </p>
 
-It will eventually return us to whatever page we are on. 
+It will eventually return us to whatever page we were initially on. 
 
 Anyway, continuing from the LOVELAND dashboard we accessed, we are going to access the associated forecasts (in this case the first one that says 'View Details').
 
@@ -352,13 +352,13 @@ Now we go back to the forecast page, try to enter an empty comment, and go back 
 
 ```javascript
 casper.wait(2000, function(){
-    //On that same forecast, we try to erase the comment but submitting a blank field.
+    // On that same forecast, we try to erase the comment by submitting a blank field.
     this.click('a[id="btn-comments"]');
     this.fillSelectors('fieldset', {
         'input[type="text"]': ''
     }, true);
     test.comment('Re-entering comment to be blank.');
-    //We navigate back to the dashboard to see if we can see the comment.
+    // We navigate back to the dashboard to see if we can see the comment.
     this.click('button.confirm');
     this.click('a[href="/orderportal/dashboard"]');
     test.comment('Navigating back to dashboard.')
@@ -366,34 +366,34 @@ casper.wait(2000, function(){
 casper.wait(2000, function(){
     test.assertUrlMatch("http://192.168.0.236/orderportal/dashboard", "Confirm Navigation from Forecast to Dashboard.");
     test.assertExists('table#tbl-recent-forecasts', "Find Table with Forecast data.");
-    //We determine if the testing comment can be found.
+    // We determine if the testing comment can be found.
     var commentt = this.evaluate(function(){
         return $("table#tbl-recent-forecasts td:contains('testing')").size() === 0;
     });
     test.comment('Taking photo of second comment input...');
     casper.capture('test_img/empty_comment_forecast.png');
     test.assertTruthy(commentt, "New empty comment is reflected in table.");
-    //We now progress to orders and begin messing with those.
+    // We now progress to orders and begin messing with those.
     test.assertExists('a[class="btn btn-primary btn-xs btn-view-order"]', "Find View Details Button for Orders.");
     this.click('a[class="btn btn-primary btn-xs btn-view-order"]');
     test.comment('Navigating to Order page.')
 });
 ```
 
-This follows similar logic from initially entering the comment above. In fact, at the time of writing this, it was not possible to write empty comments! This means the the instruction `test.assertTruthy(commentt, "New empty comment is reflected in table.")` will fail. Finding bugs like this is easy with Casper, heck, this is the first testcase I've written with it.
+This follows similar logic from initially entering the comment above. In fact, at the time of writing this, it was not possible to write empty comments! This means the the instruction `test.assertTruthy(commentt, "New empty comment is reflected in table.")` will fail. Finding bugs like this is easy with Casper; this is the first testcase I've written with it.
 
-Next, we need to play with the order forms. We are already at the oder page with to code above, and to give you a sense of where we are at, here's a photo:
+Next, we need to play with the order forms. We are already at the order page with the code above, and to give you a sense of where we are at, here's a photo:
 
 <p align="center">
 <img src="https://github.com/cjolson1/Lagunitas-Quality-Assurance/blob/master/order_data.png">
 </p>
 
-We will interact with it in the follwoing way:
+We will interact with it in the following way:
 
 ```javascript
 casper.wait(5000, function(){
-    //Of particular interest are the specialty beers because they are limited by allocation. We enter the max value 
-    //allowed into their fields and save it.
+    /* Of particular interest are the specialty beers because they are limited by allocation. We enter the max value 
+    * allowed into their fields and save it. */
     test.comment('Entering Limit for Units Ordered...');
     this.sendKeys('input[data-key-name="B1-EQUINOX-12/22"]', '9999', {reset: true});
     this.sendKeys('input[data-key-name="B2-LUCKY13-4/6/12"]', '9999', {reset: true});
@@ -409,7 +409,7 @@ casper.wait(2000, function(){
     casper.capture('test_img/adj_prompt.png');
     this.click('button.confirm');
     test.comment('Make sure all adjustments are consistent with 9999 limit implemented.');
-    //We then test to see that these values are still under the threshold after the modifications by the system.
+    // We then test to see that these values are still under the threshold after the modifications by the system.
     var correct = this.evaluate(function(){
         var ret = true;
         $('table#tbl-order-data-ss td div.input-group input.form-control').each( function(index, element){
@@ -439,13 +439,13 @@ Now we are done with this user account, and we want to test authentication from 
 
 ```javascript
 casper.then(function(){
-    //Then, we logout.
+    // Then, we logout.
     test.assertExists('a[href="/logout"]', "Find logout button.");
     casper.capture('test_img/logout.png');
     this.click('a[href="/logout"]');
     test.comment('Testing unauthorized navigation.');
-    //Afterward, we try to access orders and forecasts that are unauthorized. We also try to go to the dashboard.
-    //We verify the correct response is taken by checking URL.
+    /* Afterward, we try to access orders and forecasts that are unauthorized. We also try to go to the dashboard.
+    * We verify the correct response is taken by checking URL. */
     casper.thenOpen('http://192.168.0.236/orderportal/order/42', function(response){
         test.assertUrlMatch('http://192.168.0.236/accounts/login/?next=/orderportal/order/42', "Cannot view Order not associated with user.");
     });
@@ -462,16 +462,16 @@ casper.then(function(){
 });
 ```
 
-Instead of a `assertEquals` with status codes, we simply did a `assertUrlMatch`. This demonstrates how we can accomplish the same thing multiple ways with CasperJS. We were able to logout with a simple `.click` command and execute the rest of our testing.
+Instead of an `assertEquals` with status codes, we simply did an `assertUrlMatch`. This demonstrates how we can accomplish the same thing multiple ways with CasperJS. We were able to logout with a simple `.click` command and execute the rest of our testing.
 
 After writing all your tests, it is vital that you inclue these lines at the end:
 
 ```javascript
-//This last function is critical. Without it, the tests won't run.
+// This last function is critical. Without it, the tests won't run.
     casper.run(function(){
-        //This line is just for aesthetics.
+        // This line is just for aesthetics.
         this.echo('\n');
-        //End testing.
+        // End testing.
         test.done();
     })
 ```
