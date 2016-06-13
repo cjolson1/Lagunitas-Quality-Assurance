@@ -578,7 +578,13 @@ This allows the tests to complete. Now that we have walked through an entire tes
 
 ## Locust
 
-Locust is a open-source performance testing tool that spawns "locusts" (users) to test your program's http requests efficiently. So it's important to note that the HTML page rendering time is NOT evaluated. Locust's event-based architecture relies on micro-threads. This allows a single machine to asynchronously simulate many more users in comparison to technologies such as Jmeter which create much more load on your machine. Locust is Python-based pairs well with Lagunitas' Django experience. 
+Locust is a open-source performance testing tool that spawns "locusts" (users) to test your program's http requests efficiently. Locust is Python-based pairs well with Lagunitas' Django experience. 
+
+Why Locust is able to simulate so many users on one machine:
+Locust's event-based architecture relies on <a href="https://greenlet.readthedocs.io/en/latest/">greenlets</a>. Greenlets rely on switching to minimize the amount of energy because no callbacks are used. Instead a greenlet calculates then suspends and hands off its result to another greenlet. Once a greenlet explicitly switches to another greenlet its task it suspends where it is and the other resumes where it was suspended. This underlying technology allows for efficient encapsulation of processing and asyncronous execution between different "locusts". This allows a single machine to simulate many more users in comparison to technologies such as Jmeter which create much more load on your machine.
+
+Below are photos of the Locust statistics from thier web application and on the command line:
+
 
 ### Installing Locust
 ```
@@ -645,7 +651,10 @@ class WebsiteTasks(TaskSet):
         
     @task
     def about(self):
-        self.client.get("/about/")
+        response = self.client.get("/about/")
+        #can print the status codes or the actual response
+        print "Response status code:", response.status_code
+        print "Response content:", response.content
 
 
 # HttpLocust inherits from Locust
@@ -659,21 +668,7 @@ Each “locust” will be an instance of the class `WebsiteUser`. Each `WebsiteU
 
 The `TaskSet` subclass can include a method called `on_start`, often for login purposes. The `on_start` function is called when a simulated user starts executing that `TaskSet` class.
 
-`HttpLocust` inherits from `locust`, and it allows the user to preserve cookies between requests so that it can be used to log in to websites and keep a session between http requests:
-
-POST example:
-
-```python
-response = self.client.post("/login", {"username":"testuser", "password":"secret"})
-```
-
-GET example:
-
-```python
-response = self.client.get("/about")
-print "Response status code:", response.status_code
-print "Response content:", response.content
-```
+`HttpLocust` inherits from `locust`, and it allows the user to preserve cookies between requests so that it can be used to log in to websites and keep a session between http requests. Any http methods can be used such as: get, post, put, delete, head, patch and options. Get takes in a URL as a perameter. Post takes in a URL and the data to be sent such as username and password. Get and post will likely be the most commonly used methods. For more information on the different methods and their perameters go <a href="http://docs.locust.io/en/latest/api.html#locust.clients.HttpSession.delete">here</a>. 
 
 #### Specifying Task Ratios
 
@@ -698,17 +693,21 @@ So in the example above `task2` will run twice as often as `task1`.
 
 #### Nesting Tasks
 
-Most web pages have pages are hierarchical so <a href=”http://docs.locust.io/en/latest/writing-a-locustfile.html#tasksets-can-be-nested”>nesting</a> your task sets helps replicate the way users behave within your site. An example of this would be how in a site like reddit, a user would:
+Most web pages have pages are hierarchical so <a href=”http://docs.locust.io/en/latest/writing-a-locustfile.html#tasksets-can-be-nested”>nesting</a> your task sets helps replicate the way users behave within your site. An example of this hierarchy structure in a site like reddit, a user would:
 
 1. Open a forum page 
   - Read a thread
+    * like a comment
     * Reply to that thread
   - Read a new thread
   - Go to next page
+  
+"Read thread", "Read new thread", and "Go to next page" are all in a nest. All are grouped under "Open a forum page". Within "Read a thread" is the inner nest of "like a comment" and "Reply to that thread". You encapsulate these groups with classes. Each group of nested tasks must be encapsulated by a class that inherits from TaskSet. The individual tasks are methods, unless they have an inner nest, and so must be a class to encapsulate the inner nest's methods. 
 
-To do this in Locust you nest these `TaskSet` classes:
+Below is example code testing Lagunitas's Ordering Portal. It load tests the GET requests for key URLs accessible on the dashboards top menu in DashboardBehavior and forcast details in the order_adjust method:
 
 ```python
+#outer nest testing Dashboard and forcast details
 class UserBehavior(TaskSet):
 
    # logs in user
@@ -733,7 +732,7 @@ class UserBehavior(TaskSet):
        def export(self):
            self.client.get("/om_export")
 
-   # tests the "view details" forecast requests
+# tests the "view details" forecast requests
 @task(5)
 def order_adjust(self):
 self.client.get("/order/1354")
@@ -752,7 +751,7 @@ In the example above, the task nesting structure looks like this:
     * `export`
   - `order_adjust`
 
-Admin, schedule, and export methods are all the methods of the `DashboardBehavior` class. Each of these can also have their own ratios in relation to each other.
+Nested inside the class UserBehavior (also a subclass of TaskSet) are DashboardBehavior and order_adjust. Since there are no inner nests within order_adjust it is simply a method that executes its request. As you can see DashboardBehavior is a class that inherits from TaskSet because nested inside Dashboard behavior are 3 methods to test get requests on the admin, schedule, and export paths. Each level of nesting can have their own ratios in relation to the other items at thier level of nesting.
 
 #### Simulating Page Views
 
