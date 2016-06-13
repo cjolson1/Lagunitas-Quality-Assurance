@@ -63,8 +63,8 @@ casper.test.begin('Testing Lagunitas Ordering Portal', 34, function(test){
         /*this.fill is used to fill forms. the username and password parameters in the dictionary correspond
          * to the name of the input fields. We use this to login. The true parameter tells casper to submit the form.*/
         this.fill('form#form-login', {
-            'username': 'cj.olson',
-            'password': 'cj.olson123'
+            'username': 'xxxxxxx',
+            'password': 'xxxxxxx'
         }, true);
         test.comment('Attempting to login...')
     });
