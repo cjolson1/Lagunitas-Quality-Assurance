@@ -721,9 +721,13 @@ class MyTaskSet(TaskSet):
     @task(6)
     def task2(self):
         pass
+    
+    @task
+    def task3(self):
+      pass
 ```
 
-So in the example above `task2` will run twice as often as `task1`.
+So in the example above `task2`, with a weight of 6, will run twice as often as `task1` and 6 times as often as task3. When task is given no perameters it is assumed to have a weight of 1, as is the case with `task 3`. 
 
 
 #### Nesting Tasks
@@ -755,10 +759,18 @@ class UserBehavior(TaskSet):
    # inner nest testing dashboard behavior
    @task(1)
    class DashboardBehavior(TaskSet):
-       @task(3)
-       def admin(self):
-           self.client.get('/admin')
-
+        @task
+        def admin(self):
+            response = self.client.get('/admin')
+            #loads the additional files that a real user would also load
+            resource_urls = set()
+            soup = BeautifulSoup(response.text)
+            for res in soup.find_all(src=True):
+                url = res['src']
+                resource_urls.add(url)
+            for url in resource_urls:
+                self.client.get(url)
+                
        @task
        def schedule(self):
            self.client.get("/schedule")
@@ -793,12 +805,24 @@ Nested inside the class UserBehavior (also a subclass of TaskSet) are DashboardB
 Locust doesn’t request a URL unless you tell it to. You can either do this explicitly for each, or utilize <a href=”https://www.crummy.com/software/BeautifulSoup/”>Beautiful Soup</a>.
 An example to open all the URLs a user typically loads when accessing a page (for images, style sheets, and scripts):
 
-```python
-resource_urls = set()
-    soup = BeautifulSoup(response.text)
-    for res in soup.find_all(src=True):
-        url = res['src']
-        resource_urls.add(url)
+First import Beautiful Soup:
+```
+from bs4 import BeautifulSoup
+```
+Below is how you utilize Beautiful Soup to find all the extra URLs, GET them, and close them:
+```
+        @task
+        def admin(self):
+            response = self.client.get('/admin')
+            resource_urls = set()
+            soup = BeautifulSoup(response.text)
+            for res in soup.find_all(src=True):
+                url = res['src']
+                resource_urls.add(url)
+            for url in resource_urls:
+                self.client.get(url)
+            for url in resource_urls:
+                url.close()
 ```
 
 This is critical to having more realistic load on your application.
@@ -809,3 +833,14 @@ You can install BeautifulSoup by entering the following on the command line:
 pip install beautifulsoup4
 ```
 
+#### Adjusting Your Computer's Resource Limit
+
+We initially found that when testing 2,000 users we had an 81% failure rate. This was actually due to Python's default value of the The maximum number of open file descriptors for the current process being too low. This can easily be changed with one line so that arbitrary open file number isn't exceeded and count as a failure. Put the following lines directly beneath your import statements:
+
+```
+import resource
+
+resource.setrlimit(resource.RLIMIT_NOFILE, (9999, 9999))
+```
+
+Once this was done we ran 2,000 users with a 6% failure rate. Significant improvement. 
